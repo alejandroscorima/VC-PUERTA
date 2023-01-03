@@ -1,0 +1,79 @@
+<body >
+  <div class="container" style="margin:20px; text-align:center; max-height:100%;" [hidden]="hideAll">
+
+    <mat-grid-list cols="3" rowHeight="20px">
+      <mat-grid-tile [colspan]="3" [rowspan]="4">
+        <img mat-card-image class="logo" src="{{linkTitle}}"  height="150%">
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="21">
+        <img mat-card-image class="logo" src="assets/OscBot.png"  height="100%">
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="9">
+        <img mat-card-image class="logo" [hidden]="hideDoc" src='assets/idcard.png'  height="100%">
+        <img mat-card-image class="logo" [hidden]="hideLoad" src='assets/loading2.gif'  height="100%">
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="9">
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="12" style="background-color: rgba(0, 0, 0, 0.43); border-radius: 10px;">
+        <div style="color:white; font-weight: normal; ">
+          <a >Inserte documento de identidad</a>
+          <br>
+          <br>
+          <a style="color: white; font-size: 30px; font-weight: normal;">Realizar una búsqueda</a>
+          <br>
+          <br>
+          <mat-form-field class="doc" appearance="outline" style=" min-width: 95%; height: 30px; font-size: 20px; ; ">
+            <mat-label class="doc" >DNI o Carnet de extranjería:</mat-label>
+            <input matInput type="number" id="docInput" [disabled]="disableDocInput" [(ngModel)]="docInputText" name="docInput" (keyup.enter)="verifyEnter($event.target.value)"  style="font-size:30px; border-color: white; " #docInput >
+          </mat-form-field>
+          <br>
+          <br>
+          <br>
+          <button mat-raised-button id="btnSearch" class="btnSearch" (click)="search(docInput.value)" style="min-width: 95%; height:50px; border-radius: 20px; background-color: rgb(225, 169, 149);">
+            BUSCAR
+          </button>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="12">
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="3" [rowspan]="4" style="color: white; ">
+        <p style="font-size:auto; font-weight: lighter; width:95%">
+          <a>
+            &dash; TEAM DESARROLLO | OSCORP TECHNOLOGY &dash;
+            <br>
+            desarrollo@oscorp.com.pe
+          </a>
+        </p>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+
+<!--     <h2>Selecciona un inventario:</h2>
+    <a >
+      <div class="line-boxes" style="text-align:center">
+        <img routerLink="/indice/mega" mat-card-image class="box" id="box1" src="assets/logoMega.png"   HSPACE="20" VSPACE="20">
+        <img routerLink="/indice/pro" mat-card-image class="box" id="box2" src="assets/logoPro.png"  HSPACE="20" VSPACE="20">
+        <img routerLink="/indice/huaral" mat-card-image class="box" id="box3" src="assets/logoHuaral.png"  HSPACE="20" VSPACE="20">
+      </div>
+    </a>
+    <a>
+      <div class="line-boxes" style="text-align:center">
+        <img routerLink="/indice/oficina" mat-card-image class="box" id="box4" src="assets/oficina.png"  HSPACE="20" VSPACE="20">
+        <img routerLink="/indice/megabet" mat-card-image class="box" id="box5" src="assets/megabet.png"  HSPACE="20" VSPACE="20">
+        <img routerLink="/indice/cochera" mat-card-image class="box" id="box6" src="assets/cochera.png"  HSPACE="20" VSPACE="20">
+      </div>
+    </a>
+    <p>Window width: <strong>{{ getScreenWidth }}</strong></p>
+    <p>Window height: <strong>{{ getScreenHeight }}</strong></p> -->
+
+  </div>
+
+  <div [hidden]="hideBirthCeleb">
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/build/pdf.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+</body>

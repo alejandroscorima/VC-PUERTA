@@ -1,0 +1,50 @@
+<div class="formRevisar">
+  <h1 mat-dialog-title>MOVER</h1>
+
+  <div mat-dialog-content>
+    <mat-form-field class="admin" id="admin" appearance="fill">
+      <mat-label>Lugar:</mat-label>
+      <mat-select [(value)]="data.lugar" (selectionChange)="cambioSala($event)">
+          <mat-option *ngFor="let l of lugares" [value]="l[1]">{{l[0]}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="admin" id="admin" appearance="fill">
+      <mat-label>Area:</mat-label>
+      <mat-select [(value)]="sala" (selectionChange)="cambioSala($event)">
+          <mat-option *ngFor="let ar of areas" [value]="ar[0]">{{ar[0]}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+<!--     <p>
+      <mat-form-field >
+        <input matInput placeholder="Código" disabled="false" [(ngModel)]="data.code">
+      </mat-form-field>
+      <mat-form-field >
+        <input matInput placeholder="Nombre" disabled="false" [(ngModel)]="data.name">
+      </mat-form-field>
+    </p>
+    <mat-form-field >
+      <input matInput placeholder="Descripción" disabled="false" [(ngModel)]="data.description">
+    </mat-form-field>
+    <mat-form-field >
+      <input matInput placeholder="Precio" disabled="false" [(ngModel)]="data.price">
+    </mat-form-field>
+    <p>
+      <mat-form-field >
+        <input matInput placeholder="Stock" disabled="false" [(ngModel)]="data.stock">
+      </mat-form-field>
+      <mat-form-field >
+        <input matInput placeholder="Stock" disabled="false" [(ngModel)]="data.stock">
+      </mat-form-field>
+    </p> -->
+
+
+  </div>
+
+  <div mat-dialog-actions>
+
+    <button mat-raised-button [disabled]="false" class="btnSave" (click)="btnSave()" >OK</button>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+
+  </div>
+
+</div>
