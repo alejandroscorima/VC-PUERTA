@@ -253,7 +253,7 @@ export class InicioComponent implements OnInit {
             visR.date_entrance=v.date_entrance;
             visR.hour_entrance=v.hour_entrance;
             visR.obs=v.obs;
-            visR.sala='SAN JUAN III';
+            visR.sala='PRO';
             vis.visits=parseInt(String(v.visits))+1;
             this.clientsService.deleteVisit(v).subscribe(a=>{
               this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -309,6 +309,7 @@ export class InicioComponent implements OnInit {
               })
 
               var message = 'Cliente con restricción'
+              // console.log(c);
               if(String(c.motivo)!=''){
                 message+='\n Motivo: '+String(c.motivo);
               }
@@ -323,7 +324,7 @@ export class InicioComponent implements OnInit {
                   visR.date_entrance=v.date_entrance;
                   visR.hour_entrance=v.hour_entrance;
                   visR.obs=v.obs;
-                  visR.sala='SAN JUAN III';
+                  visR.sala='PRO';
                   vis.visits=parseInt(String(v.visits))+1;
                   this.clientsService.deleteVisit(v).subscribe(a=>{
                     this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -353,9 +354,14 @@ export class InicioComponent implements OnInit {
                   this.limpiar();
                 })
 
-                this.toastr.info('Cliente de cumpleaños','CUMPLEAÑOS');
+                var message = 'Cliente para seguimiento'
+                // console.log(c);
+                if(String(c.motivo)!=''){
+                  message+='\n Motivo: '+String(c.motivo);
+                }
+                this.toastr.info(message,'OBSERVADO DE CUMPLEAÑOS');
+                vis.obs='EN OBSERVACIÓN';
 
-                vis.obs='DESTACADO';
 
                 this.clientsService.getVisit(this.dni_ce).subscribe((v:Visit)=>{
                   if(v && v.date_entrance==this.fechaString){
@@ -364,7 +370,7 @@ export class InicioComponent implements OnInit {
                     visR.date_entrance=v.date_entrance;
                     visR.hour_entrance=v.hour_entrance;
                     visR.obs=v.obs;
-                    visR.sala='SAN JUAN III';
+                    visR.sala='PRO';
                     vis.visits=parseInt(String(v.visits))+1;
                     this.clientsService.deleteVisit(v).subscribe(a=>{
                       this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -393,9 +399,13 @@ export class InicioComponent implements OnInit {
                   this.limpiar();
                 })
 
-                this.toastr.info('Cliente sin restricciones','DESTACADO');
-
-                vis.obs='DESTACADO';
+                var message='Cliente para seguimiento';
+                // console.log(c);
+                if(String(c.motivo)!=''){
+                  message+='\n Motivo: '+String(c.motivo);
+                }
+                this.toastr.info(message,'OBSERVADO');
+                vis.obs='EN OBSERVACIÓN';
 
                 this.clientsService.getVisit(this.dni_ce).subscribe((v:Visit)=>{
                   if(v && v.date_entrance==this.fechaString){
@@ -404,7 +414,7 @@ export class InicioComponent implements OnInit {
                     visR.date_entrance=v.date_entrance;
                     visR.hour_entrance=v.hour_entrance;
                     visR.obs=v.obs;
-                    visR.sala='SAN JUAN III';
+                    visR.sala='PRO';
                     vis.visits=parseInt(String(v.visits))+1;
                     this.clientsService.deleteVisit(v).subscribe(a=>{
                       this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -447,7 +457,7 @@ export class InicioComponent implements OnInit {
                     visR.date_entrance=v.date_entrance;
                     visR.hour_entrance=v.hour_entrance;
                     visR.obs=v.obs;
-                    visR.sala='SAN JUAN III';
+                    visR.sala='PRO';
                     vis.visits=parseInt(String(v.visits))+1;
                     this.clientsService.deleteVisit(v).subscribe(a=>{
                       this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -486,7 +496,7 @@ export class InicioComponent implements OnInit {
                     visR.date_entrance=v.date_entrance;
                     visR.hour_entrance=v.hour_entrance;
                     visR.obs=v.obs;
-                    visR.sala='SAN JUAN III';
+                    visR.sala='PRO';
                     vis.visits=parseInt(String(v.visits))+1;
                     this.clientsService.deleteVisit(v).subscribe(a=>{
                       this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -506,6 +516,7 @@ export class InicioComponent implements OnInit {
 
             }
           }
+          //CLIENTE PERMITIDO
           else{
             var dialogRef;
 
@@ -523,6 +534,7 @@ export class InicioComponent implements OnInit {
 
               var clienteNew = new Cliente('','','','','','','','','','','','');
 
+              //CLIENTE CON DATOS EN RENIEC
               if(res['success']){
                 clienteNew.doc_number = res['data']['numero'];
                 clienteNew.client_name = res['data']['nombre_completo'];
@@ -534,7 +546,7 @@ export class InicioComponent implements OnInit {
                 clienteNew.address = res['data']['direccion'];
                 clienteNew.condicion = 'PERMITIDO';
                 clienteNew.motivo = ' ';
-                clienteNew.sala_registro = 'SAN JUAN III';
+                clienteNew.sala_registro = 'PRO';
                 clienteNew.fecha_registro = this.fechaString;
 
                 let snackBarRef = this.snackBar.open(clienteNew.client_name,'X',{duration:4000});
@@ -560,13 +572,14 @@ export class InicioComponent implements OnInit {
                 vis.obs='PERMITIDO';
 
                 this.clientsService.getVisit(this.dni_ce).subscribe((v:Visit)=>{
+                  //VISITAS REPETIDAS
                   if(v && v.date_entrance==this.fechaString){
                     visR.doc_number=vis.doc_number;
                     visR.name=vis.name;
                     visR.date_entrance=v.date_entrance;
                     visR.hour_entrance=v.hour_entrance;
                     visR.obs=v.obs;
-                    visR.sala='SAN JUAN III';
+                    visR.sala='PRO';
                     vis.visits=parseInt(String(v.visits))+1;
                     this.clientsService.deleteVisit(v).subscribe(a=>{
                       this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -576,6 +589,7 @@ export class InicioComponent implements OnInit {
                       })
                     });
                   }
+                  //NUEVO INGRESO
                   else{
                     this.clientsService.addVisit(vis).subscribe();
                   }
@@ -586,6 +600,7 @@ export class InicioComponent implements OnInit {
                 })
 
               }
+              //CLIENTES SIN DATOS EN RENIEC
               else{
                 clienteNew.doc_number = this.dni_ce;
                 clienteNew.client_name = 'JUGADOR';
@@ -597,7 +612,7 @@ export class InicioComponent implements OnInit {
                 clienteNew.address = 'SN';
                 clienteNew.condicion = 'PERMITIDO';
                 clienteNew.motivo = ' ';
-                clienteNew.sala_registro = 'SAN JUAN III';
+                clienteNew.sala_registro = 'PRO';
                 clienteNew.fecha_registro = this.fechaString;
 
                 let snackBarRef = this.snackBar.open('NO SE OBTUVO DATOS DE RENIEC','X',{duration:4000});
@@ -623,14 +638,16 @@ export class InicioComponent implements OnInit {
 
                 vis.obs='PERMITIDO';
 
+
                 this.clientsService.getVisit(this.dni_ce).subscribe((v:Visit)=>{
+                  //VISITAS REPETIDAS
                   if(v && v.date_entrance==this.fechaString){
                     visR.doc_number=vis.doc_number;
                     visR.name=vis.name;
                     visR.date_entrance=v.date_entrance;
                     visR.hour_entrance=v.hour_entrance;
                     visR.obs=v.obs;
-                    visR.sala='SAN JUAN III';
+                    visR.sala='PRO';
                     vis.visits=parseInt(String(v.visits))+1;
                     this.clientsService.deleteVisit(v).subscribe(a=>{
                       this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -640,6 +657,7 @@ export class InicioComponent implements OnInit {
                       })
                     });
                   }
+                  //NUEVO REGISTRO
                   else{
                     this.clientsService.addVisit(vis).subscribe();
                   }
