@@ -1,5 +1,32 @@
 <div class="container" >
+  <mat-toolbar class="barra"  id="barra">
+    <mat-toolbar-row >
+      <button (click)="cajon.toggle()" mat-icon-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>
+        Bienvenido, SALA: {{' '+sala_name}}&nbsp;
+      </span>
+      <span class="example-spacer"></span>
+      <button mat-raised-button (click)="logout()">
+        <mat-icon>logout</mat-icon>Cerrar sesión
+      </button>
 
-  <router-outlet></router-outlet>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+
+  <mat-sidenav-container class="contenido">
+    <mat-sidenav style="min-width: 150px;" #cajon mode="side">
+      <mat-nav-list>
+        <a mat-stroked-button color="primary">Oscorp Technology</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+
 
 </div>

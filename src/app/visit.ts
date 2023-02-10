@@ -10,5 +10,6 @@ export class Visit {
       public hour_entrance: string,
       public obs: string,
       public visits: number,
+      public table_entrance: string,
   ) { }
 }

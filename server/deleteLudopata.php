@@ -7,11 +7,8 @@ if ($metodo != "DELETE" && $metodo != "OPTIONS") {
     exit("Solo se permite método DELETE");
 }
 
-if (empty($_GET["idCliente"])) {
-    exit("No hay id de mascota para eliminar");
-}
-$idMascota = $_GET["idCliente"];
-$bd = include_once "bd.php";
-$sentencia = $bd->prepare("DELETE FROM mascotas WHERE id = ?");
-$resultado = $sentencia->execute([$idMascota]);
+$ludop_id = $_GET["ludop_id"];
+$bd = include_once "bdEntrance.php";
+$sentencia = $bd->prepare("DELETE FROM ludopatas WHERE id = ?");
+$resultado = $sentencia->execute([$ludop_id]);
 echo json_encode($resultado);

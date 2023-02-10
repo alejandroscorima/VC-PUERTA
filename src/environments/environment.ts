@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   //baseUrl: "http://localhost:8888/Pro/server",
   //baseUrl: "http://localhost:8888/InventarioPatrimonio/server",
-  baseUrl: "http://34.207.60.246/Ingreso/pro/",
+  baseUrl: "http://34.207.60.246/Ingreso",
 };
 
 /*

@@ -9,16 +9,11 @@ if (empty($_GET["doc_number"])) {
 $doc_number = $_GET["doc_number"];
 $date_entrance = $_GET["date_entrance"];
 $selectedSala = $_GET['selectedSala'];
+$table_entrance = $_GET['table_entrance'];
 $bd = include_once "bd.php";
-if($selectedSala == 'MEGA'){
-  $sentencia = $bd->prepare("SELECT hour_entrance, age FROM visits_mega WHERE doc_number = '".$doc_number."' AND date_entrance = '".$date_entrance."'");
-}
-if($selectedSala == 'PRO'){
-  $sentencia = $bd->prepare("SELECT hour_entrance, age FROM visits_pro WHERE doc_number = '".$doc_number."' AND date_entrance = '".$date_entrance."'");
-}
-if($selectedSala == 'HUARAL'){
-  $sentencia = $bd->prepare("SELECT hour_entrance, age FROM visits_huaral WHERE doc_number = '".$doc_number."' AND date_entrance = '".$date_entrance."'");
-}
+
+$sentencia = $bd->prepare("SELECT hour_entrance, age FROM ".$table_entrance." WHERE doc_number = '".$doc_number."' AND date_entrance = '".$date_entrance."'");
+
 
 $sentencia->execute();
 //$cliente = $sentencia->fetchObject();

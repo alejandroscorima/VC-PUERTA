@@ -37,9 +37,9 @@ export class ClientesService {
     return this.http.get(`${this.baseUrl}/getClient.php?doc_number=${doc_number}`);
   }
 
-  getVisit(doc_number: string) {
+  getVisit(doc_number: string, table_entrance: string) {
 
-    return this.http.get(`${this.baseUrl}/getVisit.php?doc_number=${doc_number}`);
+    return this.http.get(`${this.baseUrl}/getVisit.php?doc_number=${doc_number}&table_entrance=${table_entrance}`);
   }
 
   getClientFromReniec(doc_number: string) {

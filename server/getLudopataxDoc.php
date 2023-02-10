@@ -8,14 +8,12 @@ if (empty($_GET["doc_number"])) {
 }
 $doc_number = $_GET["doc_number"];
 
-$table_entrance = $_GET["table_entrance"];
-
 $bd = include_once "bdEntrance.php";
 
-$sentencia = $bd->prepare("SELECT doc_number, name, age, gender, address, date_entrance, hour_entrance, obs, visits FROM ".$table_entrance." WHERE doc_number = '".$doc_number."' order by date_entrance desc");
+$sentencia = $bd->prepare("SELECT id, type_doc, code, doc_number, name FROM ludopatas WHERE doc_number = '".$doc_number."'");
 
 $sentencia->execute();
 //$cliente = $sentencia->fetchObject();
-$visit = $sentencia->fetchObject();
+$ludop = $sentencia->fetchObject();
 //echo json_encode($cliente[$cliente.length()-1]);
-echo json_encode($visit);
+echo json_encode($ludop);

@@ -10,9 +10,6 @@ header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 
-if ($_SERVER["REQUEST_METHOD"] != "POST") {
-    exit("Solo acepto peticiones POST");
-}
 
 
 
@@ -20,8 +17,11 @@ $jsonVisit = json_decode(file_get_contents("php://input"));
 if (!$jsonVisit) {
     exit("No hay datos");
 }
+
+$table_entrance = $jsonVisit->table_entrance;
+
 $bd = include_once "bdEntrance.php";
-$sentencia = $bd->prepare("delete from visits_pro where doc_number=? and date_entrance=?");
+$sentencia = $bd->prepare("delete from ".$table_entrance." where doc_number=? and date_entrance=?");
 $resultado = $sentencia->execute([$jsonVisit->doc_number, $jsonVisit->date_entrance]);
 
 echo json_encode([

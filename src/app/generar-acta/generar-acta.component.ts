@@ -7,11 +7,9 @@ import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl } from '@angular/forms';
 import { Sale } from '../sale';
-import { PersonalService } from '../personal.service';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Item } from '../item';
-import { InventarioService } from '../inventario.service';
 import { Product } from '../product';
 import { ToastrService } from 'ngx-toastr';
 
@@ -83,9 +81,8 @@ export class GenerarActaComponent implements OnInit {
 
 
   constructor(private route: ActivatedRoute,
-    private router: Router, private personalService: PersonalService, private clientesService: ClientesService,
-    private snackBar: MatSnackBar, public location: Location,
-    private inventarioService: InventarioService, private toastr: ToastrService) { }
+    private router: Router, private clientesService: ClientesService,
+    private snackBar: MatSnackBar, public location: Location, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.direccionInput=true;

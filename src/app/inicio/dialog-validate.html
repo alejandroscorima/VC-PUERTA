@@ -1,0 +1,22 @@
+<div mat-dialog-title style="text-align:center;">
+  <h3>VALIDACION</h3>
+</div>
+
+
+<div mat-dialog-content style="text-align:center">
+
+  <mat-form-field  appearance="outline">
+    <mat-label>Sala:</mat-label>
+    <input matInput type="username" [(ngModel)]="data">
+  </mat-form-field>
+
+  <mat-form-field  appearance="outline">
+    <mat-label>Contraseña:</mat-label>
+    <input matInput type="password" [(ngModel)]="password">
+  </mat-form-field>
+
+  <button mat-raised-button (click)="validate()" style="background-color: darkcyan; color: white; margin: 5px;">Ingresar</button>
+  <button mat-raised-button (click)="changeCampus()" style="background-color:palevioletred; color: white; margin: 5px;">Cambiar sala</button>
+
+</div>
+

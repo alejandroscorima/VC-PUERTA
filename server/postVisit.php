@@ -20,8 +20,11 @@ $jsonVisit = json_decode(file_get_contents("php://input"));
 if (!$jsonVisit) {
     exit("No hay datos");
 }
+
+$table_entrance = $jsonVisit->table_entrance;
+
 $bd = include_once "bdEntrance.php";
-$sentencia = $bd->prepare("insert into visits_pro(doc_number, name, age, gender, address, date_entrance, hour_entrance, obs, visits) values (?,?,?,?,?,?,?,?,?)");
+$sentencia = $bd->prepare("insert into ".$table_entrance." (doc_number, name, age, gender, address, date_entrance, hour_entrance, obs, visits) values (?,?,?,?,?,?,?,?,?)");
 $resultado = $sentencia->execute([$jsonVisit->doc_number, $jsonVisit->name, $jsonVisit->age, $jsonVisit->gender, $jsonVisit->address, $jsonVisit->date_entrance, $jsonVisit->hour_entrance, $jsonVisit->obs, $jsonVisit->visits]);
 echo json_encode([
     "resultado" => $resultado,

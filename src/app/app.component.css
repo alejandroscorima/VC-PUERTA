@@ -7,20 +7,14 @@
 .barra {
     flex: 0 1 auto;
     color:white;
-    background-color: rgb(34, 146, 161);
+    background-color: transparent;
+    height: 30px!important;
 }
 
-.icon1{
-  color: rgba(20, 102, 20, 0.817);
+.example-spacer {
+  flex: 1 1 auto;
 }
 
-.icon2{
-  color: rgb(95, 10, 95);
-}
-
-.icon3{
-  color: red;
-}
 
 .contenido {
     flex: 1 1 auto;

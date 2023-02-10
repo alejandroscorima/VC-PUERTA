@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 //import { DialogConfirm } from './lista-activos/lista-activos.component';
-import { ListaActivosComponent } from './lista-activos/lista-activos.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -31,16 +30,13 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 //import { DialogRevisar } from './lista-activos/lista-activos.component';
-import { DialogRevalidar,DialogResultado} from './inicio/inicio.component';
+import { DialogSelectSala,DialogResultado, DialogValidate} from './inicio/inicio.component';
 import {MatCardModule} from '@angular/material/card';
 
 import { ToastrModule } from 'ngx-toastr';
 
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { DialogEdit, EditarComponent } from './editar/editar.component';
-import { DialogDatos, MoverComponent } from './mover/mover.component';
-import { DialogNewEdit, DialogMove } from './lista-activos/lista-activos.component';
 
 import {MatGridListModule} from '@angular/material/grid-list';
 import { GoogleChartsModule } from 'angular-google-charts';
@@ -50,18 +46,12 @@ import { GoogleChartsModule } from 'angular-google-charts';
 @NgModule({
     declarations: [
         AppComponent,
-        ListaActivosComponent,
-        EditarComponent,
         InicioComponent,
         GenerarActaComponent,
-        MoverComponent,
         //DialogRevisar,
-        DialogRevalidar,
+        DialogSelectSala,
         DialogResultado,
-        DialogEdit,
-        DialogDatos,
-        DialogNewEdit,
-        DialogMove,
+        DialogValidate,
         //DialogConfirm,
     ],
     imports: [

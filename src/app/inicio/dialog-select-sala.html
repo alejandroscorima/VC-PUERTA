@@ -1,0 +1,21 @@
+<div mat-dialog-title style="text-align:center;">
+  <h2>SALAS OSCORP</h2>
+</div>
+<a>
+
+  <div mat-dialog-content class="line-boxes" style="text-align:center">
+    
+    <img *ngFor="let c of campus" style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box1" src="{{c.logo_url}}"  HSPACE="20" VSPACE="20" (click)="select(c)">
+<!--     <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box2" src="assets/logoVENEZUELA.png" HSPACE="20" VSPACE="20" (click)="select('VENEZUELA')">
+    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoHUANDOY.png" HSPACE="20" VSPACE="20" (click)="select('HUANDOY')">
+    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoKANTA.png" HSPACE="20" VSPACE="20" (click)="select('KANTA')">
+    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoMEGA.png" HSPACE="20" VSPACE="20" (click)="select('MEGA')">
+    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoPRO.png" HSPACE="20" VSPACE="20" (click)="select('PRO')">
+    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoHUARAL.png" HSPACE="20" VSPACE="20" (click)="select('HUARAL')">
+    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoSJI.png" HSPACE="20" VSPACE="20" (click)="select('SJI')">
+    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoSJII.png" HSPACE="20" VSPACE="20" (click)="select('SJII')">
+    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoSJIII.png" HSPACE="20" VSPACE="20" (click)="select('SJIII')"> -->
+
+  </div>
+
+</a>

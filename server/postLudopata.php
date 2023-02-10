@@ -16,13 +16,13 @@ if ($_SERVER["REQUEST_METHOD"] != "POST") {
 
 
 
-$jsonProduct = json_decode(file_get_contents("php://input"));
-if (!$jsonProduct) {
+$jsonLudop = json_decode(file_get_contents("php://input"));
+if (!$jsonLudop) {
     exit("No hay datos");
 }
-$bd = include_once "bdTienda.php";
-$sentencia = $bd->prepare("insert into products(code, name, description, price, stock, status) values (?,?,?,?,?,'activo')");
-$resultado = $sentencia->execute([$jsonProduct->code, $jsonProduct->name, $jsonProduct->description, $jsonProduct->price, $jsonProduct->stock]);
+$bd = include_once "bdEntrance.php";
+$sentencia = $bd->prepare("insert into ludopatas(code, type_doc, doc_number, name) values (?,?,?,?)");
+$resultado = $sentencia->execute([$jsonLudop->code, $jsonLudop->type_doc, $jsonLudop->doc_number, $jsonLudop->name]);
 echo json_encode([
     "resultado" => $resultado,
 ]);

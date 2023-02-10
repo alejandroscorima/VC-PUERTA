@@ -11,7 +11,10 @@ $jsonMascota = json_decode(file_get_contents("php://input"));
 if (!$jsonMascota) {
     exit("No hay datos");
 }
+
+$table_entrance = $jsonMascota->table_entrance;
+
 $bd = include_once "bd.php";
-$sentencia = $bd->prepare("UPDATE visits_pro SET name = ?, doc_number = ?, age = ? WHERE id = ?");
+$sentencia = $bd->prepare("UPDATE ".$table_entrance." SET name = ?, doc_number = ?, age = ? WHERE id = ?");
 $resultado = $sentencia->execute([$jsonMascota->name, $jsonMascota->doc_number, $jsonMascota->age, $jsonMascota->id]);
 echo json_encode($resultado);
