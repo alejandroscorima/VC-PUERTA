@@ -111,7 +111,7 @@ export class InicioComponent implements OnInit {
     pdfjsLib.GlobalWorkerOptions.workerSrc = '//cdn.jsdelivr.net/npm/pdfjs-dist@2.14.305/build/pdf.worker.js';
 
     //var loadingTask = pdfjsLib.getDocument('http://192.168.4.250/Sistema consulta de Ludopatía.pdf');
-    var loadingTask = pdfjsLib.getDocument('http://34.207.60.246/Sistema consulta de Ludopatía.pdf');
+    var loadingTask = pdfjsLib.getDocument('http://52.5.47.64/Sistema consulta de Ludopatía.pdf');
     this.ludopatas = await loadingTask.promise.then(function(pdf) {
 
       var pages=pdf.numPages;
@@ -914,7 +914,7 @@ export class DialogSelectSala implements OnInit {
       if(campusList){
         this.campus=campusList;
         this.campus.forEach((c:Campus)=>{
-          c.logo_url='http://desarrollo.oscorp.com.pe/Logistica/assets/logo'+c.name+'.png';
+          c.logo_url='http://52.5.47.64/Logistica/assets/logo'+c.name+'.png';
         })
       }
     })
