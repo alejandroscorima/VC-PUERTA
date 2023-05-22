@@ -914,7 +914,7 @@ export class DialogSelectSala implements OnInit {
       if(campusList){
         this.campus=campusList;
         this.campus.forEach((c:Campus)=>{
-          c.logo_url='http://34.207.60.246/Logistica/assets/logo'+c.name+'.png';
+          c.logo_url='http://desarrollo.oscorp.com.pe/Logistica/assets/logo'+c.name+'.png';
         })
       }
     })
