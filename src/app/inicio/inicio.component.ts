@@ -215,7 +215,8 @@ export class InicioComponent implements OnInit {
   
           dialogRef=this.dialog.open(DialogResultado,{
             data:{result:'denied',
-            name_result:l.name}
+            name_result:l.name,
+            age_result:'NO APLICA'}
           })
   
           dialogRef.afterClosed().subscribe(result => {
@@ -300,7 +301,10 @@ export class InicioComponent implements OnInit {
   
                 dialogRef=this.dialog.open(DialogResultado,{
                   data:{result:'warn',
-                  name_result:c.client_name},
+                  name_result:c.client_name,
+                  age_result:vis.age
+                },
+                  
                 })
   
                 dialogRef.afterClosed().subscribe(result => {
@@ -342,28 +346,29 @@ export class InicioComponent implements OnInit {
                 })
   
               }
-              else if(c.condicion=='DESTACADO'){
-                console.log('destacado');
+              else if(c.condicion=='VIP'){
+                console.log('vip');
                 if(c.birth_date.includes(this.fecha_cumple)){
   
                   var dialogRef;
   
                   dialogRef=this.dialog.open(DialogResultado,{
                     data:{result:'birth',
-                    name_result:c.client_name}
+                    name_result:c.client_name,
+                    age_result:vis.age}
                   })
   
                   dialogRef.afterClosed().subscribe(result => {
                     this.limpiar();
                   })
   
-                  var message = 'Cliente para seguimiento'
+                  var message = 'Cliente VIP cumpleañero'
                   // console.log(c);
                   if(String(c.motivo)!=''){
                     message+='\n Motivo: '+String(c.motivo);
                   }
-                  this.toastr.info(message,'OBSERVADO DE CUMPLEAÑOS');
-                  vis.obs='EN OBSERVACIÓN';
+                  this.toastr.info(message,'VIP CUMPLEAÑERO');
+                  vis.obs='VIP';
   
   
                   this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
@@ -398,7 +403,109 @@ export class InicioComponent implements OnInit {
   
                   dialogRef=this.dialog.open(DialogResultado,{
                     data:{result:'vip',
-                    name_result:c.client_name}
+                    name_result:c.client_name,
+                    age_result:vis.age}
+                  })
+  
+                  dialogRef.afterClosed().subscribe(result => {
+                    this.limpiar();
+                  })
+  
+                  var message='Cliente VIP';
+                  // console.log(c);
+                  if(String(c.motivo)!=''){
+                    message+='\n Motivo: '+String(c.motivo);
+                  }
+                  this.toastr.info(message,'VIP');
+                  vis.obs='VIP';
+  
+                  this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
+                    if(v && v.date_entrance==this.fechaString){
+                      visR.doc_number=vis.doc_number;
+                      visR.name=vis.name;
+                      visR.date_entrance=v.date_entrance;
+                      visR.hour_entrance=v.hour_entrance;
+                      visR.obs=v.obs;
+                      visR.sala=this.sala_name;
+                      vis.visits=parseInt(String(v.visits))+1;
+
+                      v.table_entrance=this.sala.table_entrance;
+
+                      this.clientsService.deleteVisit(v).subscribe(a=>{
+                        this.clientsService.addVisit(vis).subscribe(resp=>{
+                          if(resp){
+                            this.clientsService.addVisitRepeated(visR).subscribe();
+                          }
+                        })
+                      });
+                    }
+                    else{
+                      this.clientsService.addVisit(vis).subscribe();
+                    }
+                  })
+  
+                }
+  
+              }
+              else if(c.condicion=='OBSERVADO'){
+                console.log('observado');
+                if(c.birth_date.includes(this.fecha_cumple)){
+  
+                  var dialogRef;
+  
+                  dialogRef=this.dialog.open(DialogResultado,{
+                    data:{result:'birth',
+                    name_result:c.client_name,
+                    age_result:vis.age}
+                  })
+  
+                  dialogRef.afterClosed().subscribe(result => {
+                    this.limpiar();
+                  })
+  
+                  var message = 'Cliente para seguimiento'
+                  // console.log(c);
+                  if(String(c.motivo)!=''){
+                    message+='\n Motivo: '+String(c.motivo);
+                  }
+                  this.toastr.info(message,'OBSERVADO DE CUMPLEAÑOS');
+                  vis.obs='OBSERVADO';
+  
+  
+                  this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
+                    if(v && v.date_entrance==this.fechaString){
+                      visR.doc_number=vis.doc_number;
+                      visR.name=vis.name;
+                      visR.date_entrance=v.date_entrance;
+                      visR.hour_entrance=v.hour_entrance;
+                      visR.obs=v.obs;
+                      visR.sala=this.sala_name;
+                      vis.visits=parseInt(String(v.visits))+1;
+
+                      v.table_entrance=this.sala.table_entrance;
+
+                      this.clientsService.deleteVisit(v).subscribe(a=>{
+                        this.clientsService.addVisit(vis).subscribe(resp=>{
+                          if(resp){
+                            this.clientsService.addVisitRepeated(visR).subscribe();
+                          }
+                        })
+                      });
+                    }
+                    else{
+                      this.clientsService.addVisit(vis).subscribe();
+                    }
+                  })
+  
+                }
+                else{
+  
+                  var dialogRef;
+  
+                  dialogRef=this.dialog.open(DialogResultado,{
+                    data:{result:'obs',
+                    name_result:c.client_name,
+                    age_result:vis.age}
                   })
   
                   dialogRef.afterClosed().subscribe(result => {
@@ -451,7 +558,8 @@ export class InicioComponent implements OnInit {
   
                   dialogRef=this.dialog.open(DialogResultado,{
                     data:{result:'birth',
-                    name_result:c.client_name}
+                    name_result:c.client_name,
+                    age_result:vis.age}
                   })
   
                   dialogRef.afterClosed().subscribe(result => {
@@ -495,7 +603,8 @@ export class InicioComponent implements OnInit {
   
                   dialogRef=this.dialog.open(DialogResultado,{
                     data:{result:'allowed',
-                    name_result:c.client_name}
+                    name_result:c.client_name,
+                    age_result:vis.age}
                   })
   
                   dialogRef.afterClosed().subscribe(result => {
@@ -554,16 +663,17 @@ export class InicioComponent implements OnInit {
               console.log('no esta en BD')
               var dialogRef;
   
-              dialogRef=this.dialog.open(DialogResultado,{
+/*               dialogRef=this.dialog.open(DialogResultado,{
                 data:{result:'allowed',
-                name_result:c.client_name}
+                name_result:c.client_name,
+                age_result:vis.age}
               })
   
               dialogRef.afterClosed().subscribe((result:Item) => {
                 this.limpiar();
-              })
+              })*/
   
-              this.toastr.success('Cliente sin restricciones','PERMITIDO');
+              this.toastr.info('Cliente nuevo!','REGISTRANDO...');
               this.clientsService.getClientFromReniec(this.dni_ce).subscribe(res=>{
   
                 var clienteNew = new Cliente('','','','','','','','','','','','');
@@ -603,9 +713,19 @@ export class InicioComponent implements OnInit {
                   vis.address=clienteNew.departamento+'-'+clienteNew.provincia+'-'+clienteNew.distrito;
                   vis.visits=1;
                   vis.table_entrance=this.sala.table_entrance;
-  
+                  //MOSTRANDO LA VALIDACIÓN
                   vis.obs='PERMITIDO';
-  
+                  dialogRef=this.dialog.open(DialogResultado,{
+                    data:{result:'allowed',
+                    name_result:vis.name,
+                    age_result:vis.age}
+                  })
+      
+                  dialogRef.afterClosed().subscribe((result:Item) => {
+                    this.limpiar();
+                  })
+                  this.toastr.success('Cliente sin restricciones','PERMITIDO');
+                  //
                   this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
                     //VISITAS REPETIDAS
                     if(v && v.date_entrance==this.fechaString){
@@ -673,9 +793,20 @@ export class InicioComponent implements OnInit {
   
                   vis.visits=1;
                   vis.table_entrance=this.sala.table_entrance
-  
+                  //
                   vis.obs='PERMITIDO';
-  
+
+                  dialogRef=this.dialog.open(DialogResultado,{
+                    data:{result:'allowed',
+                    name_result:vis.name,
+                    age_result:vis.age}
+                  })
+      
+                  dialogRef.afterClosed().subscribe((result:Item) => {
+                    this.limpiar();
+                  })
+                  this.toastr.success('Cliente sin restricciones','PERMITIDO');
+                  //
   
                   this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
                     //VISITAS REPETIDAS
@@ -830,12 +961,14 @@ export class DialogResultado implements OnInit {
   doc = new jsPDF();
   img = new Image();
   name_result = '';
+  age_result = 0;
 
   hideCheck=false;
   hideBlock=false;
   hideBirth=false;
-  hideVip=false;
+  hideObs=false;
   hideWarn=false;
+  hideVip=false;
 
   urlResult;
 
@@ -851,14 +984,19 @@ export class DialogResultado implements OnInit {
     this.hideCheck=true;
     this.hideBlock=true;
     this.hideBirth=true;
-    this.hideVip=true;
+    this.hideObs=true;
     this.hideWarn=true;
+    this.hideVip=true;
 
     this.name_result=this.data['name_result'];
 
+    this.age_result=this.data['age_result'];
 
     if(this.data['result']=='allowed'){
       this.hideCheck=false;
+    }
+    if(this.data['result']=='vip'){
+      this.hideVip=false;
     }
     if(this.data['result']=='denied'){
       this.hideBlock=false;
@@ -866,8 +1004,8 @@ export class DialogResultado implements OnInit {
     if(this.data['result']=='birth'){
       this.hideBirth=false;
     }
-    if(this.data['result']=='vip'){
-      this.hideVip=false;
+    if(this.data['result']=='obs'){
+      this.hideObs=false;
     }
     if(this.data['result']=='warn'){
       this.hideWarn=false;

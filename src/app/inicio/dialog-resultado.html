@@ -5,13 +5,15 @@
     <a >
       <div class="line-boxes" style="text-align:center">
         <img mat-card-image [hidden]="hideCheck" class="box" id="box1" src='assets/allowed.png' width="100%">
-        <img mat-card-image [hidden]="hideBlock" class="box" id="box2" src="assets/denied.png" width="100%">
-        <img mat-card-image [hidden]="hideBirth" class="box" id="box3" src="assets/birthday.png" width="100%">
-        <img mat-card-image [hidden]="hideVip" class="box" id="box4" src="assets/vip.webp" width="100%">
-        <img mat-card-image [hidden]="hideWarn" class="box" id="box5" src="assets/warn.webp" width="100%">
+        <img mat-card-image [hidden]="hideVip" class="box" id="box2" src='assets/allowed-vip.png' width="100%">        
+        <img mat-card-image [hidden]="hideBlock" class="box" id="box3" src="assets/denied.png" width="100%">
+        <img mat-card-image [hidden]="hideBirth" class="box" id="box4" src="assets/birthday.png" width="100%">
+        <img mat-card-image [hidden]="hideObs" class="box" id="box5" src="assets/observed.png" width="100%">
+        <img mat-card-image [hidden]="hideWarn" class="box" id="box6" src="assets/warn.png" width="100%">
       </div>
     </a>
     <h2>{{name_result}}</h2>
+    <h2>EDAD: {{age_result}}</h2>
   </div>
 
 
