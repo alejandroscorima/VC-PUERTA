@@ -672,171 +672,239 @@ export class InicioComponent implements OnInit {
               dialogRef.afterClosed().subscribe((result:Item) => {
                 this.limpiar();
               })*/
-  
-              this.toastr.info('Cliente nuevo!','REGISTRANDO...');
-              this.clientsService.getClientFromReniec(this.dni_ce).subscribe(res=>{
-  
+
+              if(this.dni_ce.length>8){
+
+                this.toastr.info('SIN DATOS','Documento distinto a DNI');
+
                 var clienteNew = new Cliente('','','','','','','','','','','','');
-  
-                //CLIENTE CON DATOS EN RENIEC
-                if(res['success']){
-                  clienteNew.doc_number = res['data']['numero'];
-                  clienteNew.client_name = res['data']['nombre_completo'];
-                  clienteNew.birth_date = res['data']['fecha_nacimiento'];
-                  clienteNew.gender = res['data']['sexo'];
-                  clienteNew.departamento = res['data']['departamento'];
-                  clienteNew.provincia = res['data']['provincia'];
-                  clienteNew.distrito = res['data']['distrito'];
-                  clienteNew.address = res['data']['direccion'];
-                  clienteNew.condicion = 'PERMITIDO';
-                  clienteNew.motivo = ' ';
-                  clienteNew.sala_registro = this.sala_name;
-                  clienteNew.fecha_registro = this.fechaString;
-  
-                  let snackBarRef = this.snackBar.open(clienteNew.client_name,'X',{duration:4000});
-  
-                  vis.doc_number=this.dni_ce;
-                  vis.name=clienteNew.client_name;
-                  vis.gender=clienteNew.gender;
-                  var birthArray=clienteNew.birth_date.split('-');
-                  vis.age=parseInt(this.anio)-parseInt(birthArray[0]);
-                  if(parseInt(this.mes)<parseInt(birthArray[1])){
-                    vis.age-=1;
-                  }
-                  if(parseInt(this.mes)==parseInt(birthArray[1])){
-                    if(parseInt(this.dia)<parseInt(birthArray[2])){
-                      vis.age-=1;
-                    }
-                  }
-                  vis.date_entrance=this.fechaString;
-                  vis.hour_entrance=this.horaString;
-                  vis.address=clienteNew.departamento+'-'+clienteNew.provincia+'-'+clienteNew.distrito;
-                  vis.visits=1;
-                  vis.table_entrance=this.sala.table_entrance;
-                  //MOSTRANDO LA VALIDACIÓN
-                  vis.obs='PERMITIDO';
-                  dialogRef=this.dialog.open(DialogResultado,{
-                    data:{result:'allowed',
-                    name_result:vis.name,
-                    age_result:vis.age}
-                  })
-      
-                  dialogRef.afterClosed().subscribe((result:Item) => {
-                    this.limpiar();
-                  })
-                  this.toastr.success('Cliente sin restricciones','PERMITIDO');
-                  //
-                  this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
-                    //VISITAS REPETIDAS
-                    if(v && v.date_entrance==this.fechaString){
-                      visR.doc_number=vis.doc_number;
-                      visR.name=vis.name;
-                      visR.date_entrance=v.date_entrance;
-                      visR.hour_entrance=v.hour_entrance;
-                      visR.obs=v.obs;
-                      visR.sala=this.sala_name;
-                      vis.visits=parseInt(String(v.visits))+1;
 
-                      v.table_entrance=this.sala.table_entrance;
-                      this.clientsService.deleteVisit(v).subscribe(a=>{
-                        this.clientsService.addVisit(vis).subscribe(resp=>{
-                          if(resp){
-                            this.clientsService.addVisitRepeated(visR).subscribe();
-                          }
-                        })
-                      });
-                    }
-                    //NUEVO INGRESO
-                    else{
-                      this.clientsService.addVisit(vis).subscribe();
-                    }
-  
-                    this.clientsService.addCliente(clienteNew).subscribe(m=>{
-  
+                clienteNew.doc_number = this.dni_ce;
+                clienteNew.client_name = 'JUGADOR';
+                clienteNew.birth_date = 'SN';
+                clienteNew.gender = 'SN';
+                clienteNew.departamento = 'SN';
+                clienteNew.provincia = 'SN';
+                clienteNew.distrito = 'SN';
+                clienteNew.address = 'SN';
+                clienteNew.condicion = 'PERMITIDO';
+                clienteNew.motivo = ' ';
+                clienteNew.sala_registro = this.sala_name;
+                clienteNew.fecha_registro = this.fechaString;
+
+                vis.doc_number=this.dni_ce;
+                vis.name=clienteNew.client_name;
+                vis.gender=clienteNew.gender;
+                vis.age=0
+                vis.date_entrance=this.fechaString;
+                vis.hour_entrance=this.horaString;
+                vis.address='SN';
+
+                vis.visits=1;
+                vis.table_entrance=this.sala.table_entrance
+                //
+                vis.obs='PERMITIDO';
+
+                dialogRef=this.dialog.open(DialogResultado,{
+                  data:{result:'allowed',
+                  name_result:vis.name,
+                  age_result:vis.age}
+                })
+    
+                dialogRef.afterClosed().subscribe((result:Item) => {
+                  this.limpiar();
+                })
+                this.toastr.success('Cliente sin restricciones','PERMITIDO');
+                //
+
+                this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
+                  //VISITAS REPETIDAS
+                  if(v && v.date_entrance==this.fechaString){
+                    visR.doc_number=vis.doc_number;
+                    visR.name=vis.name;
+                    visR.date_entrance=v.date_entrance;
+                    visR.hour_entrance=v.hour_entrance;
+                    visR.obs=v.obs;
+                    visR.sala=this.sala_name;
+                    vis.visits=parseInt(String(v.visits))+1;
+
+                    v.table_entrance=this.sala.table_entrance;
+
+                    this.clientsService.deleteVisit(v).subscribe(a=>{
+                      this.clientsService.addVisit(vis).subscribe(resp=>{
+                        if(resp){
+                          this.clientsService.addVisitRepeated(visR).subscribe();
+                        }
+                      })
                     });
-                  })
-  
-                }
-                //CLIENTES SIN DATOS EN RENIEC
-                else{
-                  clienteNew.doc_number = this.dni_ce;
-                  clienteNew.client_name = 'JUGADOR';
-                  clienteNew.birth_date = 'SN';
-                  clienteNew.gender = 'SN';
-                  clienteNew.departamento = 'SN';
-                  clienteNew.provincia = 'SN';
-                  clienteNew.distrito = 'SN';
-                  clienteNew.address = 'SN';
-                  clienteNew.condicion = 'PERMITIDO';
-                  clienteNew.motivo = ' ';
-                  clienteNew.sala_registro = this.sala_name;
-                  clienteNew.fecha_registro = this.fechaString;
-  
-                  let snackBarRef = this.snackBar.open('NO SE OBTUVO DATOS DE RENIEC','X',{duration:4000});
-  
-                  vis.doc_number=this.dni_ce;
-                  vis.name=clienteNew.client_name;
-                  vis.gender=clienteNew.gender;
-                  var birthArray=clienteNew.birth_date.split('-');
-                  vis.age=parseInt(this.anio)-parseInt(birthArray[0]);
-                  if(parseInt(this.mes)<parseInt(birthArray[1])){
-                    vis.age-=1;
                   }
-                  if(parseInt(this.mes)==parseInt(birthArray[1])){
-                    if(parseInt(this.dia)<parseInt(birthArray[2])){
+                  //NUEVO REGISTRO
+                  else{
+                    this.clientsService.addVisit(vis).subscribe();
+                  }
+                })
+
+
+
+              }
+              else{
+                this.toastr.info('Cliente nuevo!','REGISTRANDO...');
+                
+                this.clientsService.getClientFromReniec(this.dni_ce).subscribe(res=>{
+  
+                  var clienteNew = new Cliente('','','','','','','','','','','','');
+    
+                  //CLIENTE CON DATOS EN RENIEC
+                  if(res['success']){
+                    clienteNew.doc_number = res['data']['numero'];
+                    clienteNew.client_name = res['data']['nombre_completo'];
+                    clienteNew.birth_date = res['data']['fecha_nacimiento'];
+                    clienteNew.gender = res['data']['sexo'];
+                    clienteNew.departamento = res['data']['departamento'];
+                    clienteNew.provincia = res['data']['provincia'];
+                    clienteNew.distrito = res['data']['distrito'];
+                    clienteNew.address = res['data']['direccion'];
+                    clienteNew.condicion = 'PERMITIDO';
+                    clienteNew.motivo = ' ';
+                    clienteNew.sala_registro = this.sala_name;
+                    clienteNew.fecha_registro = this.fechaString;
+    
+                    let snackBarRef = this.snackBar.open(clienteNew.client_name,'X',{duration:4000});
+    
+                    vis.doc_number=this.dni_ce;
+                    vis.name=clienteNew.client_name;
+                    vis.gender=clienteNew.gender;
+                    var birthArray=clienteNew.birth_date.split('-');
+                    vis.age=parseInt(this.anio)-parseInt(birthArray[0]);
+                    if(parseInt(this.mes)<parseInt(birthArray[1])){
                       vis.age-=1;
                     }
-                  }
-                  vis.date_entrance=this.fechaString;
-                  vis.hour_entrance=this.horaString;
-                  vis.address='SN';
+                    if(parseInt(this.mes)==parseInt(birthArray[1])){
+                      if(parseInt(this.dia)<parseInt(birthArray[2])){
+                        vis.age-=1;
+                      }
+                    }
+                    vis.date_entrance=this.fechaString;
+                    vis.hour_entrance=this.horaString;
+                    vis.address=clienteNew.departamento+'-'+clienteNew.provincia+'-'+clienteNew.distrito;
+                    vis.visits=1;
+                    vis.table_entrance=this.sala.table_entrance;
+                    //MOSTRANDO LA VALIDACIÓN
+                    vis.obs='PERMITIDO';
+                    dialogRef=this.dialog.open(DialogResultado,{
+                      data:{result:'allowed',
+                      name_result:vis.name,
+                      age_result:vis.age}
+                    })
+        
+                    dialogRef.afterClosed().subscribe((result:Item) => {
+                      this.limpiar();
+                    })
+                    this.toastr.success('Cliente sin restricciones','PERMITIDO');
+                    //
+                    this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
+                      //VISITAS REPETIDAS
+                      if(v && v.date_entrance==this.fechaString){
+                        visR.doc_number=vis.doc_number;
+                        visR.name=vis.name;
+                        visR.date_entrance=v.date_entrance;
+                        visR.hour_entrance=v.hour_entrance;
+                        visR.obs=v.obs;
+                        visR.sala=this.sala_name;
+                        vis.visits=parseInt(String(v.visits))+1;
   
-                  vis.visits=1;
-                  vis.table_entrance=this.sala.table_entrance
-                  //
-                  vis.obs='PERMITIDO';
-
-                  dialogRef=this.dialog.open(DialogResultado,{
-                    data:{result:'allowed',
-                    name_result:vis.name,
-                    age_result:vis.age}
-                  })
-      
-                  dialogRef.afterClosed().subscribe((result:Item) => {
-                    this.limpiar();
-                  })
-                  this.toastr.success('Cliente sin restricciones','PERMITIDO');
-                  //
-  
-                  this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
-                    //VISITAS REPETIDAS
-                    if(v && v.date_entrance==this.fechaString){
-                      visR.doc_number=vis.doc_number;
-                      visR.name=vis.name;
-                      visR.date_entrance=v.date_entrance;
-                      visR.hour_entrance=v.hour_entrance;
-                      visR.obs=v.obs;
-                      visR.sala=this.sala_name;
-                      vis.visits=parseInt(String(v.visits))+1;
-
-                      v.table_entrance=this.sala.table_entrance;
-
-                      this.clientsService.deleteVisit(v).subscribe(a=>{
-                        this.clientsService.addVisit(vis).subscribe(resp=>{
-                          if(resp){
-                            this.clientsService.addVisitRepeated(visR).subscribe();
-                          }
-                        })
+                        v.table_entrance=this.sala.table_entrance;
+                        this.clientsService.deleteVisit(v).subscribe(a=>{
+                          this.clientsService.addVisit(vis).subscribe(resp=>{
+                            if(resp){
+                              this.clientsService.addVisitRepeated(visR).subscribe();
+                            }
+                          })
+                        });
+                      }
+                      //NUEVO INGRESO
+                      else{
+                        this.clientsService.addVisit(vis).subscribe();
+                      }
+    
+                      this.clientsService.addCliente(clienteNew).subscribe(m=>{
+    
                       });
-                    }
-                    //NUEVO REGISTRO
-                    else{
-                      this.clientsService.addVisit(vis).subscribe();
-                    }
-                  })
+                    })
+    
+                  }
+                  //CLIENTES SIN DATOS EN RENIEC
+                  else{
+                    clienteNew.doc_number = this.dni_ce;
+                    clienteNew.client_name = 'JUGADOR';
+                    clienteNew.birth_date = 'SN';
+                    clienteNew.gender = 'SN';
+                    clienteNew.departamento = 'SN';
+                    clienteNew.provincia = 'SN';
+                    clienteNew.distrito = 'SN';
+                    clienteNew.address = 'SN';
+                    clienteNew.condicion = 'PERMITIDO';
+                    clienteNew.motivo = ' ';
+                    clienteNew.sala_registro = this.sala_name;
+                    clienteNew.fecha_registro = this.fechaString;
+    
+                    let snackBarRef = this.snackBar.open('NO SE OBTUVO DATOS DE RENIEC','X',{duration:4000});
+    
+                    vis.doc_number=this.dni_ce;
+                    vis.name=clienteNew.client_name;
+                    vis.gender=clienteNew.gender;
+                    vis.age=0
+                    vis.date_entrance=this.fechaString;
+                    vis.hour_entrance=this.horaString;
+                    vis.address='SN';
+    
+                    vis.visits=1;
+                    vis.table_entrance=this.sala.table_entrance
+                    //
+                    vis.obs='PERMITIDO';
   
-                }
-              })
+                    dialogRef=this.dialog.open(DialogResultado,{
+                      data:{result:'allowed',
+                      name_result:vis.name,
+                      age_result:vis.age}
+                    })
+        
+                    dialogRef.afterClosed().subscribe((result:Item) => {
+                      this.limpiar();
+                    })
+                    this.toastr.success('Cliente sin restricciones','PERMITIDO');
+                    //
+    
+                    this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
+                      //VISITAS REPETIDAS
+                      if(v && v.date_entrance==this.fechaString){
+                        visR.doc_number=vis.doc_number;
+                        visR.name=vis.name;
+                        visR.date_entrance=v.date_entrance;
+                        visR.hour_entrance=v.hour_entrance;
+                        visR.obs=v.obs;
+                        visR.sala=this.sala_name;
+                        vis.visits=parseInt(String(v.visits))+1;
+  
+                        v.table_entrance=this.sala.table_entrance;
+  
+                        this.clientsService.deleteVisit(v).subscribe(a=>{
+                          this.clientsService.addVisit(vis).subscribe(resp=>{
+                            if(resp){
+                              this.clientsService.addVisitRepeated(visR).subscribe();
+                            }
+                          })
+                        });
+                      }
+                      //NUEVO REGISTRO
+                      else{
+                        this.clientsService.addVisit(vis).subscribe();
+                      }
+                    })
+    
+                  }
+                })
+              }
   
             }
           })
