@@ -42,9 +42,16 @@ export class ClientesService {
     return this.http.get(`${this.baseUrl}/getVisit.php?doc_number=${doc_number}&table_entrance=${table_entrance}`);
   }
 
-  getClientFromReniec(doc_number: string) {
+/*   getClientFromReniec(doc_number: string) {
 
     this.urlconsulta = 'https://apiperu.dev/api/dni/'+doc_number+'?api_token=e9f647e67d492cdee675bfb2b365c09393611b5141144a60da34cab5429b55e8';
+    return this.http.get(this.urlconsulta);
+
+  } */
+
+  getClientFromReniec(doc_number: string) {
+
+    this.urlconsulta = 'https://my.apidevs.pro/api/dni/'+doc_number+'?api_token=e9cc47e67d492cdee675bfb2b365c09393611b5141144aa0da34cab5429bb5e8';
     return this.http.get(this.urlconsulta);
 
   }
