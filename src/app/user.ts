@@ -10,7 +10,7 @@ export class User {
     public area_id: number,
     public campus_id: number,
     public position: string,
-    public supply_role: string,
+    public entrance_role: string,
     public user_id?: number,
   ) { }
 

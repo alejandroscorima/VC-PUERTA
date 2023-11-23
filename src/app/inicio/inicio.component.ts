@@ -31,6 +31,7 @@ import { User } from '../user';
 import { Campus } from '../campus';
 import { table } from 'console';
 import { ICON_REGISTRY_PROVIDER } from '@angular/material/icon';
+import { Payment } from '../payment';
 
 
 @Component({
@@ -103,6 +104,7 @@ export class InicioComponent implements OnInit {
     private userService: UsersService,
     private cookies: CookiesService,
     private toastr: ToastrService,
+    private usersService: UsersService,
   ) { }
 
 
@@ -1110,12 +1112,21 @@ export class InicioComponent implements OnInit {
 
       this.sala_name=this.cookies.getToken('sala');
 
-      this.userService.getCampusByName(this.sala_name).subscribe((cam:Campus)=>{
+      this.userService.getCampusActiveByName(this.sala_name).subscribe((cam:Campus)=>{
         if(cam){
           this.sala=cam;
           setTimeout(()=>{
             document.getElementById("docInput").focus();
           }, 1000)
+        }
+        else{
+          this.cookies.deleteToken("user_id");
+          this.cookies.deleteToken("user_role");
+          this.cookies.deleteToken('sala');
+          this.cookies.deleteToken('onSession');
+          this.toastr.error('Sala no existe');
+          this.router.navigateByUrl('/');
+          location.reload();
         }
       })
   
@@ -1172,6 +1183,106 @@ export class InicioComponent implements OnInit {
 
 
     }
+
+/*     this.usersService.getPaymentByClientId(1).subscribe((resPay:Payment)=>{
+      console.log(resPay);
+      if(resPay.error){
+        this.cookies.deleteToken("user_id");
+        this.cookies.deleteToken("user_role");
+        this.cookies.deleteToken('sala');
+        this.cookies.deleteToken('onSession');
+        console.error('Error al obtener el pago:', resPay.error);
+        this.toastr.error('Error al obtener la licencia: '+resPay.error);
+
+      }
+      this.disableDocInput=false;
+
+      this.hideDoc=false;
+      this.hideLoad=true;
+  
+      this.hideAll=false;
+      this.hideBirthCeleb=true;
+  
+  
+      this.linkTitle='assets/titulo3.png';
+  
+      if(this.cookies.checkToken('sala')&&this.cookies.checkToken('onSession')){
+  
+        this.sala_name=this.cookies.getToken('sala');
+  
+        this.userService.getCampusByName(this.sala_name).subscribe((cam:Campus)=>{
+          if(cam){
+            this.sala=cam;
+            setTimeout(()=>{
+              document.getElementById("docInput").focus();
+            }, 1000)
+          }
+        })
+    
+      }
+      else{
+  
+        if(this.cookies.checkToken('sala')){
+  
+          this.sala_name=this.cookies.getToken('sala');
+  
+          var dialogRef2;
+    
+          dialogRef2=this.dialog.open(DialogValidate,{
+            data:this.sala_name,
+            disableClose:true,
+            width:'500px'
+          })
+    
+          dialogRef2.afterClosed().subscribe(result => {
+            if(result){
+              location.reload();
+            }
+          })
+        }
+  
+        else{
+          var dialogRef;
+    
+          dialogRef=this.dialog.open(DialogSelectSala,{
+            data:'',
+            disableClose:true
+          })
+    
+          dialogRef.afterClosed().subscribe(result => {
+            if(result){
+              this.sala_name=this.cookies.getToken('sala');
+              var dialogRef2;
+      
+              dialogRef2=this.dialog.open(DialogValidate,{
+                data:this.sala_name,
+                disableClose:true,
+                width:'500px'
+              })
+        
+              dialogRef2.afterClosed().subscribe(result => {
+                if(result){
+                  location.reload();
+                }
+              })
+            }
+          })
+        }
+        
+  
+  
+      }
+    },
+    (error) => {
+    
+      this.cookies.deleteToken("user_id");
+      this.cookies.deleteToken("user_role");
+      console.error('Error al obtener el pago:', error);
+
+      // Maneja el error aquí según tus necesidades
+      this.toastr.error('Error al obtener la licencia: '+error);
+      this.router.navigateByUrl('/login');
+    }); */
 
   }
 
@@ -1313,6 +1424,7 @@ export class DialogValidate implements OnInit {
     private toastr: ToastrService,
     private cookies: CookiesService,
     private router: Router,
+    private usersService: UsersService,
   ) {}
 
   ngOnInit(): void {
@@ -1327,18 +1439,55 @@ export class DialogValidate implements OnInit {
   }
 
   validate(){
-    this.userService.getUser(this.data,this.password).subscribe((us:User)=>{
-      if(us){
-        this.cookies.setToken("onSession",'Y');
-        this.toastr.success('Correcto!')
-        setTimeout(()=>{
-          this.dialogRef.close(true);
-        },500)
+
+    this.usersService.getPaymentByClientId(1).subscribe((resPay:Payment)=>{
+      console.log(resPay);
+      if(resPay.error){
+        this.cookies.deleteToken("user_id");
+        this.cookies.deleteToken("user_role");
+        this.cookies.deleteToken('sala');
+        this.cookies.deleteToken('onSession');
+        console.error('Error al obtener el pago:', resPay.error);
+        this.toastr.error('Error al obtener la licencia: '+resPay.error);
+        this.router.navigateByUrl('/');
+        console.log('No cumple licencia en APP MODULE');
+
       }
       else{
-        this.toastr.warning('Contraseña incorrecta');
+        if(this.data.trim()!=''&&this.password.trim()!=''){
+          this.userService.getUser(this.data.trim(),this.password.trim()).subscribe((us:User)=>{
+            if(us){
+              if(us.entrance_role!='NINGUNO'){
+                this.cookies.setToken("onSession",'Y');
+                this.toastr.success('Correcto!')
+                setTimeout(()=>{
+                  this.dialogRef.close(true);
+                },500)
+              }
+              else{
+                this.toastr.warning('El usuario  no tiene permisos');
+              }
+            }
+            else{
+              this.toastr.warning('Contraseña incorrecta');
+            }
+          })
+        }
+        else{
+          this.toastr.warning('No ha proporcionado las credenciales');
+        }
       }
-    })
+    },
+    (error) => {
+    
+      this.cookies.deleteToken("user_id");
+      this.cookies.deleteToken("user_role");
+      console.error('Error al obtener el pago:', error);
+
+      // Maneja el error aquí según tus necesidades
+      this.toastr.error('Error al obtener la licencia: '+error);
+      this.router.navigateByUrl('/');
+    });
 
   }
 

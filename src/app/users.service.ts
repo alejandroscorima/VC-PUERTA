@@ -39,4 +39,14 @@ export class UsersService {
     return this.http.get(`${this.baseUrl}/getCampusByName.php?campus_name=${campus_name}`);
   }
 
+  getCampusActiveByName(campus_name: string) {
+    return this.http.get(`${this.baseUrl}/getCampusActiveByName.php?campus_name=${campus_name}`);
+  }
+
+  getPaymentByClientId(client_id: number) {
+    return this.http.get(
+      `${this.baseUrl}/getPaymentByClientId.php?client_id=${client_id}`
+    );
+  }
+
 }
