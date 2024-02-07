@@ -358,7 +358,7 @@ export class InicioComponent implements OnInit {
               }
               else if(c.condicion=='VIP'){
                 console.log('vip');
-                if(c.birth_date.includes(this.fecha_cumple)){
+                if(c.birth_date && c.birth_date.includes(this.fecha_cumple)){
   
                   var dialogRef;
   
@@ -459,7 +459,7 @@ export class InicioComponent implements OnInit {
               }
               else if(c.condicion=='OBSERVADO'){
                 console.log('observado');
-                if(c.birth_date.includes(this.fecha_cumple)){
+                if(c.birth_date && c.birth_date.includes(this.fecha_cumple)){
   
                   var dialogRef;
   
@@ -562,7 +562,7 @@ export class InicioComponent implements OnInit {
 
                 console.log('ni restringido ni destacado');
                 if(c.birth_date!=null){
-                  if(c.birth_date.includes(this.fecha_cumple)){
+                  if(c.birth_date && c.birth_date.includes(this.fecha_cumple)){
                     console.log('cumpleañero');
     
                     var dialogRef;
