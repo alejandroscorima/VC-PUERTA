@@ -19,7 +19,6 @@ import { InicioComponent } from './inicio/inicio.component';
 import { MatTableModule } from '@angular/material/table';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
-import { GenerarActaComponent } from './generar-acta/generar-acta.component';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -47,7 +46,6 @@ import { GoogleChartsModule } from 'angular-google-charts';
     declarations: [
         AppComponent,
         InicioComponent,
-        GenerarActaComponent,
         //DialogRevisar,
         DialogSelectSala,
         DialogResultado,

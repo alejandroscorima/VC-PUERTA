@@ -32,6 +32,7 @@ import { Campus } from '../campus';
 import { table } from 'console';
 import { ICON_REGISTRY_PROVIDER } from '@angular/material/icon';
 import { Payment } from '../payment';
+import { initFlowbite } from 'flowbite';
 
 
 @Component({
@@ -1096,6 +1097,8 @@ export class InicioComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    initFlowbite();
 
     this.disableDocInput=false;
 
