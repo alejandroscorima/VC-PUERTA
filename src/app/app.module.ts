@@ -52,6 +52,7 @@ import { SidenavComponent } from "./sidenav/sidenav.component";
         DialogResultado,
         DialogValidate,
         //DialogConfirm,
+        SidenavComponent,
     ],
     providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
     bootstrap: [AppComponent],

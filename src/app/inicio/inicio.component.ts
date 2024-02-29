@@ -57,7 +57,9 @@ export class InicioComponent implements OnInit {
   disableDocInput;
 
   accessPoint: AccesPoint = new AccesPoint('','','','');
-  sala_name;
+
+  accessPoint_name = '';
+  accessPoint_id = 0;
 
   linkTitle;
 
@@ -250,7 +252,7 @@ export class InicioComponent implements OnInit {
               visR.date_entrance=v.date_entrance;
               visR.hour_entrance=v.hour_entrance;
               visR.obs=v.obs;
-              visR.sala=this.sala_name;
+              visR.sala=this.accessPoint_name;
               vis.visits=parseInt(String(v.visits))+1;
 
               v.table_entrance=this.accessPoint.table_entrance;
@@ -338,7 +340,7 @@ export class InicioComponent implements OnInit {
                     visR.date_entrance=v.date_entrance;
                     visR.hour_entrance=v.hour_entrance;
                     visR.obs=v.obs;
-                    visR.sala=this.sala_name;
+                    visR.sala=this.accessPoint_name;
                     vis.visits=parseInt(String(v.visits))+1;
 
                     v.table_entrance=this.accessPoint.table_entrance;
@@ -389,7 +391,7 @@ export class InicioComponent implements OnInit {
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
                       visR.obs=v.obs;
-                      visR.sala=this.sala_name;
+                      visR.sala=this.accessPoint_name;
                       vis.visits=parseInt(String(v.visits))+1;
 
                       v.table_entrance=this.accessPoint.table_entrance;
@@ -437,7 +439,7 @@ export class InicioComponent implements OnInit {
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
                       visR.obs=v.obs;
-                      visR.sala=this.sala_name;
+                      visR.sala=this.accessPoint_name;
                       vis.visits=parseInt(String(v.visits))+1;
 
                       v.table_entrance=this.accessPoint.table_entrance;
@@ -490,7 +492,7 @@ export class InicioComponent implements OnInit {
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
                       visR.obs=v.obs;
-                      visR.sala=this.sala_name;
+                      visR.sala=this.accessPoint_name;
                       vis.visits=parseInt(String(v.visits))+1;
 
                       v.table_entrance=this.accessPoint.table_entrance;
@@ -538,7 +540,7 @@ export class InicioComponent implements OnInit {
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
                       visR.obs=v.obs;
-                      visR.sala=this.sala_name;
+                      visR.sala=this.accessPoint_name;
                       vis.visits=parseInt(String(v.visits))+1;
 
                       v.table_entrance=this.accessPoint.table_entrance;
@@ -589,7 +591,7 @@ export class InicioComponent implements OnInit {
                         visR.date_entrance=v.date_entrance;
                         visR.hour_entrance=v.hour_entrance;
                         visR.obs=v.obs;
-                        visR.sala=this.sala_name;
+                        visR.sala=this.accessPoint_name;
                         vis.visits=parseInt(String(v.visits))+1;
   
                         v.table_entrance=this.accessPoint.table_entrance;
@@ -638,7 +640,7 @@ export class InicioComponent implements OnInit {
                         visR.date_entrance=v.date_entrance;
                         visR.hour_entrance=v.hour_entrance;
                         visR.obs=v.obs;
-                        visR.sala=this.sala_name;
+                        visR.sala=this.accessPoint_name;
                         vis.visits=parseInt(String(v.visits))+1;
   
                         v.table_entrance=this.accessPoint.table_entrance;
@@ -698,7 +700,7 @@ export class InicioComponent implements OnInit {
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
                       visR.obs=v.obs;
-                      visR.sala=this.sala_name;
+                      visR.sala=this.accessPoint_name;
                       vis.visits=parseInt(String(v.visits))+1;
 
                       v.table_entrance=this.accessPoint.table_entrance;
@@ -761,7 +763,7 @@ export class InicioComponent implements OnInit {
                 clienteNew.address = 'SN';
                 clienteNew.condicion = 'PERMITIDO';
                 clienteNew.motivo = ' ';
-                clienteNew.sala_registro = this.sala_name;
+                clienteNew.sala_registro = this.accessPoint_name;
                 clienteNew.fecha_registro = this.fechaString;
 
                 vis.doc_number=this.dni_ce;
@@ -797,7 +799,7 @@ export class InicioComponent implements OnInit {
                     visR.date_entrance=v.date_entrance;
                     visR.hour_entrance=v.hour_entrance;
                     visR.obs=v.obs;
-                    visR.sala=this.sala_name;
+                    visR.sala=this.accessPoint_name;
                     vis.visits=parseInt(String(v.visits))+1;
 
                     v.table_entrance=this.accessPoint.table_entrance;
@@ -923,7 +925,7 @@ export class InicioComponent implements OnInit {
                     clienteNew.address = res['data']['direccion'];
                     clienteNew.condicion = 'PERMITIDO';
                     clienteNew.motivo = ' ';
-                    clienteNew.sala_registro = this.sala_name;
+                    clienteNew.sala_registro = this.accessPoint_name;
                     clienteNew.fecha_registro = this.fechaString;
     
                     let snackBarRef = this.snackBar.open(clienteNew.client_name,'X',{duration:4000});
@@ -974,7 +976,7 @@ export class InicioComponent implements OnInit {
                         visR.date_entrance=v.date_entrance;
                         visR.hour_entrance=v.hour_entrance;
                         visR.obs=v.obs;
-                        visR.sala=this.sala_name;
+                        visR.sala=this.accessPoint_name;
                         vis.visits=parseInt(String(v.visits))+1;
   
                         v.table_entrance=this.accessPoint.table_entrance;
@@ -1009,7 +1011,7 @@ export class InicioComponent implements OnInit {
                     clienteNew.address = 'SN';
                     clienteNew.condicion = 'PERMITIDO';
                     clienteNew.motivo = ' ';
-                    clienteNew.sala_registro = this.sala_name;
+                    clienteNew.sala_registro = this.accessPoint_name;
                     clienteNew.fecha_registro = this.fechaString;
     
                     let snackBarRef = this.snackBar.open('NO SE OBTUVO DATOS DE RENIEC','X',{duration:4000});
@@ -1047,7 +1049,7 @@ export class InicioComponent implements OnInit {
                         visR.date_entrance=v.date_entrance;
                         visR.hour_entrance=v.hour_entrance;
                         visR.obs=v.obs;
-                        visR.sala=this.sala_name;
+                        visR.sala=this.accessPoint_name;
                         vis.visits=parseInt(String(v.visits))+1;
   
                         v.table_entrance=this.accessPoint.table_entrance;
@@ -1111,11 +1113,11 @@ export class InicioComponent implements OnInit {
 
     this.linkTitle='assets/titulo3.png';
 
-    if(this.cookies.checkToken('sala')&&this.cookies.checkToken('onSession')){
+    if(this.cookies.checkToken('accessPoint_id')&&this.cookies.checkToken('onSession')){
 
-      this.sala_name=this.cookies.getToken('sala');
+      this.accessPoint_id=parseInt(this.cookies.getToken('accessPoint_id'));
 
-      this.userService.getCampusActiveByName(this.sala_name).subscribe((cam:AccesPoint)=>{
+      this.userService.getAccessPointById(this.accessPoint_id).subscribe((cam:AccesPoint)=>{
         if(cam){
           this.accessPoint=cam;
           setTimeout(()=>{
@@ -1125,7 +1127,7 @@ export class InicioComponent implements OnInit {
         else{
           this.cookies.deleteToken("user_id");
           this.cookies.deleteToken("user_role");
-          this.cookies.deleteToken('sala');
+          this.cookies.deleteToken('accessPoint_id');
           this.cookies.deleteToken('onSession');
           this.toastr.error('Sala no existe');
           this.router.navigateByUrl('/');
@@ -1136,14 +1138,14 @@ export class InicioComponent implements OnInit {
     }
     else{
 
-      if(this.cookies.checkToken('sala')){
+      if(this.cookies.checkToken('accessPoint_id')){
 
-        this.sala_name=this.cookies.getToken('sala');
+        this.accessPoint_id=parseInt(this.cookies.getToken('accessPoint_id'));
 
         var dialogRef2;
   
         dialogRef2=this.dialog.open(DialogValidate,{
-          data:this.sala_name,
+          data:this.accessPoint_name,
           disableClose:true,
           width:'500px'
         })
@@ -1165,11 +1167,11 @@ export class InicioComponent implements OnInit {
   
         dialogRef.afterClosed().subscribe(result => {
           if(result){
-            this.sala_name=this.cookies.getToken('sala');
+            this.accessPoint_id=parseInt(this.cookies.getToken('accessPoint_id'));
             var dialogRef2;
     
             dialogRef2=this.dialog.open(DialogValidate,{
-              data:this.sala_name,
+              data:this.accessPoint_name,
               disableClose:true,
               width:'500px'
             })
@@ -1401,8 +1403,8 @@ export class DialogSelectSala implements OnInit {
     })
   }
 
-  select(camp:AccesPoint){
-    this.cookies.setToken("sala",camp.name);
+  select(ap:AccesPoint){
+    this.cookies.setToken("accessPoint_id",String(ap.id));
     this.dialogRef.close(true);
   }
 
@@ -1417,6 +1419,7 @@ export class DialogSelectSala implements OnInit {
 })
 export class DialogValidate implements OnInit {
 
+  username='';
   password='';
 
   constructor(
@@ -1436,7 +1439,7 @@ export class DialogValidate implements OnInit {
   }
 
   changeCampus(){
-    this.cookies.deleteToken('sala');
+    this.cookies.deleteToken('accessPoint_id');
     this.cookies.deleteToken('onSession');
     this.dialogRef.close(true);
   }
@@ -1457,8 +1460,8 @@ export class DialogValidate implements OnInit {
 
       }
       else{
-        if(this.data.trim()!=''&&this.password.trim()!=''){
-          this.userService.getUser(this.data.trim(),this.password.trim()).subscribe((us:User)=>{
+        if(this.username.trim()!=''&&this.password.trim()!=''){
+          this.userService.getUser(this.username.trim(),this.password.trim()).subscribe((us:User)=>{
             if(us){
               if(us.entrance_role!='NINGUNO'){
                 this.cookies.setToken("onSession",'Y');
