@@ -31,8 +31,8 @@ export class UsersService {
     return this.http.put(`${this.baseUrl}/updateUser.php`, u);
   }
 
-  getAllCampus() {
-    return this.http.get(`${this.baseUrl}/getAllCampus.php`);
+  getAccessPointsByStatus() {
+    return this.http.get(`${this.baseUrl}/getAccessPointsByStatus.php`);
   }
 
   getCampusByName(campus_name: string) {

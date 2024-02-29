@@ -1,76 +1,3 @@
-.box{
-    cursor:pointer;
-    border-radius: 0%;
-    width: 300px;
-    height: 300px;
-    min-width: 150px;
-}
-
-.formRevalidar{
-  display: flex;
-  flex-direction: column;
-  max-width: 550px;
-  padding: 1rem;
-}
-
-.btnRevalidar{
-  background-color: indianred;
-  color: white;
-}
-
-.btnValidar {
-  background-color: rgb(24, 177, 24);
-  color: white;
-}
-
-.nombre, .direccion{
-  min-width: 500px;
-}
-
-.e, .j{
-  width: 200px;
-}
-
-
-mat-form-field {
-  margin-top: 0px;
-  margin-bottom: 0px;
-  margin-right:10px;
-  margin-left:10px;
-  border-radius: 20px;
-}
-
-p{
-  margin: 0px;
-}
-
-.titulo-select{
-  text-align: center;
-}
-
-tr.mat-row:hover {
-  background-color: rgba(137, 130, 130, 0.328);
-}
-
-mat-grid-tile {
-  background-color: transparent;
-}
-
-mat-grid-list {
-  margin-right: 20px;
-  min-width: 400px;
-  min-height: 150px;
-}
-
-.container{
-  min-width: 600px;
-  min-height: 220px;
-}
-
-.doc{
-  color: white;
-}
-
 .mat-snack-bar-container {
   background:white;
   color: black;
@@ -78,4 +5,34 @@ mat-grid-list {
   font-optical-sizing:auto;
   align-content: center;
 }
+.txtSearch{
+  color: #03e9f4;
+  border-radius: 5px;
+  text-shadow: 0 0 5px #03e9f4,
+              0 0 25px #03e9f4,
+              0 0 50px #03e9f4,
+              0 0 100px #03e9f4;
+
+  box-shadow: 
+  0 0 5px #03e9f4,
+  0 0 25px #03e9f4,
+  0 0 50px #03e9f4,
+  0 0 100px #03e9f4;
+}
+
+.txtSearch:focus{
+  color: #03e9f4;
+  border-radius: 5px;
+  text-shadow: 0 0 5px #03e9f4,
+              0 0 25px #03e9f4,
+              0 0 50px #03e9f4,
+              0 0 100px #03e9f4;
+
+  box-shadow: 
+  0 0 5px #03e9f4,
+  0 0 25px #03e9f4,
+  0 0 50px #03e9f4,
+  0 0 100px #03e9f4;
+}
+
 

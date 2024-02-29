@@ -1,0 +1,143 @@
+<nav class="fixed top-0 z-50 w-full bg-black bg-opacity-40 text-gray-100 dark:bg-blue-500 dark:border-blue-500">
+    <div class="px-3 py-3 lg:px-5 lg:pl-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center justify-start rtl:justify-end">
+                <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" 
+                aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 
+                text-sm text-gray-100 rounded-lg  hover:bg-gray-100 hover:text-gray-600 focus:outline-none 
+                focus:ring-2 focus:rin-200 dark:text-gray-400 dark:hover:bg-blue-500 dark:focus:ring-">
+                  <span class="sr-only">Open sidebar</span>
+                  <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                      <path clip-rule="evenodd" fill-rule="evenodd"
+                          d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+                  </svg>
+                </button>
+                <a href="https://oscorp.com.pe/web" target="_blank" class="flex ms-2 md:me-24">
+                <img src="http://52.5.47.64/Logistica/assets/logoOscorp.png" class="h-8 me-3" alt="Oscorp Logo" />
+                <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">OSCORP</span>
+                <span>
+                  Bienvenido, SALA: {{' '+sala_name}}&nbsp;
+                </span>
+                </a>
+            </div>
+            <div class="flex items-center">
+                <div class="flex items-center ms-3">
+                    <div>
+                        <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" 
+                        aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                            <span class="sr-only">Open user menu</span>
+                            <img class="w-8 h-8 rounded-full" [src]="userOnSes.photo_url" alt="user photo">
+                        </button>
+                    </div>
+                    <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow
+                    dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+                        <div class="px-4 py-3" role="none">
+                            <p class="text-sm text-center text-gray-900 dark:text-white" role="none">
+                            {{userOnSes.paternal_surname+' '+userOnSes.maternal_surname+', '+userOnSes.first_name}}
+                            </p>
+                            <p class="text-sm text-center font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                            --------
+                            </p>
+                        </div>
+                        <ul class="py-1" role="none">
+
+                            <li>
+                            <a class="block px-4 py-2
+                                text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" 
+                                role="menuitem" (click)="logout()">Salir</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 
+transition-transform -translate-x-full border-r border-y-white 
+ bg-white dark:bg-gray-800 dark:border-blue-500" aria-label="Sidebar">
+    <div class="h-full px-3 pb-4  dark:bg-gray-800">
+
+ 
+ 
+ 
+ 
+     <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-blue-500">
+      <div class="flex justify-end px-4 pt-4">
+           <button id="dropdownButton"
+           class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100
+            dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200
+            dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
+               <span class="sr-only">Open dropdown</span>
+               <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+                   <path
+                    d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+               </svg>
+           </button>
+       </div>
+       <div class="flex flex-col items-center pb-10">
+           <img class="w-24 h-24 mb-3 rounded-full shadow-lg" [src]="userOnSes.photo_url" alt="Bonnie image"/>
+           <h5 class="mb-1 text-l font-medium text-center text-gray-900 dark:text-white">{{userOnSes.paternal_surname+' '+userOnSes.maternal_surname+', '+userOnSes.first_name}}</h5>
+       </div>
+     </div>
+ 
+
+       <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-">
+
+          <li>
+            
+            <a class="flex items-center p-2 text-gray-900 rounded-lg
+            dark:text-white hover:bg-purple-500 dark:hover:bg-gray-700 group" routerLink="/">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M5 0H1a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1Zm14 0h-4a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1ZM5 14H1a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1Zm14 0h-4a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1ZM12 2H8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2Zm0 14H8a1 1 0 0 0 0 2h4a1 1 0 0 0 0-2Zm-8-4V8a1 1 0 0 0-2 0v4a1 1 0 1 0 2 0Zm14 0V8a1 1 0 0 0-2 0v4a1 1 0 0 0 2 0Z"/>
+            </svg>
+            <p class="pl-7 text-base  text-gray-900 dark:text-white">Dashboard</p>
+              </a>
+
+              </li>
+              <li>
+              <a class="flex items-center p-2 text-gray-900 rounded-lg
+              dark:text-white hover:bg-purple-500 dark:hover:bg-gray-700 group" routerLink="/listas">
+              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                <path d="M17 11h-2.722L8 17.278a5.512 5.512 0 0 1-.9.722H17a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1ZM6 0H1a1 1 0 0 0-1 1v13.5a3.5 3.5 0 1 0 7 0V1a1 1 0 0 0-1-1ZM3.5 15.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2ZM16.132 4.9 12.6 1.368a1 1 0 0 0-1.414 0L9 3.55v9.9l7.132-7.132a1 1 0 0 0 0-1.418Z"/>
+              </svg>
+              <p class="pl-7 text-base  text-gray-900 dark:text-white">Listas</p>
+              </a>
+              </li>
+              <li>
+              <a class="flex items-center p-2 text-black rounded-lg
+              dark:text-white hover:bg-purple-500 dark:hover:bg-gray-700 group" routerLink="/hb">
+                <p class="pl-7 text-base  text-gray-900 dark:text-white">Cumpleaños</p>
+              </a>
+              </li>
+              <li>
+              <a class="flex items-center p-2 text-gray-900 rounded-lg
+              dark:text-white hover:bg-purple-500 dark:hover:bg-gray-700 group" routerLink="/history">
+              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M10 6v4l3.276 3.276M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+              </svg>
+              <p class="pl-7 text-base  text-gray-900 dark:text-white"> Historial</p>
+              </a>
+              </li>
+              <li>
+              <a class="flex items-center p-2 text-gray-900 rounded-lg
+              dark:text-white hover:bg-purple-500 dark:hover:bg-gray-700 group" routerLink="/upload">
+              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="m14.707 4.793-4-4a1 1 0 0 0-1.416 0l-4 4a1 1 0 1 0 1.416 1.414L9 3.914V12.5a1 1 0 0 0 2 0V3.914l2.293 2.293a1 1 0 0 0 1.414-1.414Z"/>
+                <path d="M18 12h-5v.5a3 3 0 0 1-6 0V12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+              </svg>
+              <p class="pl-7 text-base  text-gray-900 dark:text-white"> Subir PDF</p>
+              </a>
+            </li>
+            <li>
+              <a style="align-content: center p-2 text rounded-lg">
+                <a mat-stroked-button color="bg-white">Oscorp Technology</a>
+              </a>
+              </li>
+             
+
+       </ul>
+    </div>
+ </aside>
+ 

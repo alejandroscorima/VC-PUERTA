@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Cliente } from "./cliente";
+import { Person } from "./person";
 import { environment } from "../environments/environment";
 import { Observable } from 'rxjs';
 
@@ -17,7 +17,7 @@ export class ClientesService {
   baseUrl = environment.baseUrl
   respuesta;
   urlconsulta;
-  cliente = new Cliente('','','','','','','','','','','','');
+  cliente = new Person('','','','','','','','','','','','');
 
   constructor(private http: HttpClient,
 
@@ -28,13 +28,13 @@ export class ClientesService {
     return this.http.get(`${this.baseUrl}/getAll.php?fecha_cumple=${fecha_cumple}`);
   }
 
-  getClients() {
-    return this.http.get(`${this.baseUrl}/getAllClients.php`);
+  getPersons() {
+    return this.http.get(`${this.baseUrl}/getAllPersons.php`);
   }
 
-  getClient(doc_number: string) {
+  getPerson(doc_number: string) {
 
-    return this.http.get(`${this.baseUrl}/getClient.php?doc_number=${doc_number}`);
+    return this.http.get(`${this.baseUrl}/getPerson.php?doc_number=${doc_number}`);
   }
 
   getVisit(doc_number: string, table_entrance: string) {
@@ -56,7 +56,7 @@ export class ClientesService {
 
   }
 
-  addCliente(cliente: Cliente) {
+  addCliente(cliente: Person) {
     return this.http.post(`${this.baseUrl}/postClient.php`, cliente);
   }
 
@@ -64,11 +64,11 @@ export class ClientesService {
     return this.http.post(`${this.baseUrl}/postLudop.php`, ludop);
   }
 
-  deleteCliente(cliente: Cliente) {
+  deleteCliente(cliente: Person) {
     //return this.http.delete(`${this.baseUrl}/delete.php?idCliente=${cliente.id}`);
   }
 
-  updateCliente(cliente: Cliente) {
+  updateCliente(cliente: Person) {
     return this.http.put(`${this.baseUrl}/update.php`, cliente);
   }
 

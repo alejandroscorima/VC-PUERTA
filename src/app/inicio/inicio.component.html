@@ -1,63 +1,103 @@
-<body class="mat-app-background" style="background-image: url('assets/fondo6.jpeg'); background-repeat: no-repeat;
-background-attachment: fixed; background-position: center center; background-size: cover; ">
-  <div class="container" style="padding:20px ;text-align:center; max-height:100%;" [hidden]="hideAll">
-
-    <mat-grid-list cols="3" rowHeight="20px">
-      <mat-grid-tile [colspan]="3" [rowspan]="4">
-        <img mat-card-image class="logo" src="{{linkTitle}}"  height="150%">
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="21">
-        <img mat-card-image class="logo" src="assets/OscBot.png"  height="100%">
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="9">
-        <img mat-card-image class="logo" [hidden]="hideDoc" src='assets/idcard.png'  height="100%">
-        <img mat-card-image class="logo" [hidden]="hideLoad" src='assets/loading2.gif'  height="100%">
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="9">
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="12" style="background-color: rgba(0, 0, 0, 0.43); border-radius: 10px;">
-        <div style="color:white; font-weight: normal; ">
-          <a >Inserte documento de identidad</a>
-          <br>
-          <br>
-          <a style="color: white; font-size: 30px; font-weight: normal;">Realizar una búsqueda</a>
-          <br>
-          <br>
-          <mat-form-field class="doc" appearance="outline" style=" min-width: 95%; height: 30px; font-size: 20px; ; ">
-            <mat-label class="doc" >DNI o Carnet de extranjería:</mat-label>
-            <input matInput type="number" id="docInput" [disabled]="disableDocInput" [(ngModel)]="docInputText" name="docInput" (keyup.enter)="verifyEnter($event.target.value)"  style="font-size:30px; border-color: white; " #docInput >
-          </mat-form-field>
-          <br>
-          <br>
-          <br>
-          <button mat-raised-button id="btnSearch" class="btnSearch" (click)="search(docInput.value)" style="min-width: 95%; height:50px; border-radius: 20px; background-color: rgb(225, 169, 149);">
-            BUSCAR
-          </button>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="1" [rowspan]="12">
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="3" [rowspan]="4" style="color: white; ">
-        <p style="font-size:auto; font-weight: lighter; width:95%">
-          <a>
-            &dash; TEAM DESARROLLO | OSCORP TECHNOLOGY &dash;
+<div class="p-4 pt-20 h-screen w-screen">
+  <div class="p-4 border-2 w-full h-full border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+    <div class="w-full flex justify-center">
+      <img mat-card-image class="logo sm:w-5/12 w-full" src="{{linkTitle}}" >
+    </div>
+    <div class="w-full flex justify-center">
+      <img mat-card-image class="logo sm:w-1/6 w-2/5" [hidden]="hideDoc" src='assets/idcard.png'>
+    </div>
+    <br>
+    <div class="w-full flex justify-center">
+      <div class="sm:w-5/12 w-full bg-black bg-opacity-60 rounded-lg">
+        <div class="w-full flex justify-center">
+          <div class="text-center text-gray-100">
+            <a >Inserte documento de identidad</a>
             <br>
-            desarrollo&#64;oscorp.com.pe
-          </a>
-        </p>
-      </mat-grid-tile>
+            <a style="color: white; font-size: 30px; font-weight: normal;">Realizar una búsqueda</a>
+            <br>
 
-    </mat-grid-list>
+            <div>
+              <label for="docInput" class="doc block mb-2 text-sm font-medium text-gray-100 dark:text-white">DNI/CE:</label>
+              <input type="text" [disabled]="disableDocInput" [(ngModel)]="docInputText" name="docInput" id="docInput" (keyup.enter)="verifyEnter($event.target.value)" #docInput class="bg-gray-800 border text-center border-gray-300 text-gray-800 text-2xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white txtSearch" placeholder="" required>
+            </div>
 
+<!--             <mat-form-field class="doc" appearance="outline" style=" min-width: 95%; height: 30px; font-size: 20px; ; ">
+              <mat-label class="doc" >DNI/CE:</mat-label>
+              <input matInput type="number" id="docInput" [disabled]="disableDocInput" [(ngModel)]="docInputText" name="docInput" (keyup.enter)="verifyEnter($event.target.value)"  style="font-size:30px; border-color: white; " #docInput >
+            </mat-form-field> -->
+            <br>
+            <button mat-raised-button id="btnSearch" class="btnSearch" (click)="search(docInput.value)" style="min-width: 95%; height:50px; border-radius: 20px; background-color: rgb(225, 169, 149);">
+              BUSCAR
+            </button>
+          </div>
+        </div>
+        <br>
+        <div class="w-full flex justify-center">
+          <p class="font-light text-gray-100 text-center">
+            <a>
+              &dash; TEAM DESARROLLO | OSCORP TECHNOLOGY &dash;
+              <br>
+              desarrollo&#64;oscorp.com.pe
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
 
+    <div  [hidden]="hideAll" class="grid grid-cols-3">
+
+      <div class="col-span-3">
+
+      </div>
+
+<!--       <mat-grid-list cols="3" rowHeight="20px">
+        <mat-grid-tile [colspan]="3" [rowspan]="4">
+          <img mat-card-image class="logo" src="{{linkTitle}}"  height="150%">
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="21">
+          <img mat-card-image class="logo" src="assets/OscBot.png"  height="100%">
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="9">
+          <img mat-card-image class="logo" [hidden]="hideDoc" src='assets/idcard.png'  height="100%">
+          <img mat-card-image class="logo" [hidden]="hideLoad" src='assets/loading2.gif'  height="100%">
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="9">
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="12" style="background-color: rgba(0, 0, 0, 0.43); border-radius: 10px;">
+          <div style="color:white; font-weight: normal; ">
+            <a >Inserte documento de identidad</a>
+            <br>
+            <br>
+            <a style="color: white; font-size: 30px; font-weight: normal;">Realizar una búsqueda</a>
+            <br>
+            <br>
+            <mat-form-field class="doc" appearance="outline" style=" min-width: 95%; height: 30px; font-size: 20px; ; ">
+              <mat-label class="doc" >DNI o Carnet de extranjería:</mat-label>
+              <input matInput type="number" id="docInput" [disabled]="disableDocInput" [(ngModel)]="docInputText" name="docInput" (keyup.enter)="verifyEnter($event.target.value)"  style="font-size:30px; border-color: white; " #docInput >
+            </mat-form-field>
+            <br>
+            <br>
+            <br>
+            <button mat-raised-button id="btnSearch" class="btnSearch" (click)="search(docInput.value)" style="min-width: 95%; height:50px; border-radius: 20px; background-color: rgb(225, 169, 149);">
+              BUSCAR
+            </button>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="12">
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="3" [rowspan]="4" style="color: white; ">
+          <p style="font-size:auto; font-weight: lighter; width:95%">
+            <a>
+              &dash; TEAM DESARROLLO | OSCORP TECHNOLOGY &dash;
+              <br>
+              desarrollo&#64;oscorp.com.pe
+            </a>
+          </p>
+        </mat-grid-tile>
+  
+      </mat-grid-list> -->
+  
+  
+    </div>
   </div>
-
-  <div [hidden]="hideBirthCeleb">
-
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/build/pdf.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-</body>
-
+</div>

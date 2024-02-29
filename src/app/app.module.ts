@@ -39,6 +39,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import {MatGridListModule} from '@angular/material/grid-list';
 import { GoogleChartsModule } from 'angular-google-charts';
+import { SidenavComponent } from "./sidenav/sidenav.component";
 
 
 
@@ -52,6 +53,8 @@ import { GoogleChartsModule } from 'angular-google-charts';
         DialogValidate,
         //DialogConfirm,
     ],
+    providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
+    bootstrap: [AppComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -81,9 +84,8 @@ import { GoogleChartsModule } from 'angular-google-charts';
         MatTableExporterModule,
         MatGridListModule,
         GoogleChartsModule,
-        ToastrModule.forRoot(), // ToastrModule added
-    ],
-    providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
-    bootstrap: [AppComponent]
+        ToastrModule.forRoot(),
+        SidenavComponent
+    ]
 })
 export class AppModule { }

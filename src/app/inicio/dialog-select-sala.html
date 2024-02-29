@@ -4,8 +4,13 @@
 <a>
 
   <div mat-dialog-content class="line-boxes" style="text-align:center">
+
+    <div *ngFor="let c of campus" HSPACE="20" VSPACE="20" style="display:inline" class="mat-elevation-z8 h-100 w-100" id="box1">
+      <img src="{{c.image_url}}" class="w-full"  (click)="select(c)">
+      <p>{{c.name}}</p>
+    </div>
     
-    <img *ngFor="let c of campus" style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box1" src="{{c.logo_url}}"  HSPACE="20" VSPACE="20" (click)="select(c)">
+
 <!--     <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box2" src="assets/logoVENEZUELA.png" HSPACE="20" VSPACE="20" (click)="select('VENEZUELA')">
     <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoHUANDOY.png" HSPACE="20" VSPACE="20" (click)="select('HUANDOY')">
     <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoKANTA.png" HSPACE="20" VSPACE="20" (click)="select('KANTA')">

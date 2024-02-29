@@ -7,6 +7,7 @@ import { CookiesService } from './cookies.service';
 import { ToastrService } from 'ngx-toastr';
 import { UsersService } from './users.service';
 import { Payment } from './payment';
+import { User } from './user';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,8 @@ import { Payment } from './payment';
 export class AppComponent implements OnInit {
 
   sala_name='';
+
+  userOnSes: User = new User('','','','','','','','','','','','','','','','','','','','','',0,0);
 
   constructor(private router: Router,
   private cookies: CookiesService,
@@ -46,6 +49,7 @@ export class AppComponent implements OnInit {
       else{
         if(this.cookies.checkToken('sala')){
           this.sala_name=this.cookies.getToken('sala');
+          console.log(this.sala_name);
         }
       }
     },
