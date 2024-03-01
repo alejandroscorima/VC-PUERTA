@@ -43,7 +43,7 @@ import { initFlowbite } from 'flowbite';
 })
 export class InicioComponent implements OnInit {
 
-  cliente: Person = new Person('','','','','','','','','','','','');
+  cliente: Person = new Person('','','','','','','','','','','','','','','','','','','','','',0,0,'');
 
   clientes: Person[] = [];
 
@@ -150,7 +150,8 @@ export class InicioComponent implements OnInit {
     document.getElementById('btnSearch').click();
   }
 
-  search(e){
+
+/*   search(e){
 
     this.dni_ce = String(e.trim());
     this.disableDocInput=true;
@@ -243,19 +244,19 @@ export class InicioComponent implements OnInit {
           vis.obs='DENEGADO';
           vis.address='SN';
           vis.visits=1;
-          vis.table_entrance=this.accessPoint.table_entrance;
+          vis.table_entrance=this.sala.table_entrance;
   
-          this.clientsService.getVisit(this.dni_ce,this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+          this.clientsService.getVisit(this.dni_ce,this.sala.table_entrance).subscribe((v:Visit)=>{
             if(v && v.date_entrance==this.fechaString){
               visR.doc_number=vis.doc_number;
               visR.name=vis.name;
               visR.date_entrance=v.date_entrance;
               visR.hour_entrance=v.hour_entrance;
               visR.obs=v.obs;
-              visR.sala=this.accessPoint_name;
+              visR.sala=this.sala_name;
               vis.visits=parseInt(String(v.visits))+1;
 
-              v.table_entrance=this.accessPoint.table_entrance;
+              v.table_entrance=this.sala.table_entrance;
 
               this.clientsService.deleteVisit(v).subscribe(a=>{
                 this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -272,7 +273,7 @@ export class InicioComponent implements OnInit {
   
         }
         else{
-          this.clientsService.getPerson(this.dni_ce).subscribe((c:Person)=>{
+          this.clientsService.getClient(this.dni_ce).subscribe((c:Cliente)=>{
   
             var vis = new Visit('','',0,'','','','','',0,'');
             var visR = new VisitRepeated('','','','','','');
@@ -305,7 +306,7 @@ export class InicioComponent implements OnInit {
               vis.hour_entrance=this.horaString;
               vis.address=c.departamento+'-'+c.provincia+'-'+c.distrito;
               vis.visits=1;
-              vis.table_entrance=this.accessPoint.table_entrance;
+              vis.table_entrance=this.sala.table_entrance;
   
               if(c.condicion=='RESTRINGIDO'){
                 console.log('restringido');
@@ -325,7 +326,6 @@ export class InicioComponent implements OnInit {
                 })
   
                 var message = 'Cliente con restricción'
-                // console.log(c);
                 if(String(c.motivo)!=''){
                   message+='\n Motivo: '+String(c.motivo);
                 }
@@ -333,17 +333,17 @@ export class InicioComponent implements OnInit {
   
                 vis.obs='RESTRINGIDO';
   
-                this.clientsService.getVisit(this.dni_ce,this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                this.clientsService.getVisit(this.dni_ce,this.sala.table_entrance).subscribe((v:Visit)=>{
                   if(v && v.date_entrance==this.fechaString){
                     visR.doc_number=vis.doc_number;
                     visR.name=vis.name;
                     visR.date_entrance=v.date_entrance;
                     visR.hour_entrance=v.hour_entrance;
                     visR.obs=v.obs;
-                    visR.sala=this.accessPoint_name;
+                    visR.sala=this.sala_name;
                     vis.visits=parseInt(String(v.visits))+1;
 
-                    v.table_entrance=this.accessPoint.table_entrance;
+                    v.table_entrance=this.sala.table_entrance;
 
                     this.clientsService.deleteVisit(v).subscribe(a=>{
                       this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -376,7 +376,7 @@ export class InicioComponent implements OnInit {
                   })
   
                   var message = 'Cliente VIP cumpleañero'
-                  // console.log(c);
+
                   if(String(c.motivo)!=''){
                     message+='\n Motivo: '+String(c.motivo);
                   }
@@ -384,17 +384,17 @@ export class InicioComponent implements OnInit {
                   vis.obs='VIP';
   
   
-                  this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                  this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
                     if(v && v.date_entrance==this.fechaString){
                       visR.doc_number=vis.doc_number;
                       visR.name=vis.name;
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
                       visR.obs=v.obs;
-                      visR.sala=this.accessPoint_name;
+                      visR.sala=this.sala_name;
                       vis.visits=parseInt(String(v.visits))+1;
 
-                      v.table_entrance=this.accessPoint.table_entrance;
+                      v.table_entrance=this.sala.table_entrance;
 
                       this.clientsService.deleteVisit(v).subscribe(a=>{
                         this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -425,24 +425,24 @@ export class InicioComponent implements OnInit {
                   })
   
                   var message='Cliente VIP';
-                  // console.log(c);
+
                   if(String(c.motivo)!=''){
                     message+='\n Motivo: '+String(c.motivo);
                   }
                   this.toastr.info(message,'VIP');
                   vis.obs='VIP';
   
-                  this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                  this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
                     if(v && v.date_entrance==this.fechaString){
                       visR.doc_number=vis.doc_number;
                       visR.name=vis.name;
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
                       visR.obs=v.obs;
-                      visR.sala=this.accessPoint_name;
+                      visR.sala=this.sala_name;
                       vis.visits=parseInt(String(v.visits))+1;
 
-                      v.table_entrance=this.accessPoint.table_entrance;
+                      v.table_entrance=this.sala.table_entrance;
 
                       this.clientsService.deleteVisit(v).subscribe(a=>{
                         this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -477,7 +477,7 @@ export class InicioComponent implements OnInit {
                   })
   
                   var message = 'Cliente para seguimiento'
-                  // console.log(c);
+
                   if(String(c.motivo)!=''){
                     message+='\n Motivo: '+String(c.motivo);
                   }
@@ -485,17 +485,17 @@ export class InicioComponent implements OnInit {
                   vis.obs='OBSERVADO';
   
   
-                  this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                  this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
                     if(v && v.date_entrance==this.fechaString){
                       visR.doc_number=vis.doc_number;
                       visR.name=vis.name;
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
                       visR.obs=v.obs;
-                      visR.sala=this.accessPoint_name;
+                      visR.sala=this.sala_name;
                       vis.visits=parseInt(String(v.visits))+1;
 
-                      v.table_entrance=this.accessPoint.table_entrance;
+                      v.table_entrance=this.sala.table_entrance;
 
                       this.clientsService.deleteVisit(v).subscribe(a=>{
                         this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -526,24 +526,24 @@ export class InicioComponent implements OnInit {
                   })
   
                   var message='Cliente para seguimiento';
-                  // console.log(c);
+
                   if(String(c.motivo)!=''){
                     message+='\n Motivo: '+String(c.motivo);
                   }
                   this.toastr.info(message,'OBSERVADO');
                   vis.obs='EN OBSERVACIÓN';
   
-                  this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                  this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
                     if(v && v.date_entrance==this.fechaString){
                       visR.doc_number=vis.doc_number;
                       visR.name=vis.name;
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
                       visR.obs=v.obs;
-                      visR.sala=this.accessPoint_name;
+                      visR.sala=this.sala_name;
                       vis.visits=parseInt(String(v.visits))+1;
 
-                      v.table_entrance=this.accessPoint.table_entrance;
+                      v.table_entrance=this.sala.table_entrance;
 
                       this.clientsService.deleteVisit(v).subscribe(a=>{
                         this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -584,17 +584,17 @@ export class InicioComponent implements OnInit {
     
                     vis.obs='PERMITIDO';
     
-                    this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                    this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
                       if(v && v.date_entrance==this.fechaString){
                         visR.doc_number=vis.doc_number;
                         visR.name=vis.name;
                         visR.date_entrance=v.date_entrance;
                         visR.hour_entrance=v.hour_entrance;
                         visR.obs=v.obs;
-                        visR.sala=this.accessPoint_name;
+                        visR.sala=this.sala_name;
                         vis.visits=parseInt(String(v.visits))+1;
   
-                        v.table_entrance=this.accessPoint.table_entrance;
+                        v.table_entrance=this.sala.table_entrance;
   
                         this.clientsService.deleteVisit(v).subscribe(a=>{
                           this.clientsService.addVisit(vis).subscribe(resp=>{
@@ -629,9 +629,9 @@ export class InicioComponent implements OnInit {
     
                     vis.obs='PERMITIDO';
   
-                    console.log(this.accessPoint.table_entrance);
+                    console.log(this.sala.table_entrance);
     
-                    this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                    this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
                       console.log(v);
                       console.log(this.fechaString);
                       if(v && v.date_entrance==this.fechaString){
@@ -640,10 +640,10 @@ export class InicioComponent implements OnInit {
                         visR.date_entrance=v.date_entrance;
                         visR.hour_entrance=v.hour_entrance;
                         visR.obs=v.obs;
-                        visR.sala=this.accessPoint_name;
+                        visR.sala=this.sala_name;
                         vis.visits=parseInt(String(v.visits))+1;
   
-                        v.table_entrance=this.accessPoint.table_entrance;
+                        v.table_entrance=this.sala.table_entrance;
                         
                         console.log('listo para borrar');
                         this.clientsService.deleteVisit(v).subscribe(a=>{
@@ -689,9 +689,9 @@ export class InicioComponent implements OnInit {
   
                   vis.obs='PERMITIDO';
 
-                  console.log(this.accessPoint.table_entrance);
+                  console.log(this.sala.table_entrance);
   
-                  this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                  this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
                     console.log(v);
                     console.log(this.fechaString);
                     if(v && v.date_entrance==this.fechaString){
@@ -700,10 +700,10 @@ export class InicioComponent implements OnInit {
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
                       visR.obs=v.obs;
-                      visR.sala=this.accessPoint_name;
+                      visR.sala=this.sala_name;
                       vis.visits=parseInt(String(v.visits))+1;
 
-                      v.table_entrance=this.accessPoint.table_entrance;
+                      v.table_entrance=this.sala.table_entrance;
                       
                       console.log('listo para borrar');
                       this.clientsService.deleteVisit(v).subscribe(a=>{
@@ -736,22 +736,12 @@ export class InicioComponent implements OnInit {
             else{
               console.log('no esta en BD')
               var dialogRef;
-  
-/*               dialogRef=this.dialog.open(DialogResultado,{
-                data:{result:'allowed',
-                name_result:c.client_name,
-                age_result:vis.age}
-              })
-  
-              dialogRef.afterClosed().subscribe((result:Item) => {
-                this.limpiar();
-              })*/
 
               if(this.dni_ce.length>8){
 
                 this.toastr.info('SIN DATOS','Documento distinto a DNI');
 
-                var clienteNew = new Person('','','','','','','','','','','','');
+                var clienteNew = new Cliente('','','','','','','','','','','','');
 
                 clienteNew.doc_number = this.dni_ce;
                 clienteNew.client_name = 'JUGADOR';
@@ -763,11 +753,1048 @@ export class InicioComponent implements OnInit {
                 clienteNew.address = 'SN';
                 clienteNew.condicion = 'PERMITIDO';
                 clienteNew.motivo = ' ';
-                clienteNew.sala_registro = this.accessPoint_name;
+                clienteNew.sala_registro = this.sala_name;
                 clienteNew.fecha_registro = this.fechaString;
 
                 vis.doc_number=this.dni_ce;
                 vis.name=clienteNew.client_name;
+                vis.gender=clienteNew.gender;
+                vis.age=0
+                vis.date_entrance=this.fechaString;
+                vis.hour_entrance=this.horaString;
+                vis.address='SN';
+
+                vis.visits=1;
+                vis.table_entrance=this.sala.table_entrance
+                //
+                vis.obs='PERMITIDO';
+
+                dialogRef=this.dialog.open(DialogResultado,{
+                  data:{result:'allowed',
+                  name_result:vis.name,
+                  age_result:vis.age}
+                })
+    
+                dialogRef.afterClosed().subscribe((result:Item) => {
+                  this.limpiar();
+                })
+                this.toastr.success('Cliente sin restricciones','PERMITIDO');
+
+                this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
+                  //VISITAS REPETIDAS
+                  if(v && v.date_entrance==this.fechaString){
+                    visR.doc_number=vis.doc_number;
+                    visR.name=vis.name;
+                    visR.date_entrance=v.date_entrance;
+                    visR.hour_entrance=v.hour_entrance;
+                    visR.obs=v.obs;
+                    visR.sala=this.sala_name;
+                    vis.visits=parseInt(String(v.visits))+1;
+
+                    v.table_entrance=this.sala.table_entrance;
+
+                    this.clientsService.deleteVisit(v).subscribe(a=>{
+                      this.clientsService.addVisit(vis).subscribe(resp=>{
+                        if(resp){
+                          this.clientsService.addVisitRepeated(visR).subscribe();
+                        }
+                      })
+                    });
+                  }
+                  //NUEVO REGISTRO
+                  else{
+                    this.clientsService.addVisit(vis).subscribe();
+                  }
+                })
+
+
+
+              }
+              else{
+                this.toastr.info('Cliente nuevo!','REGISTRANDO...');
+
+
+
+
+
+
+
+                
+                this.clientsService.getClientFromReniec(this.dni_ce).subscribe(res=>{
+  
+                  var clienteNew = new Cliente('','','','','','','','','','','','');
+    
+                  //CLIENTE CON DATOS EN RENIEC
+                  if(res['success']){
+                    clienteNew.doc_number = res['data']['numero'];
+                    clienteNew.client_name = res['data']['nombre_completo'];
+                    clienteNew.birth_date = res['data']['fecha_nacimiento'];
+                    clienteNew.gender = res['data']['sexo'];
+                    clienteNew.departamento = res['data']['departamento'];
+                    clienteNew.provincia = res['data']['provincia'];
+                    clienteNew.distrito = res['data']['distrito'];
+                    clienteNew.address = res['data']['direccion'];
+                    clienteNew.condicion = 'PERMITIDO';
+                    clienteNew.motivo = ' ';
+                    clienteNew.sala_registro = this.sala_name;
+                    clienteNew.fecha_registro = this.fechaString;
+    
+                    let snackBarRef = this.snackBar.open(clienteNew.client_name,'X',{duration:4000});
+    
+                    vis.doc_number=this.dni_ce;
+                    vis.name=clienteNew.client_name;
+                    vis.gender=clienteNew.gender;
+                    if(clienteNew.birth_date==null){
+                      vis.age=0;
+                      this.toastr.warning('NO SE PUDO CALCULAR LA EDAD','VERIFICAR')
+                    }
+                    else{
+                      var birthArray=clienteNew.birth_date.split('-');
+                      vis.age=parseInt(this.anio)-parseInt(birthArray[0]);
+                      if(parseInt(this.mes)<parseInt(birthArray[1])){
+                        vis.age-=1;
+                      }
+                      if(parseInt(this.mes)==parseInt(birthArray[1])){
+                        if(parseInt(this.dia)<parseInt(birthArray[2])){
+                          vis.age-=1;
+                        }
+                      }
+                    }
+
+                    vis.date_entrance=this.fechaString;
+                    vis.hour_entrance=this.horaString;
+                    vis.address=clienteNew.departamento+'-'+clienteNew.provincia+'-'+clienteNew.distrito;
+                    vis.visits=1;
+                    vis.table_entrance=this.sala.table_entrance;
+                    //MOSTRANDO LA VALIDACIÓN
+                    vis.obs='PERMITIDO';
+                    dialogRef=this.dialog.open(DialogResultado,{
+                      data:{result:'allowed',
+                      name_result:vis.name,
+                      age_result:vis.age}
+                    })
+        
+                    dialogRef.afterClosed().subscribe((result:Item) => {
+                      this.limpiar();
+                    })
+                    this.toastr.success('Cliente sin restricciones','PERMITIDO');
+                    this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
+                      //VISITAS REPETIDAS
+                      if(v && v.date_entrance==this.fechaString){
+                        visR.doc_number=vis.doc_number;
+                        visR.name=vis.name;
+                        visR.date_entrance=v.date_entrance;
+                        visR.hour_entrance=v.hour_entrance;
+                        visR.obs=v.obs;
+                        visR.sala=this.sala_name;
+                        vis.visits=parseInt(String(v.visits))+1;
+  
+                        v.table_entrance=this.sala.table_entrance;
+                        this.clientsService.deleteVisit(v).subscribe(a=>{
+                          this.clientsService.addVisit(vis).subscribe(resp=>{
+                            if(resp){
+                              this.clientsService.addVisitRepeated(visR).subscribe();
+                            }
+                          })
+                        });
+                      }
+                      //NUEVO INGRESO
+                      else{
+                        this.clientsService.addVisit(vis).subscribe();
+                      }
+    
+                      this.clientsService.addCliente(clienteNew).subscribe(m=>{
+    
+                      });
+                    })
+    
+                  } 
+                  //CLIENTES SIN DATOS EN RENIEC
+                  else{
+                    clienteNew.doc_number = this.dni_ce;
+                    clienteNew.client_name = 'JUGADOR';
+                    clienteNew.birth_date = 'SN';
+                    clienteNew.gender = 'SN';
+                    clienteNew.departamento = 'SN';
+                    clienteNew.provincia = 'SN';
+                    clienteNew.distrito = 'SN';
+                    clienteNew.address = 'SN';
+                    clienteNew.condicion = 'PERMITIDO';
+                    clienteNew.motivo = ' ';
+                    clienteNew.sala_registro = this.sala_name;
+                    clienteNew.fecha_registro = this.fechaString;
+    
+                    let snackBarRef = this.snackBar.open('NO SE OBTUVO DATOS DE RENIEC','X',{duration:4000});
+    
+                    vis.doc_number=this.dni_ce;
+                    vis.name=clienteNew.client_name;
+                    vis.gender=clienteNew.gender;
+                    vis.age=0
+                    vis.date_entrance=this.fechaString;
+                    vis.hour_entrance=this.horaString;
+                    vis.address='SN';
+    
+                    vis.visits=1;
+                    vis.table_entrance=this.sala.table_entrance
+
+                    vis.obs='PERMITIDO';
+  
+                    dialogRef=this.dialog.open(DialogResultado,{
+                      data:{result:'allowed',
+                      name_result:vis.name,
+                      age_result:vis.age}
+                    })
+        
+                    dialogRef.afterClosed().subscribe((result:Item) => {
+                      this.limpiar();
+                    })
+                    this.toastr.success('Cliente sin restricciones','PERMITIDO');
+ 
+    
+                    this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
+                      //VISITAS REPETIDAS
+                      if(v && v.date_entrance==this.fechaString){
+                        visR.doc_number=vis.doc_number;
+                        visR.name=vis.name;
+                        visR.date_entrance=v.date_entrance;
+                        visR.hour_entrance=v.hour_entrance;
+                        visR.obs=v.obs;
+                        visR.sala=this.sala_name;
+                        vis.visits=parseInt(String(v.visits))+1;
+  
+                        v.table_entrance=this.sala.table_entrance;
+  
+                        this.clientsService.deleteVisit(v).subscribe(a=>{
+                          this.clientsService.addVisit(vis).subscribe(resp=>{
+                            if(resp){
+                              this.clientsService.addVisitRepeated(visR).subscribe();
+                            }
+                          })
+                        });
+                      }
+                      //NUEVO REGISTRO
+                      else{
+                        this.clientsService.addVisit(vis).subscribe();
+                      }
+                    })
+    
+                  }
+                })
+              }
+  
+            }
+          })
+        }
+      })
+    }
+
+  } */
+
+
+
+
+
+
+  search(e){
+
+    this.dni_ce= String(e.trim());
+    this.disableDocInput=true;
+    this.hideDoc=true;
+    this.hideLoad=false;
+
+    this.fecha= new Date();
+
+    this.dia = this.fecha.getDate();
+    this.mes = this.fecha.getMonth()+1;
+    this.anio = this.fecha.getFullYear();
+
+    this.hora = this.fecha.getHours();
+    this.min = this.fecha.getMinutes();
+    this.seg = this.fecha.getSeconds();
+
+    if(this.mes<10){
+      this.mes = '0'+this.mes;
+    }
+
+    if(this.dia<10){
+      this.dia = '0'+this.dia;
+    }
+
+    this.fecha_cumple= '-'+this.mes+'-'+this.dia;
+    this.fechaString = this.anio+'-'+this.mes+'-'+this.dia;
+
+    if(this.hora<10){
+      this.hora = '0'+this.hora;
+    }
+
+    if(this.min<10){
+      this.min = '0'+this.min;
+    }
+
+    if(this.seg<10){
+      this.seg = '0'+this.seg;
+    }
+
+    this.horaString = this.hora+':'+this.min+':'+this.seg;
+
+
+    if(this.dni_ce.length<6||this.dni_ce.length>11){
+      this.toastr.warning('Intente de nuevo');
+
+      setTimeout(()=>{
+        this.docInputText='';
+        this.disableDocInput=false;
+
+        this.hideDoc=false;
+        this.hideLoad=true;
+
+        this.hideAll=false;
+        this.hideBirthCeleb=true;
+
+        setTimeout(()=>{
+          document.getElementById("docInput").focus();
+        }, 300)
+
+      }, 300);
+    }
+    else{
+
+      this.clientsService.getPerson(this.dni_ce).subscribe((c:Person)=>{
+  
+        var vis = new Visit('','',0,'','','','','',0,'');
+        var visR = new VisitRepeated('','','','','','');
+
+        if(c){
+
+          console.log('esta en BD')
+
+          vis.doc_number=this.dni_ce;
+          vis.name=c.first_name;
+          vis.gender=c.gender;
+          if(c.birth_date==null){
+            vis.age=0;
+            this.toastr.warning('NO SE PUDO CALCULAR LA EDAD','VERIFICAR');
+          }
+          else{
+            var birthArray=c.birth_date.split('-');
+            vis.age=parseInt(this.anio)-parseInt(birthArray[0]);
+            if(parseInt(this.mes)<parseInt(birthArray[1])){
+              vis.age-=1;
+            }
+            if(parseInt(this.mes)==parseInt(birthArray[1])){
+              if(parseInt(this.dia)<parseInt(birthArray[2])){
+                vis.age-=1;
+              }
+            }
+          }
+
+          vis.date_entrance=this.fechaString;
+          vis.hour_entrance=this.horaString;
+          vis.address=c.region+'-'+c.province+'-'+c.district;
+          vis.visits=1;
+          vis.table_entrance=this.accessPoint.table_entrance;
+
+          if(c.condicion=='RESTRINGIDO'){
+            console.log('restringido');
+
+            var dialogRef;
+
+            dialogRef=this.dialog.open(DialogResultado,{
+              data:{result:'warn',
+              name_result:c.first_name,
+              age_result:vis.age
+            },
+              
+            })
+
+            dialogRef.afterClosed().subscribe(result => {
+              this.limpiar();
+            })
+
+            var message = 'Cliente con restricción'
+            // console.log(c);
+/*             if(String(c.motivo)!=''){
+              message+='\n Motivo: '+String(c.motivo);
+            } */
+            this.toastr.warning(message,'RESTRINGIDO');
+
+            vis.obs='RESTRINGIDO';
+
+            this.clientsService.getVisit(this.dni_ce,this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+              if(v && v.date_entrance==this.fechaString){
+                visR.doc_number=vis.doc_number;
+                visR.name=vis.name;
+                visR.date_entrance=v.date_entrance;
+                visR.hour_entrance=v.hour_entrance;
+                visR.obs=v.obs;
+                visR.sala=this.accessPoint_name;
+                vis.visits=parseInt(String(v.visits))+1;
+
+                v.table_entrance=this.accessPoint.table_entrance;
+
+                this.clientsService.deleteVisit(v).subscribe(a=>{
+                  this.clientsService.addVisit(vis).subscribe(resp=>{
+                    if(resp){
+                      this.clientsService.addVisitRepeated(visR).subscribe();
+                    }
+                  })
+                });
+              }
+              else{
+                this.clientsService.addVisit(vis).subscribe();
+              }
+            })
+
+          }
+          else if(c.condicion=='VIP'){
+            console.log('vip');
+            if(c.birth_date && c.birth_date.includes(this.fecha_cumple)){
+
+              var dialogRef;
+
+              dialogRef=this.dialog.open(DialogResultado,{
+                data:{result:'birth',
+                name_result:c.first_name,
+                age_result:vis.age}
+              })
+
+              dialogRef.afterClosed().subscribe(result => {
+                this.limpiar();
+              })
+
+              var message = 'Cliente VIP cumpleañero'
+              // console.log(c);
+/*               if(String(c.motivo)!=''){
+                message+='\n Motivo: '+String(c.motivo);
+              } */
+              this.toastr.info(message,'VIP CUMPLEAÑERO');
+              vis.obs='VIP';
+
+
+              this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                if(v && v.date_entrance==this.fechaString){
+                  visR.doc_number=vis.doc_number;
+                  visR.name=vis.name;
+                  visR.date_entrance=v.date_entrance;
+                  visR.hour_entrance=v.hour_entrance;
+                  visR.obs=v.obs;
+                  visR.sala=this.accessPoint_name;
+                  vis.visits=parseInt(String(v.visits))+1;
+
+                  v.table_entrance=this.accessPoint.table_entrance;
+
+                  this.clientsService.deleteVisit(v).subscribe(a=>{
+                    this.clientsService.addVisit(vis).subscribe(resp=>{
+                      if(resp){
+                        this.clientsService.addVisitRepeated(visR).subscribe();
+                      }
+                    })
+                  });
+                }
+                else{
+                  this.clientsService.addVisit(vis).subscribe();
+                }
+              })
+
+            }
+            else{
+
+              var dialogRef;
+
+              dialogRef=this.dialog.open(DialogResultado,{
+                data:{result:'vip',
+                name_result:c.first_name,
+                age_result:vis.age}
+              })
+
+              dialogRef.afterClosed().subscribe(result => {
+                this.limpiar();
+              })
+
+              var message='Cliente VIP';
+              // console.log(c);
+/*               if(String(c.motivo)!=''){
+                message+='\n Motivo: '+String(c.motivo);
+              } */
+              this.toastr.info(message,'VIP');
+              vis.obs='VIP';
+
+              this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                if(v && v.date_entrance==this.fechaString){
+                  visR.doc_number=vis.doc_number;
+                  visR.name=vis.name;
+                  visR.date_entrance=v.date_entrance;
+                  visR.hour_entrance=v.hour_entrance;
+                  visR.obs=v.obs;
+                  visR.sala=this.accessPoint_name;
+                  vis.visits=parseInt(String(v.visits))+1;
+
+                  v.table_entrance=this.accessPoint.table_entrance;
+
+                  this.clientsService.deleteVisit(v).subscribe(a=>{
+                    this.clientsService.addVisit(vis).subscribe(resp=>{
+                      if(resp){
+                        this.clientsService.addVisitRepeated(visR).subscribe();
+                      }
+                    })
+                  });
+                }
+                else{
+                  this.clientsService.addVisit(vis).subscribe();
+                }
+              })
+
+            }
+
+          }
+          else if(c.condicion=='OBSERVADO'){
+            console.log('observado');
+            if(c.birth_date && c.birth_date.includes(this.fecha_cumple)){
+
+              var dialogRef;
+
+              dialogRef=this.dialog.open(DialogResultado,{
+                data:{result:'birth',
+                name_result:c.first_name,
+                age_result:vis.age}
+              })
+
+              dialogRef.afterClosed().subscribe(result => {
+                this.limpiar();
+              })
+
+              var message = 'Cliente para seguimiento'
+              // console.log(c);
+/*               if(String(c.motivo)!=''){
+                message+='\n Motivo: '+String(c.motivo);
+              } */
+              this.toastr.info(message,'OBSERVADO DE CUMPLEAÑOS');
+              vis.obs='OBSERVADO';
+
+
+              this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                if(v && v.date_entrance==this.fechaString){
+                  visR.doc_number=vis.doc_number;
+                  visR.name=vis.name;
+                  visR.date_entrance=v.date_entrance;
+                  visR.hour_entrance=v.hour_entrance;
+                  visR.obs=v.obs;
+                  visR.sala=this.accessPoint_name;
+                  vis.visits=parseInt(String(v.visits))+1;
+
+                  v.table_entrance=this.accessPoint.table_entrance;
+
+                  this.clientsService.deleteVisit(v).subscribe(a=>{
+                    this.clientsService.addVisit(vis).subscribe(resp=>{
+                      if(resp){
+                        this.clientsService.addVisitRepeated(visR).subscribe();
+                      }
+                    })
+                  });
+                }
+                else{
+                  this.clientsService.addVisit(vis).subscribe();
+                }
+              })
+
+            }
+            else{
+
+              var dialogRef;
+
+              dialogRef=this.dialog.open(DialogResultado,{
+                data:{result:'obs',
+                name_result:c.first_name,
+                age_result:vis.age}
+              })
+
+              dialogRef.afterClosed().subscribe(result => {
+                this.limpiar();
+              })
+
+              var message='Cliente para seguimiento';
+              // console.log(c);
+/*               if(String(c.motivo)!=''){
+                message+='\n Motivo: '+String(c.motivo);
+              } */
+              this.toastr.info(message,'OBSERVADO');
+              vis.obs='EN OBSERVACIÓN';
+
+              this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                if(v && v.date_entrance==this.fechaString){
+                  visR.doc_number=vis.doc_number;
+                  visR.name=vis.name;
+                  visR.date_entrance=v.date_entrance;
+                  visR.hour_entrance=v.hour_entrance;
+                  visR.obs=v.obs;
+                  visR.sala=this.accessPoint_name;
+                  vis.visits=parseInt(String(v.visits))+1;
+
+                  v.table_entrance=this.accessPoint.table_entrance;
+
+                  this.clientsService.deleteVisit(v).subscribe(a=>{
+                    this.clientsService.addVisit(vis).subscribe(resp=>{
+                      if(resp){
+                        this.clientsService.addVisitRepeated(visR).subscribe();
+                      }
+                    })
+                  });
+                }
+                else{
+                  this.clientsService.addVisit(vis).subscribe();
+                }
+              })
+
+            }
+
+          }
+          else{
+
+            console.log('ni restringido ni destacado');
+            if(c.birth_date!=null){
+              if(c.birth_date && c.birth_date.includes(this.fecha_cumple)){
+                console.log('cumpleañero');
+
+                var dialogRef;
+
+                dialogRef=this.dialog.open(DialogResultado,{
+                  data:{result:'birth',
+                  name_result:c.first_name,
+                  age_result:vis.age}
+                })
+
+                dialogRef.afterClosed().subscribe(result => {
+                  this.limpiar();
+                })
+
+                this.toastr.info('Cliente de cumpleaños','CUMPLEAÑOS');
+
+                vis.obs='PERMITIDO';
+
+                this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                  if(v && v.date_entrance==this.fechaString){
+                    visR.doc_number=vis.doc_number;
+                    visR.name=vis.name;
+                    visR.date_entrance=v.date_entrance;
+                    visR.hour_entrance=v.hour_entrance;
+                    visR.obs=v.obs;
+                    visR.sala=this.accessPoint_name;
+                    vis.visits=parseInt(String(v.visits))+1;
+
+                    v.table_entrance=this.accessPoint.table_entrance;
+
+                    this.clientsService.deleteVisit(v).subscribe(a=>{
+                      this.clientsService.addVisit(vis).subscribe(resp=>{
+                        if(resp){
+                          this.clientsService.addVisitRepeated(visR).subscribe();
+                        }
+                      })
+                    });
+                  }
+                  else{
+                    this.clientsService.addVisit(vis).subscribe();
+                  }
+                })
+
+              }
+              else{
+
+                console.log('normal');
+                var dialogRef;
+
+                dialogRef=this.dialog.open(DialogResultado,{
+                  data:{result:'allowed',
+                  name_result:c.first_name,
+                  age_result:vis.age}
+                })
+
+                dialogRef.afterClosed().subscribe(result => {
+                  this.limpiar();
+                })
+
+                this.toastr.success('Cliente sin restricciones','PERMITIDO');
+
+                vis.obs='PERMITIDO';
+
+                console.log(this.accessPoint.table_entrance);
+
+                this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                  console.log(v);
+                  console.log(this.fechaString);
+                  if(v && v.date_entrance==this.fechaString){
+                    visR.doc_number=vis.doc_number;
+                    visR.name=vis.name;
+                    visR.date_entrance=v.date_entrance;
+                    visR.hour_entrance=v.hour_entrance;
+                    visR.obs=v.obs;
+                    visR.sala=this.accessPoint_name;
+                    vis.visits=parseInt(String(v.visits))+1;
+
+                    v.table_entrance=this.accessPoint.table_entrance;
+                    
+                    console.log('listo para borrar');
+                    this.clientsService.deleteVisit(v).subscribe(a=>{
+                      console.log(a);
+                      console.log('visita borrada');
+                      this.clientsService.addVisit(vis).subscribe(resp=>{
+                        console.log('llegamos aqui')
+                        console.log(resp);
+                        if(resp){
+                          this.clientsService.addVisitRepeated(visR).subscribe();
+                        }
+                      })
+                    });
+                  }
+                  else{
+                    console.log(vis);
+                    this.clientsService.addVisit(vis).subscribe(resp=>{
+                      console.log('llegamos aqui siii')
+                      console.log(resp);
+                    });
+                  }
+                })
+
+
+              }
+            }
+            else{
+
+              console.log('normal');
+              var dialogRef;
+
+              dialogRef=this.dialog.open(DialogResultado,{
+                data:{result:'allowed',
+                name_result:c.first_name,
+                age_result:vis.age}
+              })
+
+              dialogRef.afterClosed().subscribe(result => {
+                this.limpiar();
+              })
+
+              this.toastr.success('Cliente sin restricciones','PERMITIDO');
+
+              vis.obs='PERMITIDO';
+
+              console.log(this.accessPoint.table_entrance);
+
+              this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                console.log(v);
+                console.log(this.fechaString);
+                if(v && v.date_entrance==this.fechaString){
+                  visR.doc_number=vis.doc_number;
+                  visR.name=vis.name;
+                  visR.date_entrance=v.date_entrance;
+                  visR.hour_entrance=v.hour_entrance;
+                  visR.obs=v.obs;
+                  visR.sala=this.accessPoint_name;
+                  vis.visits=parseInt(String(v.visits))+1;
+
+                  v.table_entrance=this.accessPoint.table_entrance;
+                  
+                  console.log('listo para borrar');
+                  this.clientsService.deleteVisit(v).subscribe(a=>{
+                    console.log(a);
+                    console.log('visita borrada');
+                    this.clientsService.addVisit(vis).subscribe(resp=>{
+                      console.log('llegamos aqui')
+                      console.log(resp);
+                      if(resp){
+                        this.clientsService.addVisitRepeated(visR).subscribe();
+                      }
+                    })
+                  });
+                }
+                else{
+                  console.log(vis);
+                  this.clientsService.addVisit(vis).subscribe(resp=>{
+                    console.log('llegamos aqui siii')
+                    console.log(resp);
+                  });
+                }
+              })
+
+            }
+
+
+          }
+        }
+        //CLIENTE PERMITIDO
+        else{
+          console.log('no esta en BD')
+          var dialogRef;
+
+          if(this.dni_ce.length>8){
+
+            this.toastr.info('SIN DATOS','Documento distinto a DNI');
+
+            var clienteNew = new Person('','','','','','','','','','','','','','','','','','','','','',0,0,'');
+
+            clienteNew.doc_number = this.dni_ce;
+            clienteNew.first_name = 'JUGADOR';
+            clienteNew.birth_date = 'SN';
+            clienteNew.gender = 'SN';
+            clienteNew.region = 'SN';
+            clienteNew.province = 'SN';
+            clienteNew.district = 'SN';
+            clienteNew.address = 'SN';
+            clienteNew.condicion = 'PERMITIDO';
+            //clienteNew.motivo = ' ';
+            //clienteNew.sala_registro = this.accessPoint_name;
+            //clienteNew.fecha_registro = this.fechaString;
+
+            vis.doc_number=this.dni_ce;
+            vis.name=clienteNew.first_name;
+            vis.gender=clienteNew.gender;
+            vis.age=0
+            vis.date_entrance=this.fechaString;
+            vis.hour_entrance=this.horaString;
+            vis.address='SN';
+
+            vis.visits=1;
+            vis.table_entrance=this.accessPoint.table_entrance
+            //
+            vis.obs='PERMITIDO';
+
+            dialogRef=this.dialog.open(DialogResultado,{
+              data:{result:'allowed',
+              name_result:vis.name,
+              age_result:vis.age}
+            })
+
+            dialogRef.afterClosed().subscribe((result:Item) => {
+              this.limpiar();
+            })
+            this.toastr.success('Cliente sin restricciones','PERMITIDO');
+            //
+
+            this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+              //VISITAS REPETIDAS
+              if(v && v.date_entrance==this.fechaString){
+                visR.doc_number=vis.doc_number;
+                visR.name=vis.name;
+                visR.date_entrance=v.date_entrance;
+                visR.hour_entrance=v.hour_entrance;
+                visR.obs=v.obs;
+                visR.sala=this.accessPoint_name;
+                vis.visits=parseInt(String(v.visits))+1;
+
+                v.table_entrance=this.accessPoint.table_entrance;
+
+                this.clientsService.deleteVisit(v).subscribe(a=>{
+                  this.clientsService.addVisit(vis).subscribe(resp=>{
+                    if(resp){
+                      this.clientsService.addVisitRepeated(visR).subscribe();
+                    }
+                  })
+                });
+              }
+              //NUEVO REGISTRO
+              else{
+                this.clientsService.addVisit(vis).subscribe();
+              }
+            })
+
+
+
+          }
+          else{
+            this.toastr.info('Cliente nuevo!','REGISTRANDO...');
+
+            //Para salvar el dia
+
+            /*var clienteNew = new Cliente('','','','','','','','','','','','');
+
+            console.log(this.dni_ce);
+            clienteNew.doc_number = this.dni_ce;
+            console.log('doc asignado')
+            clienteNew.client_name = 'JUGADOR';
+            clienteNew.birth_date = 'SN';
+            clienteNew.gender = 'SN';
+            clienteNew.departamento = 'SN';
+            clienteNew.provincia = 'SN';
+            clienteNew.distrito = 'SN';
+            clienteNew.address = 'SN';
+            clienteNew.condicion = 'PERMITIDO';
+            clienteNew.motivo = ' ';
+            clienteNew.sala_registro = this.sala_name;
+            clienteNew.fecha_registro = this.fechaString;
+
+            let snackBarRef = this.snackBar.open('NOMBRE NO DISPONIBLE TEMPORALMENTE','X',{duration:4000});
+
+            vis.doc_number=this.dni_ce;
+            vis.name=clienteNew.client_name;
+            vis.gender=clienteNew.gender;
+            vis.age=0
+            vis.date_entrance=this.fechaString;
+            vis.hour_entrance=this.horaString;
+            vis.address='SN';
+
+            vis.visits=1;
+            vis.table_entrance=this.sala.table_entrance
+            
+            vis.obs='PERMITIDO';
+
+            dialogRef=this.dialog.open(DialogResultado,{
+              data:{result:'allowed',
+              name_result:vis.name,
+              age_result:vis.age}
+            })
+
+            dialogRef.afterClosed().subscribe((result:Item) => {
+              this.limpiar();
+            })
+            this.toastr.success('Cliente sin restricciones','PERMITIDO');
+
+            this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
+              //VISITAS REPETIDAS
+              if(v && v.date_entrance==this.fechaString){
+                visR.doc_number=vis.doc_number;
+                visR.name=vis.name;
+                visR.date_entrance=v.date_entrance;
+                visR.hour_entrance=v.hour_entrance;
+                visR.obs=v.obs;
+                visR.sala=this.sala_name;
+                vis.visits=parseInt(String(v.visits))+1;
+
+                v.table_entrance=this.sala.table_entrance;
+
+                this.clientsService.deleteVisit(v).subscribe(a=>{
+                  this.clientsService.addVisit(vis).subscribe(resp=>{
+                    if(resp){
+                      this.clientsService.addVisitRepeated(visR).subscribe();
+                    }
+                  })
+                });
+              }
+              //NUEVO REGISTRO
+              else{
+                this.clientsService.addVisit(vis).subscribe();
+              }
+            })*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            this.clientsService.getClientFromReniec(this.dni_ce).subscribe(res=>{
+
+              var clienteNew = new Person('','','','','','','','','','','','','','','','','','','','','',0,0,'');
+
+              //CLIENTE CON DATOS EN RENIEC
+              if(res['success']){
+                clienteNew.doc_number = res['data']['numero'];
+                clienteNew.first_name = res['data']['nombre_completo'];
+                clienteNew.birth_date = res['data']['fecha_nacimiento'];
+                clienteNew.gender = res['data']['sexo'];
+                clienteNew.region = res['data']['departamento'];
+                clienteNew.province = res['data']['provincia'];
+                clienteNew.district = res['data']['distrito'];
+                clienteNew.address = res['data']['direccion'];
+                clienteNew.condicion = 'PERMITIDO';
+                //clienteNew.motivo = ' ';
+                //clienteNew.sala_registro = this.accessPoint_name;
+                //clienteNew.fecha_registro = this.fechaString;
+
+                let snackBarRef = this.snackBar.open(clienteNew.first_name,'X',{duration:4000});
+
+                vis.doc_number=this.dni_ce;
+                vis.name=clienteNew.first_name;
+                vis.gender=clienteNew.gender;
+                if(clienteNew.birth_date==null){
+                  vis.age=0;
+                  this.toastr.warning('NO SE PUDO CALCULAR LA EDAD','VERIFICAR')
+                }
+                else{
+                  var birthArray=clienteNew.birth_date.split('-');
+                  vis.age=parseInt(this.anio)-parseInt(birthArray[0]);
+                  if(parseInt(this.mes)<parseInt(birthArray[1])){
+                    vis.age-=1;
+                  }
+                  if(parseInt(this.mes)==parseInt(birthArray[1])){
+                    if(parseInt(this.dia)<parseInt(birthArray[2])){
+                      vis.age-=1;
+                    }
+                  }
+                }
+
+                vis.date_entrance=this.fechaString;
+                vis.hour_entrance=this.horaString;
+                vis.address=clienteNew.region+'-'+clienteNew.province+'-'+clienteNew.district;
+                vis.visits=1;
+                vis.table_entrance=this.accessPoint.table_entrance;
+                //MOSTRANDO LA VALIDACIÓN
+                vis.obs='PERMITIDO';
+                dialogRef=this.dialog.open(DialogResultado,{
+                  data:{result:'allowed',
+                  name_result:vis.name,
+                  age_result:vis.age}
+                })
+    
+                dialogRef.afterClosed().subscribe((result:Item) => {
+                  this.limpiar();
+                })
+                this.toastr.success('Cliente sin restricciones','PERMITIDO');
+                //
+                this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                  //VISITAS REPETIDAS
+                  if(v && v.date_entrance==this.fechaString){
+                    visR.doc_number=vis.doc_number;
+                    visR.name=vis.name;
+                    visR.date_entrance=v.date_entrance;
+                    visR.hour_entrance=v.hour_entrance;
+                    visR.obs=v.obs;
+                    visR.sala=this.accessPoint_name;
+                    vis.visits=parseInt(String(v.visits))+1;
+
+                    v.table_entrance=this.accessPoint.table_entrance;
+                    this.clientsService.deleteVisit(v).subscribe(a=>{
+                      this.clientsService.addVisit(vis).subscribe(resp=>{
+                        if(resp){
+                          this.clientsService.addVisitRepeated(visR).subscribe();
+                        }
+                      })
+                    });
+                  }
+                  //NUEVO INGRESO
+                  else{
+                    this.clientsService.addVisit(vis).subscribe();
+                  }
+
+                  this.clientsService.addCliente(clienteNew).subscribe(m=>{
+
+                  });
+                })
+
+              } 
+              //CLIENTES SIN DATOS EN RENIEC
+              else{
+                clienteNew.doc_number = this.dni_ce;
+                clienteNew.first_name = 'JUGADOR';
+                clienteNew.birth_date = 'SN';
+                clienteNew.gender = 'SN';
+                clienteNew.region = 'SN';
+                clienteNew.province = 'SN';
+                clienteNew.district = 'SN';
+                clienteNew.address = 'SN';
+                clienteNew.condicion = 'PERMITIDO';
+                //clienteNew.motivo = ' ';
+                //clienteNew.sala_registro = this.accessPoint_name;
+                //clienteNew.fecha_registro = this.fechaString;
+
+                let snackBarRef = this.snackBar.open('NO SE OBTUVO DATOS DE RENIEC','X',{duration:4000});
+
+                vis.doc_number=this.dni_ce;
+                vis.name=clienteNew.first_name;
                 vis.gender=clienteNew.gender;
                 vis.age=0
                 vis.date_entrance=this.fechaString;
@@ -818,262 +1845,10 @@ export class InicioComponent implements OnInit {
                   }
                 })
 
-
-
               }
-              else{
-                this.toastr.info('Cliente nuevo!','REGISTRANDO...');
+            })
+          }
 
-                //Para salvar el dia
-
-                /*var clienteNew = new Cliente('','','','','','','','','','','','');
-
-                console.log(this.dni_ce);
-                clienteNew.doc_number = this.dni_ce;
-                console.log('doc asignado')
-                clienteNew.client_name = 'JUGADOR';
-                clienteNew.birth_date = 'SN';
-                clienteNew.gender = 'SN';
-                clienteNew.departamento = 'SN';
-                clienteNew.provincia = 'SN';
-                clienteNew.distrito = 'SN';
-                clienteNew.address = 'SN';
-                clienteNew.condicion = 'PERMITIDO';
-                clienteNew.motivo = ' ';
-                clienteNew.sala_registro = this.sala_name;
-                clienteNew.fecha_registro = this.fechaString;
-
-                let snackBarRef = this.snackBar.open('NOMBRE NO DISPONIBLE TEMPORALMENTE','X',{duration:4000});
-
-                vis.doc_number=this.dni_ce;
-                vis.name=clienteNew.client_name;
-                vis.gender=clienteNew.gender;
-                vis.age=0
-                vis.date_entrance=this.fechaString;
-                vis.hour_entrance=this.horaString;
-                vis.address='SN';
-
-                vis.visits=1;
-                vis.table_entrance=this.sala.table_entrance
-                
-                vis.obs='PERMITIDO';
-
-                dialogRef=this.dialog.open(DialogResultado,{
-                  data:{result:'allowed',
-                  name_result:vis.name,
-                  age_result:vis.age}
-                })
-    
-                dialogRef.afterClosed().subscribe((result:Item) => {
-                  this.limpiar();
-                })
-                this.toastr.success('Cliente sin restricciones','PERMITIDO');
-
-                this.clientsService.getVisit(this.dni_ce, this.sala.table_entrance).subscribe((v:Visit)=>{
-                  //VISITAS REPETIDAS
-                  if(v && v.date_entrance==this.fechaString){
-                    visR.doc_number=vis.doc_number;
-                    visR.name=vis.name;
-                    visR.date_entrance=v.date_entrance;
-                    visR.hour_entrance=v.hour_entrance;
-                    visR.obs=v.obs;
-                    visR.sala=this.sala_name;
-                    vis.visits=parseInt(String(v.visits))+1;
-
-                    v.table_entrance=this.sala.table_entrance;
-
-                    this.clientsService.deleteVisit(v).subscribe(a=>{
-                      this.clientsService.addVisit(vis).subscribe(resp=>{
-                        if(resp){
-                          this.clientsService.addVisitRepeated(visR).subscribe();
-                        }
-                      })
-                    });
-                  }
-                  //NUEVO REGISTRO
-                  else{
-                    this.clientsService.addVisit(vis).subscribe();
-                  }
-                })*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-                
-                this.clientsService.getClientFromReniec(this.dni_ce).subscribe(res=>{
-  
-                  var clienteNew = new Person('','','','','','','','','','','','');
-    
-                  //CLIENTE CON DATOS EN RENIEC
-                  if(res['success']){
-                    clienteNew.doc_number = res['data']['numero'];
-                    clienteNew.client_name = res['data']['nombre_completo'];
-                    clienteNew.birth_date = res['data']['fecha_nacimiento'];
-                    clienteNew.gender = res['data']['sexo'];
-                    clienteNew.departamento = res['data']['departamento'];
-                    clienteNew.provincia = res['data']['provincia'];
-                    clienteNew.distrito = res['data']['distrito'];
-                    clienteNew.address = res['data']['direccion'];
-                    clienteNew.condicion = 'PERMITIDO';
-                    clienteNew.motivo = ' ';
-                    clienteNew.sala_registro = this.accessPoint_name;
-                    clienteNew.fecha_registro = this.fechaString;
-    
-                    let snackBarRef = this.snackBar.open(clienteNew.client_name,'X',{duration:4000});
-    
-                    vis.doc_number=this.dni_ce;
-                    vis.name=clienteNew.client_name;
-                    vis.gender=clienteNew.gender;
-                    if(clienteNew.birth_date==null){
-                      vis.age=0;
-                      this.toastr.warning('NO SE PUDO CALCULAR LA EDAD','VERIFICAR')
-                    }
-                    else{
-                      var birthArray=clienteNew.birth_date.split('-');
-                      vis.age=parseInt(this.anio)-parseInt(birthArray[0]);
-                      if(parseInt(this.mes)<parseInt(birthArray[1])){
-                        vis.age-=1;
-                      }
-                      if(parseInt(this.mes)==parseInt(birthArray[1])){
-                        if(parseInt(this.dia)<parseInt(birthArray[2])){
-                          vis.age-=1;
-                        }
-                      }
-                    }
-
-                    vis.date_entrance=this.fechaString;
-                    vis.hour_entrance=this.horaString;
-                    vis.address=clienteNew.departamento+'-'+clienteNew.provincia+'-'+clienteNew.distrito;
-                    vis.visits=1;
-                    vis.table_entrance=this.accessPoint.table_entrance;
-                    //MOSTRANDO LA VALIDACIÓN
-                    vis.obs='PERMITIDO';
-                    dialogRef=this.dialog.open(DialogResultado,{
-                      data:{result:'allowed',
-                      name_result:vis.name,
-                      age_result:vis.age}
-                    })
-        
-                    dialogRef.afterClosed().subscribe((result:Item) => {
-                      this.limpiar();
-                    })
-                    this.toastr.success('Cliente sin restricciones','PERMITIDO');
-                    //
-                    this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
-                      //VISITAS REPETIDAS
-                      if(v && v.date_entrance==this.fechaString){
-                        visR.doc_number=vis.doc_number;
-                        visR.name=vis.name;
-                        visR.date_entrance=v.date_entrance;
-                        visR.hour_entrance=v.hour_entrance;
-                        visR.obs=v.obs;
-                        visR.sala=this.accessPoint_name;
-                        vis.visits=parseInt(String(v.visits))+1;
-  
-                        v.table_entrance=this.accessPoint.table_entrance;
-                        this.clientsService.deleteVisit(v).subscribe(a=>{
-                          this.clientsService.addVisit(vis).subscribe(resp=>{
-                            if(resp){
-                              this.clientsService.addVisitRepeated(visR).subscribe();
-                            }
-                          })
-                        });
-                      }
-                      //NUEVO INGRESO
-                      else{
-                        this.clientsService.addVisit(vis).subscribe();
-                      }
-    
-                      this.clientsService.addCliente(clienteNew).subscribe(m=>{
-    
-                      });
-                    })
-    
-                  } 
-                  //CLIENTES SIN DATOS EN RENIEC
-                  else{
-                    clienteNew.doc_number = this.dni_ce;
-                    clienteNew.client_name = 'JUGADOR';
-                    clienteNew.birth_date = 'SN';
-                    clienteNew.gender = 'SN';
-                    clienteNew.departamento = 'SN';
-                    clienteNew.provincia = 'SN';
-                    clienteNew.distrito = 'SN';
-                    clienteNew.address = 'SN';
-                    clienteNew.condicion = 'PERMITIDO';
-                    clienteNew.motivo = ' ';
-                    clienteNew.sala_registro = this.accessPoint_name;
-                    clienteNew.fecha_registro = this.fechaString;
-    
-                    let snackBarRef = this.snackBar.open('NO SE OBTUVO DATOS DE RENIEC','X',{duration:4000});
-    
-                    vis.doc_number=this.dni_ce;
-                    vis.name=clienteNew.client_name;
-                    vis.gender=clienteNew.gender;
-                    vis.age=0
-                    vis.date_entrance=this.fechaString;
-                    vis.hour_entrance=this.horaString;
-                    vis.address='SN';
-    
-                    vis.visits=1;
-                    vis.table_entrance=this.accessPoint.table_entrance
-                    //
-                    vis.obs='PERMITIDO';
-  
-                    dialogRef=this.dialog.open(DialogResultado,{
-                      data:{result:'allowed',
-                      name_result:vis.name,
-                      age_result:vis.age}
-                    })
-        
-                    dialogRef.afterClosed().subscribe((result:Item) => {
-                      this.limpiar();
-                    })
-                    this.toastr.success('Cliente sin restricciones','PERMITIDO');
-                    //
-    
-                    this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
-                      //VISITAS REPETIDAS
-                      if(v && v.date_entrance==this.fechaString){
-                        visR.doc_number=vis.doc_number;
-                        visR.name=vis.name;
-                        visR.date_entrance=v.date_entrance;
-                        visR.hour_entrance=v.hour_entrance;
-                        visR.obs=v.obs;
-                        visR.sala=this.accessPoint_name;
-                        vis.visits=parseInt(String(v.visits))+1;
-  
-                        v.table_entrance=this.accessPoint.table_entrance;
-  
-                        this.clientsService.deleteVisit(v).subscribe(a=>{
-                          this.clientsService.addVisit(vis).subscribe(resp=>{
-                            if(resp){
-                              this.clientsService.addVisitRepeated(visR).subscribe();
-                            }
-                          })
-                        });
-                      }
-                      //NUEVO REGISTRO
-                      else{
-                        this.clientsService.addVisit(vis).subscribe();
-                      }
-                    })
-    
-                  }
-                })
-              }
-  
-            }
-          })
         }
       })
     }

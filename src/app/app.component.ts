@@ -16,7 +16,7 @@ import { User } from './user';
 })
 export class AppComponent implements OnInit {
 
-  accessPoint_name='HOLA';
+  accessPoint_name='';
   accessPoint_id = 0;
 
   userOnSes: User = new User('','','','','','','','','','','','','','','','','','','','','',0,0);

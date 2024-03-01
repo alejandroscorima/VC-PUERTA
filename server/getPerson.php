@@ -10,7 +10,7 @@ $doc_number = $_GET["doc_number"];
 
 $bd = include_once "bdData.php";
 
-$sentencia = $bd->prepare("SELECT doc_number, client_name, birth_date, gender, address, distrito, provincia, departamento, fecha_registro, sala_registro, condicion, motivo FROM users WHERE doc_number = '".$doc_number."'");
+$sentencia = $bd->prepare("SELECT user_id, colab_id, type_doc, doc_number, first_name, paternal_surname, maternal_surname, gender, birth_date, civil_status, profession, cel_number, email, address, district, province, region, username, entrance_role, latitud, longitud, photo_url, house_id FROM users WHERE doc_number = '".$doc_number."'");
 
 $sentencia->execute();
 //$cliente = $sentencia->fetchObject();

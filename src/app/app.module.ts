@@ -52,7 +52,7 @@ import { SidenavComponent } from "./sidenav/sidenav.component";
         DialogResultado,
         DialogValidate,
         //DialogConfirm,
-        SidenavComponent,
+        //SidenavComponent,
     ],
     providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
     bootstrap: [AppComponent],
@@ -86,7 +86,7 @@ import { SidenavComponent } from "./sidenav/sidenav.component";
         MatGridListModule,
         GoogleChartsModule,
         ToastrModule.forRoot(),
-        SidenavComponent
+        SidenavComponent,
     ]
 })
 export class AppModule { }
