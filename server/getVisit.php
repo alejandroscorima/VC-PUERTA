@@ -12,7 +12,7 @@ $table_entrance = $_GET["table_entrance"];
 
 $bd = include_once "bdEntrance.php";
 
-$sentencia = $bd->prepare("SELECT doc_number, name, age, gender, address, date_entrance, hour_entrance, obs, visits FROM ".$table_entrance." WHERE doc_number = '".$doc_number."' order by date_entrance desc");
+$sentencia = $bd->prepare("SELECT id, person_id, age, date_entrance, hour_entrance, obs, visits, status FROM ".$table_entrance." WHERE doc_number = '".$doc_number."' order by date_entrance desc");
 
 $sentencia->execute();
 //$cliente = $sentencia->fetchObject();

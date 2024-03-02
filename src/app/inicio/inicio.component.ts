@@ -1061,16 +1061,14 @@ export class InicioComponent implements OnInit {
 
       this.clientsService.getPerson(this.dni_ce).subscribe((c:Person)=>{
   
-        var vis = new Visit('','',0,'','','','','',0,'');
+        var vis = new Visit(0,0,'','','',0,'','');
         var visR = new VisitRepeated('','','','','','');
 
         if(c){
 
           console.log('esta en BD')
 
-          vis.doc_number=this.dni_ce;
-          vis.name=c.first_name;
-          vis.gender=c.gender;
+          vis.person_id=c.user_id;
           if(c.birth_date==null){
             vis.age=0;
             this.toastr.warning('NO SE PUDO CALCULAR LA EDAD','VERIFICAR');
@@ -1090,7 +1088,7 @@ export class InicioComponent implements OnInit {
 
           vis.date_entrance=this.fechaString;
           vis.hour_entrance=this.horaString;
-          vis.address=c.region+'-'+c.province+'-'+c.district;
+          //vis.address=c.region+'-'+c.province+'-'+c.district;
           vis.visits=1;
           vis.table_entrance=this.accessPoint.table_entrance;
 
