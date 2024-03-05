@@ -24,7 +24,8 @@ export class Person {
     public photo_url: string,
     public house_id: number,
     public colab_id: number,
-    public condicion: string,
+    public status: string,
+    public reason: string,
     public user_id?: number,
   ) { }
 

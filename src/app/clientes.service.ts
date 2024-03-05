@@ -17,7 +17,7 @@ export class ClientesService {
   baseUrl = environment.baseUrl
   respuesta;
   urlconsulta;
-  cliente = new Person('','','','','','','','','','','','','','','','','','','','','',0,0,'');
+  cliente = new Person('','','','','','','','','','','','','','','','','','','','','',0,0,'','');
 
   constructor(private http: HttpClient,
 
@@ -33,8 +33,11 @@ export class ClientesService {
   }
 
   getPerson(doc_number: string) {
-
     return this.http.get(`${this.baseUrl}/getPerson.php?doc_number=${doc_number}`);
+  }
+
+  getVehicle(plate: string) {
+    return this.http.get(`${this.baseUrl}/getVehicle.php?plate=${plate}`);
   }
 
   getVisit(doc_number: string, table_entrance: string) {
