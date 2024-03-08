@@ -2290,6 +2290,7 @@ export class DialogValidate implements OnInit {
             if(us){
               if(us.entrance_role!='NINGUNO'){
                 this.cookies.setToken("onSession",'Y');
+                this.cookies.setToken("user_id",String(us.user_id));
                 this.toastr.success('Correcto!')
                 setTimeout(()=>{
                   this.dialogRef.close(true);

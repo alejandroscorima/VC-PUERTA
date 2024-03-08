@@ -19,6 +19,9 @@ export class AppComponent implements OnInit {
   accessPoint_name='';
   accessPoint_id = 0;
 
+  user_id=0;
+  user_role='';
+
   userOnSes: User = new User('','','','','','','','','','','','','','','','','','','','','',0,0);
 
   constructor(private router: Router,
@@ -29,6 +32,7 @@ export class AppComponent implements OnInit {
 
   logout(){
     this.cookies.deleteToken('accessPoint_id');
+    this.cookies.deleteToken('user_id');
     this.cookies.deleteToken('onSession');
     location.reload();
   }
@@ -54,6 +58,12 @@ export class AppComponent implements OnInit {
           console.log('asignando valor al name de access point')
           this.accessPoint_name='Pruebaaaaa';
           console.log(this.accessPoint_name);
+        }
+        if(this.cookies.checkToken('user_id')){
+          this.user_id=parseInt(this.cookies.getToken('user_id'));
+          this.usersService.getUserById(this.user_id).subscribe((u:User)=>{
+            this.userOnSes=u;
+          })
         }
       }
     },
