@@ -59,8 +59,8 @@ export class ClientesService {
 
   }
 
-  addCliente(cliente: Person) {
-    return this.http.post(`${this.baseUrl}/postClient.php`, cliente);
+  addPerson(person: Person) {
+    return this.http.post(`${this.baseUrl}/postPerson.php`, person);
   }
 
   addLudop(ludop) {
