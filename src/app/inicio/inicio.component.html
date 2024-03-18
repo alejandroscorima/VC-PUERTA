@@ -12,13 +12,13 @@
       <div class="sm:w-5/12 w-full bg-black bg-opacity-60 rounded-lg">
         <div class="w-full flex justify-center">
           <div class="text-center text-gray-100">
-            <a >Inserte documento de identidad</a>
+            <a >Ingrese Documento de Identidad o Placa Vehicular</a>
             <br>
             <a style="color: white; font-size: 30px; font-weight: normal;">Realizar una búsqueda</a>
             <br>
 
             <div>
-              <label for="docInput" class="doc block mb-2 text-sm font-medium text-gray-100 dark:text-white">DNI/CE:</label>
+              <label for="docInput" class="doc block mb-2 text-sm font-medium text-gray-100 dark:text-white">DNI/CE o PLACA:</label>
               <input type="text" [disabled]="disableDocInput" [(ngModel)]="docInputText" name="docInput" id="docInput" (keyup.enter)="verifyEnter($event.target.value)" #docInput class="bg-gray-800 border text-center border-gray-300 text-gray-800 text-2xl rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white txtSearch" placeholder="" required>
             </div>
 
@@ -38,7 +38,7 @@
             <a>
               &dash; CREARTTECH SOLUTIONS &dash;
               <br>
-              desarrollo&#64;oscorp.com.pe
+              crearttechsolutions&#64;gmail.com
             </a>
           </p>
         </div>
