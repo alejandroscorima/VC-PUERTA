@@ -21,8 +21,8 @@ if (!$jsonVisit) {
 $table_entrance = $jsonVisit->table_entrance;
 
 $bd = include_once "bdEntrance.php";
-$sentencia = $bd->prepare("delete from ".$table_entrance." where doc_number=? and date_entrance=?");
-$resultado = $sentencia->execute([$jsonVisit->doc_number, $jsonVisit->date_entrance]);
+$sentencia = $bd->prepare("delete from ".$table_entrance." where id=?");
+$resultado = $sentencia->execute([$jsonVisit->id]);
 
 echo json_encode([
     "resultado" => $resultado,

@@ -1,5 +1,5 @@
 
-export class User {
+export class Person {
   constructor(
     public type_doc: string,
     public doc_number: string,
@@ -24,6 +24,8 @@ export class User {
     public photo_url: string,
     public house_id: number,
     public colab_id: number,
+    public status: string,
+    public reason: string,
     public user_id?: number,
   ) { }
 

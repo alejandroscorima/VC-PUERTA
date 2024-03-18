@@ -31,16 +31,16 @@ export class UsersService {
     return this.http.put(`${this.baseUrl}/updateUser.php`, u);
   }
 
-  getAllCampus() {
-    return this.http.get(`${this.baseUrl}/getAllCampus.php`);
+  getAccessPointsByStatus() {
+    return this.http.get(`${this.baseUrl}/getAccessPointsByStatus.php`);
   }
 
   getCampusByName(campus_name: string) {
     return this.http.get(`${this.baseUrl}/getCampusByName.php?campus_name=${campus_name}`);
   }
 
-  getCampusActiveByName(campus_name: string) {
-    return this.http.get(`${this.baseUrl}/getCampusActiveByName.php?campus_name=${campus_name}`);
+  getAccessPointById(accessPoint_id: number) {
+    return this.http.get(`${this.baseUrl}/getAccessPointById.php?accessPoint_id=${accessPoint_id}`);
   }
 
   getPaymentByClientId(client_id: number) {

@@ -19,7 +19,6 @@ import { InicioComponent } from './inicio/inicio.component';
 import { MatTableModule } from '@angular/material/table';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
-import { GenerarActaComponent } from './generar-acta/generar-acta.component';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -40,6 +39,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import {MatGridListModule} from '@angular/material/grid-list';
 import { GoogleChartsModule } from 'angular-google-charts';
+import { SidenavComponent } from "./sidenav/sidenav.component";
 
 
 
@@ -47,13 +47,15 @@ import { GoogleChartsModule } from 'angular-google-charts';
     declarations: [
         AppComponent,
         InicioComponent,
-        GenerarActaComponent,
         //DialogRevisar,
         DialogSelectSala,
         DialogResultado,
         DialogValidate,
         //DialogConfirm,
+        //SidenavComponent,
     ],
+    providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
+    bootstrap: [AppComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -83,9 +85,8 @@ import { GoogleChartsModule } from 'angular-google-charts';
         MatTableExporterModule,
         MatGridListModule,
         GoogleChartsModule,
-        ToastrModule.forRoot(), // ToastrModule added
-    ],
-    providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
-    bootstrap: [AppComponent]
+        ToastrModule.forRoot(),
+        SidenavComponent,
+    ]
 })
 export class AppModule { }
