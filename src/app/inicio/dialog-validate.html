@@ -5,18 +5,26 @@
 
 <div mat-dialog-content style="text-align:center">
 
-  <mat-form-field  appearance="outline">
-    <mat-label>Usuario:</mat-label>
-    <input matInput type="username" [(ngModel)]="username">
-  </mat-form-field>
+  <div class="mb-5">
+    <label for="usernameLogin" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Usuario:</label>
+    <input type="username" id="usernameLogin" [(ngModel)]="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="usuario" required />
+  </div>
+
+  <div class="mb-5">
+    <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña:</label>
+    <input type="password" id="password" [(ngModel)]="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+  </div>
+
+<!--     <label for="usernameLogin">Usuario:</label>
+    <input id="usernameLogin" type="username" [(ngModel)]="username">
 
   <mat-form-field  appearance="outline">
     <mat-label>Contraseña:</mat-label>
     <input matInput type="password" [(ngModel)]="password">
-  </mat-form-field>
+  </mat-form-field> -->
 
   <button mat-raised-button (click)="validate()" style="background-color: darkcyan; color: white; margin: 5px;">Ingresar</button>
-  <button mat-raised-button (click)="changeCampus()" style="background-color:palevioletred; color: white; margin: 5px;">Cambiar sala</button>
+  <button mat-raised-button (click)="changeCampus()" style="background-color:palevioletred; color: white; margin: 5px;">Cambiar</button>
 
 </div>
 

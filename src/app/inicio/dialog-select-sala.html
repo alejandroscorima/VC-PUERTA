@@ -1,26 +1,17 @@
 <div mat-dialog-title style="text-align:center;">
-  <h2>SALAS OSCORP</h2>
+  <h2>PUNTOS DE ACCESO</h2>
 </div>
-<a>
 
-  <div mat-dialog-content class="line-boxes" style="text-align:center">
 
-    <div *ngFor="let c of campus" HSPACE="20" VSPACE="20" style="display:inline" class="mat-elevation-z8 h-100 w-100" id="box1">
-      <img src="{{c.image_url}}" class="w-full"  (click)="select(c)">
-      <p>{{c.name}}</p>
-    </div>
-    
+<div mat-dialog-content class=" w-full items-center text-center justify-center content-center">
 
-<!--     <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box2" src="assets/logoVENEZUELA.png" HSPACE="20" VSPACE="20" (click)="select('VENEZUELA')">
-    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoHUANDOY.png" HSPACE="20" VSPACE="20" (click)="select('HUANDOY')">
-    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoKANTA.png" HSPACE="20" VSPACE="20" (click)="select('KANTA')">
-    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoMEGA.png" HSPACE="20" VSPACE="20" (click)="select('MEGA')">
-    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoPRO.png" HSPACE="20" VSPACE="20" (click)="select('PRO')">
-    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoHUARAL.png" HSPACE="20" VSPACE="20" (click)="select('HUARAL')">
-    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoSJI.png" HSPACE="20" VSPACE="20" (click)="select('SJI')">
-    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoSJII.png" HSPACE="20" VSPACE="20" (click)="select('SJII')">
-    <img style="display:inline; width: 150px; height: 150px;" class="mat-elevation-z8 box mat-elevation-z8" mat-card-image id="box3" src="assets/logoSJIII.png" HSPACE="20" VSPACE="20" (click)="select('SJIII')"> -->
-
+  <div *ngFor="let c of campus" HSPACE="20" VSPACE="20"  class="mat-elevation-z8 items-center justify-center content-center w-full sm:w-1/2" id="box1">
+    <img src="{{c.image_url}}" class="w-full self-center"  (click)="select(c)">
+    <strong>{{c.name}}</strong>
   </div>
+  
 
-</a>
+
+</div>
+
+

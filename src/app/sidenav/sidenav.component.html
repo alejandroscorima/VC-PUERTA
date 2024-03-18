@@ -1,4 +1,4 @@
-<nav class="fixed top-0 z-50 w-full bg-black bg-opacity-40 text-gray-100 dark:bg-blue-500 dark:border-blue-500">
+<nav class="top-0 fixed w-full z-50 bg-black bg-opacity-40 text-gray-100 dark:bg-blue-500 dark:border-blue-500">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
             <div class="flex items-center justify-start rtl:justify-end">
@@ -14,9 +14,10 @@
                 </button>
                 <a href="https://oscorp.com.pe/web" target="_blank" class="flex ms-2 md:me-24">
                 <img src="http://52.5.47.64/Logistica/assets/logoOscorp.png" class="h-8 me-3" alt="Oscorp Logo" />
-                <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">OSCORP</span>
-                <span>
-                  Bienvenido, SALA: {{' '+accessPoint_name}}&nbsp;
+                <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">VC5</span>
+                <span class="w-3"></span>
+                <span class="justify-center">
+                  Bienvenido, Punto de acceso: {{' '+accessPoint_name}}&nbsp;
                 </span>
                 </a>
             </div>
@@ -83,7 +84,7 @@ transition-transform -translate-x-full border-r border-y-white
      </div>
  
 
-       <ul class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-">
+       <ul *ngIf="false" class="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-">
 
           <li>
             

@@ -1650,6 +1650,22 @@ export class InicioComponent implements OnInit {
         this.clientsService.getVehicle(this.dni_ce).subscribe((v:Vehicle)=>{
           if(v){
             this.toastr.success('Vehiculo:'+v.type+'encontrado');
+
+            this.searchResult='allowed';
+            this.name_result= v.plate;
+            this.age_result= 0;
+            this.hideCheck=false;
+
+            console.log('normal');
+
+            document.getElementById('btnResultModal')?.click();
+            this.limpiar();
+
+            this.toastr.success('Cliente sin restricciones','PERMITIDO');
+
+            //vis.obs='PERMITIDO';
+
+            console.log(this.accessPoint.table_entrance);
           }
         })
 
@@ -1760,6 +1776,7 @@ export class InicioComponent implements OnInit {
   
         dialogRef=this.dialog.open(DialogSelectSala,{
           data:'',
+          panelClass: ['w-5/6', 'sm:w-3/5', 'items-center', 'content-center', 'justify-center'],
           disableClose:true
         })
   
