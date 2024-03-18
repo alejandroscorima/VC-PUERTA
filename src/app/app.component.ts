@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UsersService } from './users.service';
 import { Payment } from './payment';
 import { User } from './user';
+import { AccesPoint } from './access-point';
 
 @Component({
   selector: 'app-root',
@@ -16,11 +17,13 @@ import { User } from './user';
 })
 export class AppComponent implements OnInit {
 
-  accessPoint_name='';
+  //accessPoint_name='';
   accessPoint_id = 0;
 
   user_id=0;
   user_role='';
+
+  accessPoint: AccesPoint = new AccesPoint('','','','');
 
   userOnSes: User = new User('','','','','','','','','','','','','','','','','','','','','',0,0);
 
@@ -54,10 +57,15 @@ export class AppComponent implements OnInit {
       else{
         if(this.cookies.checkToken('accessPoint_id')){
           this.accessPoint_id=parseInt(this.cookies.getToken('accessPoint_id'));
+          this.usersService.getAccessPointById(this.accessPoint_id).subscribe((cam:AccesPoint)=>{
+            if(cam){
+              this.accessPoint=cam;
+            }
+          })
           console.log(this.accessPoint_id);
           console.log('asignando valor al name de access point')
-          this.accessPoint_name='Pruebaaaaa';
-          console.log(this.accessPoint_name);
+          //this.accessPoint_name='Pruebaaaaa';
+          //console.log(this.accessPoint_name);
         }
         if(this.cookies.checkToken('user_id')){
           this.user_id=parseInt(this.cookies.getToken('user_id'));
