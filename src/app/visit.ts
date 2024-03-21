@@ -1,7 +1,7 @@
 
 export class Visit {
   constructor(
-      public person_id: number,
+      public visitant_id: number,
       public age: number,
       //public address: string,
       public date_entrance: string,
@@ -10,6 +10,7 @@ export class Visit {
       public visits: number,
       public status: string,
       public table_entrance: string,
+      public type: string,
       public id?: number,
   ) { }
 }

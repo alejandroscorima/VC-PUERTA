@@ -24,8 +24,8 @@ if (!$jsonVisit) {
 $table_entrance = $jsonVisit->table_entrance;
 
 $bd = include_once "bdEntrance.php";
-$sentencia = $bd->prepare("insert into ".$table_entrance." (person_id, age, date_entrance, hour_entrance, obs, visits, status) values (?,?,?,?,?,?,?)");
-$resultado = $sentencia->execute([$jsonVisit->person_id, $jsonVisit->age, $jsonVisit->date_entrance, $jsonVisit->hour_entrance, $jsonVisit->obs, $jsonVisit->visits, $jsonVisit->status]);
+$sentencia = $bd->prepare("insert into ".$table_entrance." (visitant_id, age, date_entrance, hour_entrance, obs, visits, status, type) values (?,?,?,?,?,?,?,?)");
+$resultado = $sentencia->execute([$jsonVisit->visitant_id, $jsonVisit->age, $jsonVisit->date_entrance, $jsonVisit->hour_entrance, $jsonVisit->obs, $jsonVisit->visits, $jsonVisit->status, $jsonVisit->type]);
 echo json_encode([
     "resultado" => $resultado,
 ]);

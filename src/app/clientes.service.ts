@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import * as pdfjsLib from 'pdfjs-dist';
 import { Visit } from './visit';
 import { VisitRepeated } from './visitRepeated';
+import { Vehicle } from './vehicle';
 
 
 @Injectable({
@@ -61,6 +62,10 @@ export class ClientesService {
 
   addPerson(person: Person) {
     return this.http.post(`${this.baseUrl}/postPerson.php`, person);
+  }
+
+  addVehicle(vehicle: Vehicle) {
+    return this.http.post(`${this.baseUrl}/postVehicle.php`, vehicle);
   }
 
   addLudop(ludop) {

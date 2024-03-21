@@ -1007,7 +1007,6 @@ export class InicioComponent implements OnInit {
 
 
 
-
   search(e){
 
     this.dni_ce= String(e.trim());
@@ -1053,7 +1052,6 @@ export class InicioComponent implements OnInit {
 
     if(this.dni_ce.length<6||this.dni_ce.length>11){
       this.toastr.warning('Intente de nuevo');
-
       setTimeout(()=>{
         this.docInputText='';
         this.disableDocInput=false;
@@ -1072,23 +1070,25 @@ export class InicioComponent implements OnInit {
     }
     else{
 
+      var vis = new Visit(0,0,'','','',0,'','','');
+      var visR = new VisitRepeated(0,'','','','','');
+
       if(this.dni_ce.length>=8){
-        this.clientsService.getPerson(this.dni_ce).subscribe((c:Person)=>{
+        vis.type='PERSONA';
+        visR.type='PERSONA';
+        this.clientsService.getPerson(this.dni_ce).subscribe((p:Person)=>{
   
-          var vis = new Visit(0,0,'','','',0,'','');
-          var visR = new VisitRepeated(0,'','','','','');
-  
-          if(c){
+          if(p){
   
             console.log('esta en BD');
   
-            vis.person_id=c.user_id;
-            if(c.birth_date==null){
+            vis.visitant_id=p.user_id;
+            if(p.birth_date==null){
               vis.age=0;
               this.toastr.warning('NO SE PUDO CALCULAR LA EDAD','VERIFICAR');
             }
             else{
-              var birthArray=c.birth_date.split('-');
+              var birthArray=p.birth_date.split('-');
               vis.age=parseInt(this.anio)-parseInt(birthArray[0]);
               if(parseInt(this.mes)<parseInt(birthArray[1])){
                 vis.age-=1;
@@ -1106,11 +1106,11 @@ export class InicioComponent implements OnInit {
             vis.visits=1;
             vis.table_entrance=this.accessPoint.table_entrance;
   
-            if(c.status=='DENEGADO'){
+            if(p.status=='DENEGADO'){
               console.log('denegado');
   
               this.searchResult='denied'; 
-              this.name_result= c.first_name+' '+c.paternal_surname+' '+c.maternal_surname;
+              this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
               this.age_result= vis.age;
               this.hideBlock=false;
 
@@ -1119,9 +1119,9 @@ export class InicioComponent implements OnInit {
 
   
               var message = 'Cliente denegado'
-              console.log(c);
-              if(String(c.reason)!=''){
-                message+='\n Motivo: '+String(c.reason);
+              console.log(p);
+              if(String(p.reason)!=''){
+                message+='\n Motivo: '+String(p.reason);
               }
               this.toastr.warning(message,'DENEGADO');
   
@@ -1153,11 +1153,11 @@ export class InicioComponent implements OnInit {
               }) */
   
             }
-            else if(c.status=='RESTRINGIDO'){
+            else if(p.status=='RESTRINGIDO'){
               console.log('restringido');
   
               this.searchResult='warn';
-              this.name_result= c.first_name+' '+c.paternal_surname+' '+c.maternal_surname;
+              this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
               this.age_result= vis.age;
               this.hideWarn=false;
 
@@ -1166,21 +1166,21 @@ export class InicioComponent implements OnInit {
 
   
               var message = 'Cliente con restricción'
-              console.log(c);
-              if(String(c.reason)!=''){
-                message+='\n Motivo: '+String(c.reason);
+              console.log(p);
+              if(String(p.reason)!=''){
+                message+='\n Motivo: '+String(p.reason);
               }
               this.toastr.warning(message,'RESTRINGIDO');
   
               vis.obs='RESTRINGIDO';
 
             }
-            else if(c.status=='VIP'){
+            else if(p.status=='VIP'){
               console.log('vip');
-              if(c.birth_date && c.birth_date.includes(this.fecha_cumple)){
+              if(p.birth_date && p.birth_date.includes(this.fecha_cumple)){
   
                 this.searchResult='birth';
-                this.name_result= c.first_name+' '+c.paternal_surname+' '+c.maternal_surname;
+                this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
                 this.age_result= vis.age;
                 this.hideBirth=false;
   
@@ -1200,7 +1200,7 @@ export class InicioComponent implements OnInit {
               else{
   
                 this.searchResult='vip';
-                this.name_result= c.first_name+' '+c.paternal_surname+' '+c.maternal_surname;
+                this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
                 this.age_result= vis.age;
                 this.hideVip=false;
   
@@ -1208,9 +1208,9 @@ export class InicioComponent implements OnInit {
                 this.limpiar();
   
                 var message='Cliente VIP';
-                console.log(c);
-                if(String(c.reason)!=''){
-                  message+='\n Motivo: '+String(c.reason);
+                console.log(p);
+                if(String(p.reason)!=''){
+                  message+='\n Motivo: '+String(p.reason);
                 }
                 this.toastr.info(message,'VIP');
                 vis.obs='VIP';
@@ -1218,12 +1218,12 @@ export class InicioComponent implements OnInit {
               }
   
             }
-            else if(c.status=='OBSERVADO'){
+            else if(p.status=='OBSERVADO'){
               console.log('observado');
-              if(c.birth_date && c.birth_date.includes(this.fecha_cumple)){
+              if(p.birth_date && p.birth_date.includes(this.fecha_cumple)){
   
                 this.searchResult='birth';
-                this.name_result= c.first_name+' '+c.paternal_surname+' '+c.maternal_surname;
+                this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
                 this.age_result= vis.age;
                 this.hideBirth=false;
   
@@ -1244,7 +1244,7 @@ export class InicioComponent implements OnInit {
               else{
   
                 this.searchResult = 'obs';
-                this.name_result= c.first_name+' '+c.paternal_surname+' '+c.maternal_surname;
+                this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
                 this.age_result= vis.age;
                 this.hideObs=false;
   
@@ -1252,9 +1252,9 @@ export class InicioComponent implements OnInit {
                 this.limpiar();
   
                 var message='Cliente para seguimiento';
-                console.log(c);
-                if(String(c.reason)!=''){
-                  message+='\n Motivo: '+String(c.reason);
+                console.log(p);
+                if(String(p.reason)!=''){
+                  message+='\n Motivo: '+String(p.reason);
                 }
                 this.toastr.info(message,'OBSERVADO');
                 vis.obs='EN OBSERVACIÓN';
@@ -1265,12 +1265,12 @@ export class InicioComponent implements OnInit {
             else{
   
               console.log('ni restringido ni destacado');
-              if(c.birth_date!=null){
-                if(c.birth_date && c.birth_date.includes(this.fecha_cumple)){
+              if(p.birth_date!=null){
+                if(p.birth_date && p.birth_date.includes(this.fecha_cumple)){
                   console.log('cumpleañero');
   
                   this.searchResult='birth';
-                  this.name_result= c.first_name+' '+c.paternal_surname+' '+c.maternal_surname;
+                  this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
                   this.age_result= vis.age;
                   this.hideBirth=false;
   
@@ -1285,7 +1285,7 @@ export class InicioComponent implements OnInit {
                 else{
   
                   this.searchResult='allowed';
-                  this.name_result= c.first_name+' '+c.paternal_surname+' '+c.maternal_surname;
+                  this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
                   this.age_result= vis.age;
                   this.hideCheck=false;
   
@@ -1306,7 +1306,7 @@ export class InicioComponent implements OnInit {
               else{
   
                 this.searchResult='allowed';
-                this.name_result= c.first_name+' '+c.paternal_surname+' '+c.maternal_surname;
+                this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
                 this.age_result= vis.age;
                 this.hideCheck=false;
   
@@ -1329,7 +1329,7 @@ export class InicioComponent implements OnInit {
               console.log('getVisit:',v);
               if(v && v.date_entrance==this.fechaString){
                 console.log('visita encontrada:',v);
-                visR.person_id=vis.person_id;
+                visR.visitant_id=vis.visitant_id;
                 //visR.name=vis.name;
                 visR.date_entrance=v.date_entrance;
                 visR.hour_entrance=v.hour_entrance;
@@ -1392,7 +1392,7 @@ export class InicioComponent implements OnInit {
 
               this.clientsService.addPerson(personNew).subscribe(resAddNewPerson=>{
                 if(resAddNewPerson&&resAddNewPerson['lastId']){
-                  vis.person_id=resAddNewPerson['lastId'];
+                  vis.visitant_id=resAddNewPerson['lastId'];
                   vis.age=0
                   vis.date_entrance=this.fechaString;
                   vis.hour_entrance=this.horaString;
@@ -1401,7 +1401,7 @@ export class InicioComponent implements OnInit {
                   vis.obs='DENEGADO';
       
                   this.searchResult='denied';
-                  this.name_result= c.first_name+' '+c.paternal_surname+' '+c.maternal_surname;
+                  this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
                   this.age_result= vis.age;
                   this.hideBlock=false;
       
@@ -1414,7 +1414,7 @@ export class InicioComponent implements OnInit {
                   this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
                     //VISITAS REPETIDAS
                     if(v && v.date_entrance==this.fechaString){
-                      visR.person_id=vis.person_id;
+                      visR.visitant_id=vis.visitant_id;
                       //visR.name=vis.name;
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
@@ -1424,13 +1424,13 @@ export class InicioComponent implements OnInit {
       
                       v.table_entrance=this.accessPoint.table_entrance;
       
-                      // this.clientsService.deleteVisit(v).subscribe(a=>{
+                      this.clientsService.deleteVisit(v).subscribe(a=>{
                         this.clientsService.addVisit(vis).subscribe(resp=>{
-                          //if(resp){
-                            //this.clientsService.addVisitRepeated(visR).subscribe();
-                          //}
+                          if(resp){
+                            this.clientsService.addVisitRepeated(visR).subscribe();
+                          }
                         })
-                      //}); 
+                      }); 
                     }
                     //NUEVO REGISTRO
                     else{
@@ -1440,15 +1440,9 @@ export class InicioComponent implements OnInit {
                 }
               })
   
-
-  
-  
   
             }
             else{
-              this.toastr.info('Cliente nuevo!','REGISTRANDO...');
-  
-  
   
               
               this.clientsService.getClientFromReniec(this.dni_ce).subscribe(res=>{
@@ -1487,7 +1481,7 @@ export class InicioComponent implements OnInit {
   
                   let snackBarRef = this.snackBar.open(personNew.first_name,'X',{duration:4000});
   
-                  vis.person_id=personNew.user_id;
+                  vis.visitant_id=personNew.user_id;
 
                   if(personNew.birth_date==null){
                     vis.age=0;
@@ -1514,7 +1508,7 @@ export class InicioComponent implements OnInit {
                   vis.obs='DENEGADO';
   
                   this.searchResult='denied';
-                  this.name_result= c.first_name+' '+c.paternal_surname+' '+c.maternal_surname;
+                  this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
                   this.age_result= vis.age;
                   this.hideBlock=false;
 
@@ -1528,7 +1522,7 @@ export class InicioComponent implements OnInit {
                   this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
                     //VISITAS REPETIDAS
                     if(v && v.date_entrance==this.fechaString){
-                      visR.person_id=vis.person_id;
+                      visR.visitant_id=vis.visitant_id;
                       //visR.name=vis.name;
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
@@ -1589,7 +1583,7 @@ export class InicioComponent implements OnInit {
   
                   let snackBarRef = this.snackBar.open('NO SE OBTUVO DATOS DE RENIEC','X',{duration:4000});
   
-                  vis.person_id=personNew.user_id;
+                  vis.visitant_id=personNew.user_id;
                   //vis.name=clienteNew.first_name;
                   //vis.gender=clienteNew.gender;
                   vis.age=0
@@ -1603,7 +1597,7 @@ export class InicioComponent implements OnInit {
                   vis.obs='DENEGADO';
   
                   this.searchResult='denied';
-                  this.name_result= c.first_name+' '+c.paternal_surname+' '+c.maternal_surname;
+                  this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
                   this.age_result= vis.age;
                   this.hideBlock=false;
   
@@ -1615,7 +1609,7 @@ export class InicioComponent implements OnInit {
                   this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
                     //VISITAS REPETIDAS
                     if(v && v.date_entrance==this.fechaString){
-                      visR.person_id=vis.person_id;
+                      visR.visitant_id=vis.visitant_id;
                       //visR.name=vis.name;
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
@@ -1647,26 +1641,246 @@ export class InicioComponent implements OnInit {
         })
       }
       else{
+        vis.type='VEHICULO';
+        visR.type='VEHICULO';
         this.clientsService.getVehicle(this.dni_ce).subscribe((v:Vehicle)=>{
+          console.log('consulta Vehicle',v);
           if(v){
-            this.toastr.success('Vehiculo:'+v.type+'encontrado');
 
-            this.searchResult='allowed';
-            this.name_result= v.plate;
-            this.age_result= 0;
-            this.hideCheck=false;
+            console.log('esta en BD');
 
-            console.log('normal');
+            vis.visitant_id=v.vehicle_id;
+            vis.age=0;
+  
+            vis.date_entrance=this.fechaString;
+            vis.hour_entrance=this.horaString;
+            vis.visits=1;
+            vis.table_entrance=this.accessPoint.table_entrance;
+  
+            if(v.status=='DENEGADO'){
+              console.log('denegado');
+  
+              this.searchResult='denied'; 
+              this.name_result= v.type;
+              this.age_result= vis.age;
+              this.hideBlock=false;
 
-            document.getElementById('btnResultModal')?.click();
-            this.limpiar();
+              document.getElementById('btnResultModal')?.click();
+              this.limpiar();
 
-            this.toastr.success('Cliente sin restricciones','PERMITIDO');
+  
+              var message = 'Cliente denegado'
+              console.log(v);
+              if(String(v.reason)!=''){
+                message+='\n Motivo: '+String(v.reason);
+              }
+              this.toastr.warning(message,'DENEGADO');
+  
+              vis.obs='DENEGADO';
+  
+/*               this.clientsService.getVisit(this.dni_ce,this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                if(v && v.date_entrance==this.fechaString){
+                  visR.person_id=vis.person_id;
+                  //visR.name=vis.name;
+                  visR.date_entrance=v.date_entrance;
+                  visR.hour_entrance=v.hour_entrance;
+                  visR.obs=v.obs;
+                  visR.sala=this.accessPoint_name;
+                  //vis.visits=parseInt(String(v.visits))+1;
+  
+                  v.table_entrance=this.accessPoint.table_entrance;
+  
+                  this.clientsService.deleteVisit(v).subscribe(a=>{
+                    this.clientsService.addVisit(vis).subscribe(resp=>{
+                      if(resp){
+                        this.clientsService.addVisitRepeated(visR).subscribe();
+                      }
+                    })
+                  });
+                }
+                else{
+                  this.clientsService.addVisit(vis).subscribe();
+                }
+              }) */
+  
+            }
+            else if(v.status=='RESTRINGIDO'){
+              console.log('restringido');
+  
+              this.searchResult='warn';
+              this.name_result= v.type;
+              this.age_result= vis.age;
+              this.hideWarn=false;
 
-            //vis.obs='PERMITIDO';
+              document.getElementById('btnResultModal')?.click();
+              this.limpiar();
 
-            console.log(this.accessPoint.table_entrance);
+  
+              var message = 'Cliente con restricción'
+              console.log(v);
+              if(String(v.reason)!=''){
+                message+='\n Motivo: '+String(v.reason);
+              }
+              this.toastr.warning(message,'RESTRINGIDO');
+  
+              vis.obs='RESTRINGIDO';
+
+            }
+            else if(v.status=='VIP'){
+              console.log('vip');
+              this.searchResult='vip';
+              this.name_result= v.type;
+              this.age_result= vis.age;
+              this.hideVip=false;
+
+              document.getElementById('btnResultModal')?.click();
+              this.limpiar();
+
+              var message='Cliente VIP';
+              console.log(v);
+              if(String(v.reason)!=''){
+                message+='\n Motivo: '+String(v.reason);
+              }
+              this.toastr.info(message,'VIP');
+              vis.obs='VIP';
+  
+            }
+            else if(v.status=='OBSERVADO'){
+              console.log('observado');
+              this.searchResult = 'obs';
+              this.name_result= v.type
+              this.age_result= vis.age;
+              this.hideObs=false;
+
+              document.getElementById('btnResultModal')?.click();
+              this.limpiar();
+
+              var message='Cliente para seguimiento';
+              console.log(v);
+              if(String(v.reason)!=''){
+                message+='\n Motivo: '+String(v.reason);
+              }
+              this.toastr.info(message,'OBSERVADO');
+              vis.obs='EN OBSERVACIÓN';
+  
+            }
+            else{
+  
+              console.log('ni restringido ni destacado');
+              this.searchResult='allowed';
+              this.name_result= v.type;
+              this.age_result= vis.age;
+              this.hideCheck=false;
+
+              console.log('normal');
+
+              document.getElementById('btnResultModal')?.click();
+              this.limpiar();
+
+              this.toastr.success('Cliente sin restricciones','PERMITIDO');
+
+              vis.obs='PERMITIDO';
+
+              console.log(this.accessPoint.table_entrance);
+  
+            }
+
+            this.clientsService.getVisit(this.dni_ce,this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+              console.log('getVisit:',v);
+              if(v && v.date_entrance==this.fechaString){
+                console.log('visita encontrada:',v);
+                visR.visitant_id=vis.visitant_id;
+                //visR.name=vis.name;
+                visR.date_entrance=v.date_entrance;
+                visR.hour_entrance=v.hour_entrance;
+                visR.obs=v.obs;
+                visR.sala=this.accessPoint_name;
+                vis.visits=parseInt(String(v.visits))+1;
+
+                v.table_entrance=this.accessPoint.table_entrance;
+
+                this.clientsService.deleteVisit(v).subscribe(a=>{
+                  console.log('Resultado borrar visita',a);
+                  this.clientsService.addVisit(vis).subscribe(resp=>{
+                    if(resp){
+                      this.clientsService.addVisitRepeated(visR).subscribe();
+                    }
+                  })
+                });
+              }
+              else{
+                console.log('Visita no encontrada');
+                this.clientsService.addVisit(vis).subscribe();
+              }
+            })
           }
+          else{
+            console.log('no esta en BD')
+
+            this.toastr.info('SIN DATOS');
+  
+            var vehicleNew = new Vehicle('',0,'','','');
+
+            vehicleNew.house_id=0;
+            vehicleNew.plate=this.dni_ce;
+            vehicleNew.type='SN';
+            vehicleNew.status='DENEGADO';
+            vehicleNew.reason='SN';
+
+
+            this.clientsService.addVehicle(vehicleNew).subscribe(resAddNewVehicle=>{
+              if(resAddNewVehicle&&resAddNewVehicle['lastId']){
+                vis.visitant_id=resAddNewVehicle['lastId'];
+                vis.age=0
+                vis.date_entrance=this.fechaString;
+                vis.hour_entrance=this.horaString;
+                vis.visits=1;
+                vis.table_entrance=this.accessPoint.table_entrance
+                vis.obs='DENEGADO';
+    
+                this.searchResult='denied';
+                this.name_result= vehicleNew.type;
+                this.age_result= vis.age;
+                this.hideBlock=false;
+    
+                document.getElementById('btnResultModal')?.click();
+    
+                this.limpiar();
+  
+                this.toastr.error('Persona sin autorización','DENEGADO');
+    
+                this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
+                  //VISITAS REPETIDAS
+                  if(v && v.date_entrance==this.fechaString){
+                    visR.visitant_id=vis.visitant_id;
+                    //visR.name=vis.name;
+                    visR.date_entrance=v.date_entrance;
+                    visR.hour_entrance=v.hour_entrance;
+                    visR.obs=v.obs;
+                    visR.sala=this.accessPoint_name;
+                    vis.visits=parseInt(String(v.visits))+1;
+    
+                    v.table_entrance=this.accessPoint.table_entrance;
+    
+                    // this.clientsService.deleteVisit(v).subscribe(a=>{
+                      this.clientsService.addVisit(vis).subscribe(resp=>{
+                        //if(resp){
+                          //this.clientsService.addVisitRepeated(visR).subscribe();
+                        //}
+                      })
+                    //}); 
+                  }
+                  //NUEVO REGISTRO
+                  else{
+                    this.clientsService.addVisit(vis).subscribe();
+                  }
+                })
+              }
+            })
+  
+          }
+
+
         })
 
       }
