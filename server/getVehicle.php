@@ -10,7 +10,7 @@ $plate = $_GET["plate"];
 
 $bd = include_once "bdData.php";
 
-$sentencia = $bd->prepare("SELECT vehicle_id, plate, house_id, status, type FROM vehicles WHERE plate = '".$plate."'");
+$sentencia = $bd->prepare("SELECT a.vehicle_id, a.plate, a.house_id, a.status, a.type, a.reason, CONCAT('Mz: ', b.block, ' Lt: ', b.lot, ' Dpt: ', b.apartment) AS house_address FROM vehicles a JOIN houses b ON a.house_id=b.house_id WHERE a.plate = '".$plate."'");
 
 $sentencia->execute();
 //$cliente = $sentencia->fetchObject();

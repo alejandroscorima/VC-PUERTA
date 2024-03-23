@@ -10,7 +10,7 @@ $doc_number = $_GET["doc_number"];
 
 $bd = include_once "bdData.php";
 
-$sentencia = $bd->prepare("SELECT user_id, colab_id, type_doc, doc_number, first_name, paternal_surname, maternal_surname, gender, birth_date, civil_status, profession, cel_number, email, address, district, province, region, username, entrance_role, latitud, longitud, photo_url, house_id, status, reason FROM users WHERE doc_number = '".$doc_number."'");
+$sentencia = $bd->prepare("SELECT a.user_id, a.colab_id, a.type_doc, a.doc_number, a.first_name, a.paternal_surname, a.maternal_surname, a.gender, a.birth_date, a.civil_status, a.profession, a.cel_number, a.email, a.address, a.district, a.province, a.region, a.username, a.entrance_role, a.latitud, a.longitud, a.photo_url, a.house_id, a.status, a.reason, COALESCE(CONCAT('Mz: ', b.block, ' Lt: ', b.lot, ' Dpt: ', b.apartment),'SN') AS house_address FROM users a LEFT JOIN houses b ON a.house_id=b.house_id WHERE a.doc_number = '".$doc_number."'");
 
 $sentencia->execute();
 //$cliente = $sentencia->fetchObject();

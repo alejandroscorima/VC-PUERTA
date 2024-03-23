@@ -126,7 +126,9 @@
                   <img mat-card-image [hidden]="hideWarn" class="box" id="box6" src="assets/warn.png" width="100%">
                 </div>
                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">{{name_result}}</h3>
-                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">EDAD: {{age_result}}</h3>
+                <h3 *ngIf="false" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">EDAD: {{age_result}}</h3>
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">{{doc_result}}</h3>
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">{{house_result}}</h3>
 <!--                 <button data-modal-hide="result-modal" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                     Yes, I'm sure
                 </button>

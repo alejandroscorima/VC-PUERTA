@@ -44,9 +44,9 @@ import { Vehicle } from '../vehicle';
 })
 export class InicioComponent implements OnInit {
 
-  cliente: Person = new Person('','','','','','','','','','','','','','','','','','','','','',0,0,'','');
+  person: Person = new Person('','','','','','','','','','','','','','','','','','','','','',0,0,'','');
 
-  clientes: Person[] = [];
+  persons: Person[] = [];
 
   @ViewChild("content",{static:true}) content:ElementRef;
 
@@ -91,6 +91,10 @@ export class InicioComponent implements OnInit {
   hideBirthCeleb;
 
   name_result = '';
+  doc_result = '';
+  house_result = '';
+  type_result = '';
+
   age_result = 0;
 
   hideCheck=false;
@@ -123,13 +127,11 @@ export class InicioComponent implements OnInit {
     private usersService: UsersService,
   ) { }
 
-
   async loadLudop(){
 
 
     pdfjsLib.GlobalWorkerOptions.workerSrc = '//cdn.jsdelivr.net/npm/pdfjs-dist@2.14.305/build/pdf.worker.js';
 
-    //var loadingTask = pdfjsLib.getDocument('http://192.168.4.250/Sistema consulta de Ludopatía.pdf');
     var loadingTask = pdfjsLib.getDocument('http://52.5.47.64/Sistema consulta de Ludopatía.pdf');
     this.ludopatas = await loadingTask.promise.then(function(pdf) {
 
@@ -162,7 +164,6 @@ export class InicioComponent implements OnInit {
     this.dni_ce = String(e.trim());
     document.getElementById('btnSearch').click();
   }
-
 
 /*   search(e){
 
@@ -1004,17 +1005,14 @@ export class InicioComponent implements OnInit {
   } */
 
 
-
-
-
   search(e){
 
-    this.dni_ce= String(e.trim());
-    this.disableDocInput=true;
-    this.hideDoc=true;
-    this.hideLoad=false;
+    this.dni_ce = String(e.trim());
+    this.disableDocInput = true;
+    this.hideDoc = true;
+    this.hideLoad = false;
 
-    this.fecha= new Date();
+    this.fecha = new Date();
 
     this.dia = this.fecha.getDate();
     this.mes = this.fecha.getMonth()+1;
@@ -1049,7 +1047,7 @@ export class InicioComponent implements OnInit {
 
     this.horaString = this.hora+':'+this.min+':'+this.seg;
 
-
+    //Cuando tenemos cantidad de dígitos mayor o menor de lo necesario
     if(this.dni_ce.length<6||this.dni_ce.length>11){
       this.toastr.warning('Intente de nuevo');
       setTimeout(()=>{
@@ -1068,25 +1066,33 @@ export class InicioComponent implements OnInit {
 
       }, 300);
     }
+    //Cuando la cantidad de dígitos es correcta
     else{
 
       var vis = new Visit(0,0,'','','',0,'','','');
       var visR = new VisitRepeated(0,'','','','','');
 
+      //El cdogio ingresado es de una persona
       if(this.dni_ce.length>=8){
+        this.type_result='PERSON';
         vis.type='PERSONA';
         visR.type='PERSONA';
         this.clientsService.getPerson(this.dni_ce).subscribe((p:Person)=>{
-  
+          //La persona se encuentra en la DB
           if(p){
+
+            this.doc_result=this.dni_ce;
+            this.house_result=p.house_address;
   
-            console.log('esta en BD');
+            console.log('esta en DB');
   
             vis.visitant_id=p.user_id;
+            //No tiene dato de fecha de nacimiento
             if(p.birth_date==null){
               vis.age=0;
               this.toastr.warning('NO SE PUDO CALCULAR LA EDAD','VERIFICAR');
             }
+            //Tiene dato de fecha de nacimiento
             else{
               var birthArray=p.birth_date.split('-');
               vis.age=parseInt(this.anio)-parseInt(birthArray[0]);
@@ -1102,7 +1108,6 @@ export class InicioComponent implements OnInit {
   
             vis.date_entrance=this.fechaString;
             vis.hour_entrance=this.horaString;
-            //vis.address=c.region+'-'+c.province+'-'+c.district;
             vis.visits=1;
             vis.table_entrance=this.accessPoint.table_entrance;
   
@@ -1113,12 +1118,8 @@ export class InicioComponent implements OnInit {
               this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
               this.age_result= vis.age;
               this.hideBlock=false;
-
-              document.getElementById('btnResultModal')?.click();
-              this.limpiar();
-
   
-              var message = 'Cliente denegado'
+              var message = 'Persona denegada'
               console.log(p);
               if(String(p.reason)!=''){
                 message+='\n Motivo: '+String(p.reason);
@@ -1126,31 +1127,6 @@ export class InicioComponent implements OnInit {
               this.toastr.warning(message,'DENEGADO');
   
               vis.obs='DENEGADO';
-  
-/*               this.clientsService.getVisit(this.dni_ce,this.accessPoint.table_entrance).subscribe((v:Visit)=>{
-                if(v && v.date_entrance==this.fechaString){
-                  visR.person_id=vis.person_id;
-                  //visR.name=vis.name;
-                  visR.date_entrance=v.date_entrance;
-                  visR.hour_entrance=v.hour_entrance;
-                  visR.obs=v.obs;
-                  visR.sala=this.accessPoint_name;
-                  //vis.visits=parseInt(String(v.visits))+1;
-  
-                  v.table_entrance=this.accessPoint.table_entrance;
-  
-                  this.clientsService.deleteVisit(v).subscribe(a=>{
-                    this.clientsService.addVisit(vis).subscribe(resp=>{
-                      if(resp){
-                        this.clientsService.addVisitRepeated(visR).subscribe();
-                      }
-                    })
-                  });
-                }
-                else{
-                  this.clientsService.addVisit(vis).subscribe();
-                }
-              }) */
   
             }
             else if(p.status=='RESTRINGIDO'){
@@ -1160,12 +1136,8 @@ export class InicioComponent implements OnInit {
               this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
               this.age_result= vis.age;
               this.hideWarn=false;
-
-              document.getElementById('btnResultModal')?.click();
-              this.limpiar();
-
   
-              var message = 'Cliente con restricción'
+              var message = 'Persona con restricción'
               console.log(p);
               if(String(p.reason)!=''){
                 message+='\n Motivo: '+String(p.reason);
@@ -1184,14 +1156,8 @@ export class InicioComponent implements OnInit {
                 this.age_result= vis.age;
                 this.hideBirth=false;
   
-                document.getElementById('btnResultModal')?.click();
-                this.limpiar();
-  
-                var message = 'Cliente VIP cumpleañero'
-                // console.log(c);
-  /*               if(String(c.motivo)!=''){
-                  message+='\n Motivo: '+String(c.motivo);
-                } */
+                var message = 'Persona VIP cumpleañero'
+
                 this.toastr.info(message,'VIP CUMPLEAÑERO');
                 vis.obs='VIP';
   
@@ -1204,10 +1170,7 @@ export class InicioComponent implements OnInit {
                 this.age_result= vis.age;
                 this.hideVip=false;
   
-                document.getElementById('btnResultModal')?.click();
-                this.limpiar();
-  
-                var message='Cliente VIP';
+                var message='Persona VIP';
                 console.log(p);
                 if(String(p.reason)!=''){
                   message+='\n Motivo: '+String(p.reason);
@@ -1226,15 +1189,10 @@ export class InicioComponent implements OnInit {
                 this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
                 this.age_result= vis.age;
                 this.hideBirth=false;
+
   
-                document.getElementById('btnResultModal')?.click();
-                this.limpiar();
-  
-                var message = 'Cliente para seguimiento'
-                // console.log(c);
-  /*               if(String(c.motivo)!=''){
-                  message+='\n Motivo: '+String(c.motivo);
-                } */
+                var message = 'Persona para seguimiento'
+
                 this.toastr.info(message,'OBSERVADO DE CUMPLEAÑOS');
                 vis.obs='OBSERVADO';
   
@@ -1248,10 +1206,7 @@ export class InicioComponent implements OnInit {
                 this.age_result= vis.age;
                 this.hideObs=false;
   
-                document.getElementById('btnResultModal')?.click();
-                this.limpiar();
-  
-                var message='Cliente para seguimiento';
+                var message='Persona para seguimiento';
                 console.log(p);
                 if(String(p.reason)!=''){
                   message+='\n Motivo: '+String(p.reason);
@@ -1274,10 +1229,7 @@ export class InicioComponent implements OnInit {
                   this.age_result= vis.age;
                   this.hideBirth=false;
   
-                  document.getElementById('btnResultModal')?.click();
-                  this.limpiar();
-  
-                  this.toastr.info('Cliente de cumpleaños','CUMPLEAÑOS');
+                  this.toastr.info('Persona de cumpleaños','CUMPLEAÑOS');
   
                   vis.obs='PERMITIDO';
   
@@ -1291,10 +1243,8 @@ export class InicioComponent implements OnInit {
   
                   console.log('normal');
 
-                  document.getElementById('btnResultModal')?.click();
-                  this.limpiar();
   
-                  this.toastr.success('Cliente sin restricciones','PERMITIDO');
+                  this.toastr.success('Persona sin restricciones','PERMITIDO');
   
                   vis.obs='PERMITIDO';
   
@@ -1312,10 +1262,7 @@ export class InicioComponent implements OnInit {
   
                 console.log('normal');
 
-                document.getElementById('btnResultModal')?.click();
-                this.limpiar();
-  
-                this.toastr.success('Cliente sin restricciones','PERMITIDO');
+                this.toastr.success('Persona sin restricciones','PERMITIDO');
   
                 vis.obs='PERMITIDO';
   
@@ -1324,6 +1271,9 @@ export class InicioComponent implements OnInit {
               }
   
             }
+
+            document.getElementById('btnResultModal')?.click();
+            this.limpiar();
 
             this.clientsService.getVisit(this.dni_ce,this.accessPoint.table_entrance).subscribe((v:Visit)=>{
               console.log('getVisit:',v);
@@ -1354,9 +1304,11 @@ export class InicioComponent implements OnInit {
               }
             })
           }
+          //La persona no se encuentra en la DB
           else{
-            console.log('no esta en BD')
-            var dialogRef;
+            this.doc_result=this.dni_ce;
+            this.house_result='SN';
+            console.log('no esta en DB');
   
             if(this.dni_ce.length>8){
   
@@ -1390,6 +1342,15 @@ export class InicioComponent implements OnInit {
               personNew.reason = 'SN';
               personNew.colab_id = 0;
 
+              this.searchResult='denied';
+              this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
+              this.age_result= vis.age;
+              this.hideBlock=false;
+  
+              document.getElementById('btnResultModal')?.click();
+  
+              this.limpiar();
+
               this.clientsService.addPerson(personNew).subscribe(resAddNewPerson=>{
                 if(resAddNewPerson&&resAddNewPerson['lastId']){
                   vis.visitant_id=resAddNewPerson['lastId'];
@@ -1399,23 +1360,12 @@ export class InicioComponent implements OnInit {
                   vis.visits=1;
                   vis.table_entrance=this.accessPoint.table_entrance
                   vis.obs='DENEGADO';
-      
-                  this.searchResult='denied';
-                  this.name_result= p.first_name+' '+p.paternal_surname+' '+p.maternal_surname;
-                  this.age_result= vis.age;
-                  this.hideBlock=false;
-      
-                  document.getElementById('btnResultModal')?.click();
-      
-                  this.limpiar();
     
                   this.toastr.error('Persona sin autorización','DENEGADO');
       
                   this.clientsService.getVisit(this.dni_ce, this.accessPoint.table_entrance).subscribe((v:Visit)=>{
-                    //VISITAS REPETIDAS
                     if(v && v.date_entrance==this.fechaString){
                       visR.visitant_id=vis.visitant_id;
-                      //visR.name=vis.name;
                       visR.date_entrance=v.date_entrance;
                       visR.hour_entrance=v.hour_entrance;
                       visR.obs=v.obs;
@@ -1577,23 +1527,18 @@ export class InicioComponent implements OnInit {
                   personNew.status = 'DENEGADO';
                   personNew.reason = 'SN';
                   personNew.colab_id = 0;
-                  //clienteNew.motivo = ' ';
-                  //clienteNew.sala_registro = this.accessPoint_name;
-                  //clienteNew.fecha_registro = this.fechaString;
   
                   let snackBarRef = this.snackBar.open('NO SE OBTUVO DATOS DE RENIEC','X',{duration:4000});
   
                   vis.visitant_id=personNew.user_id;
-                  //vis.name=clienteNew.first_name;
-                  //vis.gender=clienteNew.gender;
+
                   vis.age=0
                   vis.date_entrance=this.fechaString;
                   vis.hour_entrance=this.horaString;
-                  //vis.address='SN';
   
                   vis.visits=1;
                   vis.table_entrance=this.accessPoint.table_entrance
-                  //
+                  
                   vis.obs='DENEGADO';
   
                   this.searchResult='denied';
@@ -1640,12 +1585,17 @@ export class InicioComponent implements OnInit {
           }
         })
       }
+
+      //El codigo ingresado es de un vehículo
       else{
+        this.type_result='VEHICLE';
         vis.type='VEHICULO';
         visR.type='VEHICULO';
         this.clientsService.getVehicle(this.dni_ce).subscribe((v:Vehicle)=>{
           console.log('consulta Vehicle',v);
           if(v){
+            this.doc_result=this.dni_ce;
+            this.house_result=v.house_address;
 
             console.log('esta en BD');
 
@@ -1665,11 +1615,8 @@ export class InicioComponent implements OnInit {
               this.age_result= vis.age;
               this.hideBlock=false;
 
-              document.getElementById('btnResultModal')?.click();
-              this.limpiar();
 
-  
-              var message = 'Cliente denegado'
+              var message = 'Vehiculo denegado'
               console.log(v);
               if(String(v.reason)!=''){
                 message+='\n Motivo: '+String(v.reason);
@@ -1677,31 +1624,6 @@ export class InicioComponent implements OnInit {
               this.toastr.warning(message,'DENEGADO');
   
               vis.obs='DENEGADO';
-  
-/*               this.clientsService.getVisit(this.dni_ce,this.accessPoint.table_entrance).subscribe((v:Visit)=>{
-                if(v && v.date_entrance==this.fechaString){
-                  visR.person_id=vis.person_id;
-                  //visR.name=vis.name;
-                  visR.date_entrance=v.date_entrance;
-                  visR.hour_entrance=v.hour_entrance;
-                  visR.obs=v.obs;
-                  visR.sala=this.accessPoint_name;
-                  //vis.visits=parseInt(String(v.visits))+1;
-  
-                  v.table_entrance=this.accessPoint.table_entrance;
-  
-                  this.clientsService.deleteVisit(v).subscribe(a=>{
-                    this.clientsService.addVisit(vis).subscribe(resp=>{
-                      if(resp){
-                        this.clientsService.addVisitRepeated(visR).subscribe();
-                      }
-                    })
-                  });
-                }
-                else{
-                  this.clientsService.addVisit(vis).subscribe();
-                }
-              }) */
   
             }
             else if(v.status=='RESTRINGIDO'){
@@ -1712,11 +1634,8 @@ export class InicioComponent implements OnInit {
               this.age_result= vis.age;
               this.hideWarn=false;
 
-              document.getElementById('btnResultModal')?.click();
-              this.limpiar();
-
   
-              var message = 'Cliente con restricción'
+              var message = 'Vehciculo con restricción'
               console.log(v);
               if(String(v.reason)!=''){
                 message+='\n Motivo: '+String(v.reason);
@@ -1733,10 +1652,7 @@ export class InicioComponent implements OnInit {
               this.age_result= vis.age;
               this.hideVip=false;
 
-              document.getElementById('btnResultModal')?.click();
-              this.limpiar();
-
-              var message='Cliente VIP';
+              var message='Vehiculo VIP';
               console.log(v);
               if(String(v.reason)!=''){
                 message+='\n Motivo: '+String(v.reason);
@@ -1752,10 +1668,7 @@ export class InicioComponent implements OnInit {
               this.age_result= vis.age;
               this.hideObs=false;
 
-              document.getElementById('btnResultModal')?.click();
-              this.limpiar();
-
-              var message='Cliente para seguimiento';
+              var message='Vehiculo para seguimiento';
               console.log(v);
               if(String(v.reason)!=''){
                 message+='\n Motivo: '+String(v.reason);
@@ -1774,16 +1687,16 @@ export class InicioComponent implements OnInit {
 
               console.log('normal');
 
-              document.getElementById('btnResultModal')?.click();
-              this.limpiar();
-
-              this.toastr.success('Cliente sin restricciones','PERMITIDO');
+              this.toastr.success('Vehiculo sin restricciones','PERMITIDO');
 
               vis.obs='PERMITIDO';
 
               console.log(this.accessPoint.table_entrance);
   
             }
+
+            document.getElementById('btnResultModal')?.click();
+            this.limpiar();
 
             this.clientsService.getVisit(this.dni_ce,this.accessPoint.table_entrance).subscribe((v:Visit)=>{
               console.log('getVisit:',v);
@@ -1815,6 +1728,9 @@ export class InicioComponent implements OnInit {
             })
           }
           else{
+            this.doc_result=this.dni_ce;
+            this.house_result='SN';
+
             console.log('no esta en BD')
 
             this.toastr.info('SIN DATOS');
@@ -1827,6 +1743,14 @@ export class InicioComponent implements OnInit {
             vehicleNew.status='DENEGADO';
             vehicleNew.reason='SN';
 
+            this.searchResult='denied';
+            this.name_result= vehicleNew.type;
+            this.age_result= vis.age;
+            this.hideBlock=false;
+
+            document.getElementById('btnResultModal')?.click();
+
+            this.limpiar();
 
             this.clientsService.addVehicle(vehicleNew).subscribe(resAddNewVehicle=>{
               if(resAddNewVehicle&&resAddNewVehicle['lastId']){
@@ -1837,15 +1761,6 @@ export class InicioComponent implements OnInit {
                 vis.visits=1;
                 vis.table_entrance=this.accessPoint.table_entrance
                 vis.obs='DENEGADO';
-    
-                this.searchResult='denied';
-                this.name_result= vehicleNew.type;
-                this.age_result= vis.age;
-                this.hideBlock=false;
-    
-                document.getElementById('btnResultModal')?.click();
-    
-                this.limpiar();
   
                 this.toastr.error('Persona sin autorización','DENEGADO');
     

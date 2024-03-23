@@ -6,6 +6,7 @@ export class Vehicle {
     public status: string,
     public type: string,
     public reason: string,
+    public house_address?: string,
     public vehicle_id?: number,
   ) { }
 

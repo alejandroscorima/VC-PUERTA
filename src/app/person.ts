@@ -26,6 +26,7 @@ export class Person {
     public colab_id: number,
     public status: string,
     public reason: string,
+    public house_address?: string,
     public user_id?: number,
   ) { }
 
