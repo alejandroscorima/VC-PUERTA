@@ -2219,11 +2219,10 @@ export class DialogValidate implements OnInit {
               }
             }
             else{
-              this.toastr.warning('Contraseña incorrecta');
+            if(this.username_system==''||this.password_system==''){
+              this.toastr.warning('Ingresa un usuario y contraseña');
             }
-          })
-        }
-        else{
+            else{
           this.toastr.warning('No ha proporcionado las credenciales');
         }
       }
