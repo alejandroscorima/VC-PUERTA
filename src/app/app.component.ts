@@ -1,8 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-
-import * as pdfjsLib from 'pdfjs-dist';
 import { CookiesService } from './cookies.service';
 import { ToastrService } from 'ngx-toastr';
 import { UsersService } from './users.service';
@@ -25,7 +23,7 @@ export class AppComponent implements OnInit {
 
   accessPoint: AccesPoint = new AccesPoint('','','','');
 
-  userOnSes: User = new User('','','','','','','','','','','','','','','','','','','','','',0,0);
+  userOnSes: User = new User('','','','','','','','','','','','','',0,'','','','','','','','','','','',0,'',0);
 
   constructor(private router: Router,
   private cookies: CookiesService,

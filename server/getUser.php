@@ -1,27 +1,33 @@
-
 <?php
-//header("Access-Control-Allow-Origin: http://localhost:4200");
 header("Access-Control-Allow-Origin: *");
-//header("Access-Control-Allow-Origin: http://192.168.4.250");
+header('Content-Type: application/json'); // Crucial!
 
+$bd = include_once "vc_db.php";
 
-$bd = include_once "bdData.php";
+// Validar las entradas
+$username = trim($_GET['username_system'] ?? '');
+$password = $_GET['password_system'] ?? '';
 
-$username=$_GET['username'];
-$password=$_GET['password'];
+if (empty($username) || empty($password)) {
+    echo json_encode(['error' => 'Faltan parámetros']);
+    exit;
+}
 
-$sentencia = $bd->prepare("SELECT user_id, colab_id, type_doc, doc_number, first_name, paternal_surname, maternal_surname, gender, birth_date, civil_status, profession, cel_number, email, address, district, province, region, username, entrance_role, latitud, longitud, photo_url, house_id FROM users WHERE username='".$username."' AND password='".$password."'");
-
-
-//$sentencia = $bd->query("select id, nombre, raza, edad from mascotas");
-//$sentencia = $bd->prepare("select * from actas.actas where estado= '".$estado."'");
-//where birth_date like '%?%'
-$sentencia -> execute();
-//[$fecha_cumple]
-//$mascotas = $sentencia->fetchAll(PDO::FETCH_OBJ);
-//$user = $sentencia->fetchAll(PDO::FETCH_OBJ);
+// Cambiar la consulta para obtener el hash de la contraseña
+$sentencia = $bd->prepare("SELECT user_id, type_doc, doc_number, first_name, paternal_surname, maternal_surname, gender, birth_date, cel_number, email, role_system, property_category, house_id, photo_url, status_validated, status_reason, status_system, civil_status, profession, address_reniec, district, province, region, password_system FROM users WHERE LOWER(username_system) = LOWER(?)");
+$sentencia->execute([$username]);
 $user = $sentencia->fetchObject();
-//echo json_encode($mascotas);
-echo json_encode($user);
 
+if ($user) {
+    // Verificar la contraseña
+    if (password_verify($password, $user->password_system)) {
+        // Remover el hash antes de enviar la respuesta
+        unset($user->password_system);
+        echo json_encode($user);
+    } else {
+        echo json_encode(['error' => 'Contraseña incorrecta']);
+    }
+} else {
+    echo json_encode(['error' => 'Usuario no encontrado']);
+}
 ?>

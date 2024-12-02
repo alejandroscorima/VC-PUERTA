@@ -18,9 +18,9 @@ export class UsersService {
 
   constructor(private http: HttpClient, private cookies: CookieService) { }
 
-
-  getUser(username, password) {
-    return this.http.get(`${this.baseUrl}/getUser.php?username=${username}&password=${password}`);
+  //login
+  getUser(username_system, password_system) {
+    return this.http.get(`${this.baseUrl}/getUser.php?username_system=${username_system}&password_system=${password_system}`);
   }
 
   getUserById(user_id) {
