@@ -14,10 +14,10 @@
                 </button>
                 <a target="_blank" class="flex ms-2 md:me-24">
                 <img [src]="accessPoint.image_url" class="max-h-6" alt="Oscorp Logo" />
-                <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">VC5</span>
+                <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">VILLA CLUB 5</span>
                 <span class="w-3"></span>
                 <span class="justify-center">
-                  Bienvenido {{userOnSes.first_name}}, Operario de: {{' '+accessPoint.name}}&nbsp;
+                  {{userOnSes.first_name}}, BIENVENIDO A {{accessPoint.ap_location}}&nbsp;
                 </span>
                 </a>
             </div>
@@ -37,7 +37,7 @@
                             {{userOnSes.paternal_surname+' '+userOnSes.maternal_surname+', '+userOnSes.first_name}}
                             </p>
                             <p class="text-sm text-center font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                            --------
+                              Operario en {{accessPoint.ap_location}}
                             </p>
                         </div>
                         <ul class="py-1" role="none">
@@ -80,6 +80,7 @@ transition-transform -translate-x-full border-r border-y-white
        <div class="flex flex-col items-center pb-10">
            <img class="w-24 h-24 mb-3 rounded-full shadow-lg" [src]="userOnSes.photo_url" alt="Bonnie image"/>
            <h5 class="mb-1 text-l font-medium text-center text-gray-900 dark:text-white">{{userOnSes.paternal_surname+' '+userOnSes.maternal_surname+', '+userOnSes.first_name}}</h5>
+           <h5 class="mb-1 text-l font-medium text-center text-gray-900 dark:text-white">Operario en {{accessPoint.ap_location}}</h5>
        </div>
      </div>
  

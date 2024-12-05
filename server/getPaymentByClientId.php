@@ -1,8 +1,10 @@
 <?php
+// Permitir el acceso desde cualquier origen
 header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json");
 
 try {
-    // Obtén el ID del cliente desde la solicitud GET
+    // Obtener el ID del cliente desde la solicitud GET
     $client_id = isset($_GET['client_id']) ? $_GET['client_id'] : null;
 
     // Validar que se proporcionó el ID del cliente
@@ -13,8 +15,20 @@ try {
     // Incluir el archivo de configuración y conexión a la base de datos
     $bd = include_once "bdLicense.php";
 
-    // Consulta preparada con comparación de fechas
-    $sql = "SELECT payment_id, client_id, date_start, date_expire, payment_date FROM payment WHERE client_id = :client_id AND STR_TO_DATE(date_expire, '%Y-%m-%d') >= STR_TO_DATE(:current_date, '%Y-%m-%d')";
+    // Consulta SQL preparada para obtener los pagos válidos
+    $sql = "
+        SELECT 
+            payment_id, 
+            client_id, 
+            date_start, 
+            date_expire, 
+            payment_date 
+        FROM 
+            payment 
+        WHERE 
+            client_id = :client_id 
+            AND STR_TO_DATE(date_expire, '%Y-%m-%d') >= STR_TO_DATE(:current_date, '%Y-%m-%d')
+    ";
     $stmt = $bd->prepare($sql);
 
     // Asignar valores a los parámetros de la consulta
@@ -36,12 +50,16 @@ try {
     }
 
     // Devolver el resultado en formato JSON
-    echo json_encode($payment);
+    echo json_encode($payment, JSON_PRETTY_PRINT);
 } catch (PDOException $e) {
-    // Capturar errores de PDO
-    echo json_encode(['error' => 'Error de conexión: ' . $e->getMessage()]);
+    // Capturar errores relacionados con la base de datos
+    echo json_encode([
+        'error' => 'Error de conexión: ' . $e->getMessage()
+    ]);
 } catch (Exception $e) {
-    // Capturar otros errores
-    echo json_encode(['error' => $e->getMessage()]);
+    // Capturar otros errores generales
+    echo json_encode([
+        'error' => $e->getMessage()
+    ]);
 }
 ?>

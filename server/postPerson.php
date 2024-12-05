@@ -1,4 +1,7 @@
 <?php
+// Configuración para errores y CORS
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
@@ -7,29 +10,44 @@ if ($_SERVER["REQUEST_METHOD"] != "POST") {
     exit("Solo acepto peticiones POST");
 }
 
-$jsonPerson = json_decode(file_get_contents("php://input"));
-if (!$jsonPerson) {
+$jsonUser  = json_decode(file_get_contents("php://input"));
+if (!$jsonUser ) {
     exit("No hay datos");
 }
 
-$bd = include_once "bdData.php";
+// Conexión a la base de datos
+$bd = include_once "vc_db.php";
 
-$sentencia = $bd->prepare("INSERT INTO users(colab_id, type_doc, 
-doc_number, first_name, paternal_surname, maternal_surname, gender, 
-birth_date, civil_status, profession, cel_number, email, address, 
-district, province, region, username, password, entrance_role, 
-latitud, longitud, photo_url, house_id, status, reason) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-$resultado = $sentencia->execute([$jsonPerson->colab_id, $jsonPerson->type_doc, $jsonPerson->doc_number, 
-$jsonPerson->first_name, $jsonPerson->paternal_surname, $jsonPerson->maternal_surname, $jsonPerson->gender, 
-$jsonPerson->birth_date, $jsonPerson->civil_status, $jsonPerson->profession, $jsonPerson->cel_number, 
-$jsonPerson->email, $jsonPerson->address, $jsonPerson->district, $jsonPerson->province, $jsonPerson->region, 
-$jsonPerson->username, $jsonPerson->password, $jsonPerson->entrance_role, $jsonPerson->latitud, 
-$jsonPerson->longitud, $jsonPerson->photo_url, $jsonPerson->house_id, $jsonPerson->status, $jsonPerson->reason]);
+// Preparar la consulta SQL para insertar un nuevo usuario
+$sql = "INSERT INTO users (
+            type_doc, doc_number, first_name, paternal_surname, maternal_surname,
+            username_system, role_system, status_validated, status_system, 
+            address_reniec, district, province, region
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-// Obtener el último ID insertado
-$lastId = $bd->lastInsertId();
+$sentencia = $bd->prepare($sql);
 
-echo json_encode([
-    "lastId" => $lastId,
+// Ejecutar la consulta con los valores del JSON recibido
+$resultado = $sentencia->execute([
+    $jsonUser->type_doc,
+    $jsonUser->doc_number,
+    $jsonUser->first_name,
+    $jsonUser->paternal_surname,
+    $jsonUser->maternal_surname,
+    $jsonUser->username_system,
+    $jsonUser->role_system,
+    $jsonUser->status_validated,
+    $jsonUser->status_system,
+    $jsonUser->address_reniec,
+    $jsonUser->district,
+    $jsonUser->province,
+    $jsonUser->region
 ]);
-?>
+
+// Retornar respuesta en JSON
+if ($resultado) {
+    echo json_encode(["success" => true, "message" => "Usuario creado correctamente."]);
+} else {
+    http_response_code(500); // Error interno
+    echo json_encode(["error" => "Error al crear el usuario."]);
+}

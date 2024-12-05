@@ -19,7 +19,7 @@
 
             <div class="items-center text-center">
               <label for="docInput" class="doc block mb-2 text-sm font-medium text-gray-100 dark:text-white">DNI/CE o PLACA:</label>
-              <input type="text" [disabled]="disableDocInput" [(ngModel)]="docInputText" name="docInput" id="docInput" (keyup.enter)="verifyEnter($event.target.value)" #docInput class="bg-gray-800 border text-center border-gray-300 text-gray-800 text-2xl rounded-lg focus:ring-blue-500 focus:border-blue-500 w-5/6 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white txtSearch" placeholder="" required>
+              <input type="text" [disabled]="disableDocInput" [(ngModel)]="docInputText" name="docInput" id="docInput" (keyup.enter)="verifyEnter($event.target.value)" #docInput class="uppercase bg-gray-800 border text-center border-gray-300 text-gray-800 text-2xl rounded-lg focus:ring-blue-500 focus:border-blue-500 w-5/6 p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white txtSearch" placeholder="" required>
             </div>
 
 <!--             <mat-form-field class="doc" appearance="outline" style=" min-width: 95%; height: 30px; font-size: 20px; ; ">
@@ -51,54 +51,6 @@
 
       </div>
 
-<!--       <mat-grid-list cols="3" rowHeight="20px">
-        <mat-grid-tile [colspan]="3" [rowspan]="4">
-          <img mat-card-image class="logo" src="{{linkTitle}}"  height="150%">
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="21">
-          <img mat-card-image class="logo" src="assets/OscBot.png"  height="100%">
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="9">
-          <img mat-card-image class="logo" [hidden]="hideDoc" src='assets/idcard.png'  height="100%">
-          <img mat-card-image class="logo" [hidden]="hideLoad" src='assets/loading2.gif'  height="100%">
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="9">
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="12" style="background-color: rgba(0, 0, 0, 0.43); border-radius: 10px;">
-          <div style="color:white; font-weight: normal; ">
-            <a >Inserte documento de identidad</a>
-            <br>
-            <br>
-            <a style="color: white; font-size: 30px; font-weight: normal;">Realizar una búsqueda</a>
-            <br>
-            <br>
-            <mat-form-field class="doc" appearance="outline" style=" min-width: 95%; height: 30px; font-size: 20px; ; ">
-              <mat-label class="doc" >DNI o Carnet de extranjería:</mat-label>
-              <input matInput type="number" id="docInput" [disabled]="disableDocInput" [(ngModel)]="docInputText" name="docInput" (keyup.enter)="verifyEnter($event.target.value)"  style="font-size:30px; border-color: white; " #docInput >
-            </mat-form-field>
-            <br>
-            <br>
-            <br>
-            <button mat-raised-button id="btnSearch" class="btnSearch" (click)="search(docInput.value)" style="min-width: 95%; height:50px; border-radius: 20px; background-color: rgb(225, 169, 149);">
-              BUSCAR
-            </button>
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1" [rowspan]="12">
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="3" [rowspan]="4" style="color: white; ">
-          <p style="font-size:auto; font-weight: lighter; width:95%">
-            <a>
-              &dash; TEAM DESARROLLO | OSCORP TECHNOLOGY &dash;
-              <br>
-              desarrollo&#64;oscorp.com.pe
-            </a>
-          </p>
-        </mat-grid-tile>
-  
-      </mat-grid-list> -->
-  
-  
     </div>
   </div>
 
@@ -110,12 +62,6 @@
   <div id="result-modal" tabindex="-1" data-modal-backdrop="static" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
       <div class="relative p-4 w-full max-w-md max-h-full">
           <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 w-full">
-<!--               <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal">
-                  <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                  </svg>
-                  <span class="sr-only">Close modal</span>
-              </button> -->
               <div class="p-4 md:p-5 text-center w-full">
                 <div class="line-boxes" style="text-align:center w-full">
                   <img mat-card-image [hidden]="hideCheck" class="box w-full" id="box1" src='assets/allowed.png'>
@@ -127,7 +73,7 @@
                 </div>
                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">{{name_result}}</h3>
                 <h3 *ngIf="false" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">EDAD: {{age_result}}</h3>
-                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">{{doc_result}}</h3>
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400 up">{{doc_result}}</h3>
                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">{{house_result}}</h3>
 <!--                 <button data-modal-hide="result-modal" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                     Yes, I'm sure

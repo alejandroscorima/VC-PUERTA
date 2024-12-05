@@ -6,7 +6,7 @@ import { environment } from "../environments/environment";
 import { Observable } from 'rxjs';
 
 import * as pdfjsLib from 'pdfjs-dist';
-import { Visit } from './visit';
+import { Visitor } from './visitor';
 import { VisitRepeated } from './visitRepeated';
 import { Vehicle } from './vehicle';
 
@@ -33,12 +33,12 @@ export class ClientesService {
     return this.http.get(`${this.baseUrl}/getAllPersons.php`);
   }
 
-  getPerson(doc_number: string) {
-    return this.http.get(`${this.baseUrl}/getPerson.php?doc_number=${doc_number}`);
+  getUserByDocNumber(doc_number: string) {
+    return this.http.get(`${this.baseUrl}/getUserByDocNumber.php?doc_number=${doc_number}`);
   }
 
-  getVehicle(plate: string) {
-    return this.http.get(`${this.baseUrl}/getVehicle.php?plate=${plate}`);
+  getVehicle(license_plate: string) {
+    return this.http.get(`${this.baseUrl}/getVehicle.php?license_plate=${license_plate}`);
   }
 
   getVisit(doc_number: string, table_entrance: string) {
@@ -53,7 +53,7 @@ export class ClientesService {
 
   } */
 
-  getClientFromReniec(doc_number: string) {
+  getUserFromReniec(doc_number: string) {
 
     this.urlconsulta = 'https://my.apidev.pro/api/dni/'+doc_number+'?api_token=e9cc47e67d492cdee675bfb2b365c09393611b5141144aa0da34cab5429bb5e8';
     return this.http.get(this.urlconsulta);
@@ -80,15 +80,15 @@ export class ClientesService {
     return this.http.put(`${this.baseUrl}/update.php`, cliente);
   }
 
-  addVisit(visit: Visit) {
+  addVisitor(visit: Visitor) {
     return this.http.post(`${this.baseUrl}/postVisit.php`, visit);
   }
 
-  deleteVisit(visit: Visit) {
+  deleteVisitor(visit: Visitor) {
     return this.http.post(`${this.baseUrl}/deleteVisit.php`, visit);
   }
 
-  addVisitRepeated(visitR: VisitRepeated) {
+  addVisitorRepeated(visitR: VisitRepeated) {
     return this.http.post(`${this.baseUrl}/postVisitRepeated.php`, visitR);
   }
 }
