@@ -10,44 +10,76 @@ if ($_SERVER["REQUEST_METHOD"] != "POST") {
     exit("Solo acepto peticiones POST");
 }
 
-$jsonUser  = json_decode(file_get_contents("php://input"));
-if (!$jsonUser ) {
+$jsonVisitor  = json_decode(file_get_contents("php://input"));
+if (!$jsonVisitor ) {
+    http_response_code(400); // Solicitud incorrecta
     exit("No hay datos");
+}
+
+if (empty($jsonVisitor->type)) {
+    http_response_code(400);
+    exit("Faltan datos obligatorios.");
 }
 
 // Conexión a la base de datos
 $bd = include_once "vc_db.php";
 
 // Preparar la consulta SQL para insertar un nuevo usuario
-$sql = "INSERT INTO users (
-            type_doc, doc_number, first_name, paternal_surname, maternal_surname,
-            username_system, role_system, status_validated, status_system, 
-            address_reniec, district, province, region
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-$sentencia = $bd->prepare($sql);
-
-// Ejecutar la consulta con los valores del JSON recibido
-$resultado = $sentencia->execute([
-    $jsonUser->type_doc,
-    $jsonUser->doc_number,
-    $jsonUser->first_name,
-    $jsonUser->paternal_surname,
-    $jsonUser->maternal_surname,
-    $jsonUser->username_system,
-    $jsonUser->role_system,
-    $jsonUser->status_validated,
-    $jsonUser->status_system,
-    $jsonUser->address_reniec,
-    $jsonUser->district,
-    $jsonUser->province,
-    $jsonUser->region
-]);
-
-// Retornar respuesta en JSON
-if ($resultado) {
-    echo json_encode(["success" => true, "message" => "Usuario creado correctamente."]);
-} else {
-    http_response_code(500); // Error interno
-    echo json_encode(["error" => "Error al crear el usuario."]);
+if ($jsonVisitor->type == 'PERSONA') {
+    if (empty($jsonVisitor->type_doc) || empty($jsonVisitor->doc_number)) {
+        http_response_code(400); // Bad Request
+        exit("Faltan datos obligatorios: 'type_doc' o 'doc_number'");
+    }
+    if (empty($jsonVisitor->username_system)) {
+        $jsonVisitor->username_system = 'USER_' . uniqid(); // Si el username_system de visitor es vacío, crea uno genérico aleatorio
+    }
+    $sql = "INSERT INTO users(
+        type_doc,
+        doc_number,
+        first_name,
+        paternal_surname,
+        maternal_surname,
+        role_system,
+        username_system,
+        status_validated
+    ) VALUES (?,?,?,?,?,?,?,?)";
+    $values = [
+        $jsonVisitor->type_doc,
+        $jsonVisitor->doc_number,
+        $jsonVisitor->name,
+        $jsonVisitor->paternal_surname,
+        $jsonVisitor->maternal_surname,
+        $jsonVisitor->role_system ?? null,
+        $jsonVisitor->username_system,
+        $jsonVisitor->status_validated
+    ];
 }
+elseif ($jsonVisitor->type == 'VEHICULO') {
+    $sql = "INSERT INTO vehicles(
+        license_plate,
+        status_validated
+    ) VALUES (?,?)";
+    $values = [
+        $jsonVisitor->license_plate ?? null,
+        $jsonVisitor->status_validated
+    ];
+}
+try {
+    if ($sql) {
+        $sentencia = $bd->prepare($sql);
+        $resultado = $sentencia->execute($values);
+
+        if ($resultado) {
+            echo json_encode(["success" => true, "message" => "Persona creada correctamente."]);
+        } else {
+            throw new Exception("Error al ejecutar la consulta sql.");
+        }
+    } else {
+        throw new Exception("La consulta principal no está definida.");
+    }
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(["error" => $e->getMessage()]);
+}
+
+?>

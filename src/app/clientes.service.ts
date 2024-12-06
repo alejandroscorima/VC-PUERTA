@@ -60,9 +60,14 @@ export class ClientesService {
 
   }
 
-  addPerson(person: Person) {
-    return this.http.post(`${this.baseUrl}/postPerson.php`, person);
+  addPerson(visitor: Visitor) {
+    return this.http.post(`${this.baseUrl}/postPerson.php`, visitor);
   }
+
+  addVisitor(visitor: Visitor) {
+    return this.http.post(`${this.baseUrl}/postVisit.php`, visitor);
+  }
+
 
   addVehicle(vehicle: Vehicle) {
     return this.http.post(`${this.baseUrl}/postVehicle.php`, vehicle);
@@ -78,10 +83,6 @@ export class ClientesService {
 
   updateCliente(cliente: Person) {
     return this.http.put(`${this.baseUrl}/update.php`, cliente);
-  }
-
-  addVisitor(visit: Visitor) {
-    return this.http.post(`${this.baseUrl}/postVisit.php`, visit);
   }
 
   deleteVisitor(visit: Visitor) {

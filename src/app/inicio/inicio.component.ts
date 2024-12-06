@@ -126,6 +126,19 @@ export class InicioComponent implements OnInit {
     private cookies: CookiesService,
     private toastr: ToastrService,
   ) { }
+  
+  ngOnInit() {
+    initFlowbite();
+
+    this.initializeVisibility();
+    this.linkTitle = 'assets/titulo3.png';
+
+    if (this.isUserAuthenticated()) {
+        this.loadAccessPoint();
+    } else {
+        this.handleUnauthenticatedUser();
+    }
+  }
 
   verifyEnter(e){
     this.dni_ce_plate = String(e.trim());
@@ -202,7 +215,7 @@ export class InicioComponent implements OnInit {
 
 // 4. Validar DNI para saber si es 5.PERSONA O 9.VEHÍCULO
   processDocument(dni_ce_plate: string) {
-    const vis = new Visitor(0, '', '', '','','', 0, '','', 0,0, '', '', '', 0, '', '', '', '', '',0, 0, 0, '', '', '', '', '', '', '', '');
+    const vis = new Visitor(0, '', '', '',0,'', 0, '','', '','', '','', 0, '', 0, '', '', '', '', '',0, 0, 0, '', '', '', '', '', '', '');
     if (dni_ce_plate.length >= 8) {
         this.handlePersonSearch(vis,dni_ce_plate);
         console.log(vis);
@@ -220,9 +233,9 @@ export class InicioComponent implements OnInit {
 
     this.clientsService.getUserByDocNumber(dni_ce_plate).subscribe((u: User) => {
         if (u.doc_number==this.docInputText) {
-            this.handlePersonFound(u, vis);
+            this.handlePersonFound(vis, u);
         } else {
-            this.handlePersonNotFound(u,vis);
+            this.handlePersonNotFound(vis, u);
         }
     });
   }
@@ -252,7 +265,7 @@ export class InicioComponent implements OnInit {
 */
 
 // 7. Si la persona se encuentra en la base de datos 
-  handlePersonFound(u: User, vis: Visitor){
+  handlePersonFound(vis: Visitor, u: User,){
     this.doc_result = this.dni_ce_plate.toUpperCase();
     this.house_result = 'Mz: '+u.block_house+' Lt: '+u.lot;
     console.log('esta en DB');
@@ -313,52 +326,16 @@ export class InicioComponent implements OnInit {
     }
 
     document.getElementById('btnResultModal')?.click();
-    this.limpiar();
     this.clientsService.addVisitor(vis).subscribe();
+    console.log(vis);
     console.log('PERUANO REGISTRADO EN VC5');
+    this.limpiar();
+
   }
 
-  private selectLogTable(lt:string):string {
-    // Comparar con las categorías
-    if (this.categories.includes(lt)) {
-      let logTable = 'access_logs';
-      return logTable;
-    } 
-    else if (this.temp_visit_type.includes(lt)) {
-      let logTable = 'temporary_access_logs';
-      return logTable;
-    } 
-    // Caso predeterminado si no coincide con ninguna categoría
-    else {
-      // Manejar el caso de error o asignar un valor por defecto
-      let logTable = 'access_logs';
-      return logTable;
-    }
-  }
-
-  private displayMessage(searchResult: string, toastTitle: string, message: string) {
-    this.searchResult = searchResult;
-    this.toastr[searchResult === 'denied' ? 'warning' : 'info'](message, toastTitle);
-  }
-
-  private calculateAge(birthDate: string | null): number {
-    if (!birthDate) {
-        this.toastr.warning('No se pudo calcular la edad', 'VERIFICAR');
-        return 0;
-    }
-
-    const [birthYear, birthMonth, birthDay] = birthDate.split('-').map(Number);
-    let age = parseInt(this.year) - birthYear;
-
-    if (parseInt(this.month) < birthMonth || (parseInt(this.month) === birthMonth && parseInt(this.day) < birthDay)) {
-        age--;
-    }
-
-    return age;
-  }
 
 // 8. Si la persona no se encuentra en la base de datos  
-  handlePersonNotFound(u: User, vis: Visitor){
+  handlePersonNotFound(vis: Visitor, u: User, ){
     this.doc_result=this.dni_ce_plate.toUpperCase();
     this.house_result='SN';
     console.log('no esta en DB');
@@ -379,6 +356,9 @@ export class InicioComponent implements OnInit {
       console.log(vis.log_type);
       vis.doc_number=this.dni_ce_plate;
       vis.status_validated = 'DENEGADO';
+      vis.type_doc='CE';
+      vis.role_system='NINGUNO';
+      vis.status_system='INACTIVO';
 
       // Mostrar modal de negación
       this.searchResult = 'denied';
@@ -386,10 +366,18 @@ export class InicioComponent implements OnInit {
       this.age_result = vis.age;
       this.hideBlock = false;
       document.getElementById('btnResultModal')?.click();
-      this.limpiar();
-
-      this.clientsService.addVisitor(vis).subscribe();
       console.log('CHAMO INDOCUMENTADO');
+      console.log(vis);
+      this.clientsService.addPerson(vis).subscribe(r=>{
+        this.clientsService.getUserByDocNumber(vis.doc_number).subscribe((usr:User)=>{
+          vis.visitor_id=u.user_id;
+          this.clientsService.addVisitor(vis).subscribe();
+          console.log('visita añadida');
+          console.log('ya lárgate!');
+        })
+        console.log('Persona añadida, añadiendo visita...');
+      });
+      this.limpiar();
     }
     //Es perucho, obtener info de RENIEC
     else{   
@@ -423,8 +411,6 @@ export class InicioComponent implements OnInit {
 
           let snackBarRef = this.snackBar.open(u.first_name,'X',{duration:4000});
 
-
-          vis.visitor_id=0;
           if(u.birth_date==null){
             vis.age=0;
             this.toastr.warning('NO SE PUDO CALCULAR LA EDAD','VERIFICAR')
@@ -432,26 +418,38 @@ export class InicioComponent implements OnInit {
           else{
             vis.age = this.calculateAge(u.birth_date);
           };
-          vis.date_entry = this.fechaString +' '+ this.horaString;
+          vis.visitor_id=0;
           vis.ap_id=this.accessPoint_id;
           vis.operator_id=parseInt(this.cookies.getToken('user_id'));
           console.log(vis.operator_id);
-          vis.log_type=this.selectLogTable(this.visitorType);
+          vis.date_entry = this.fechaString +' '+ this.horaString;
           vis.vehicle_id=null;
+          vis.log_type=this.selectLogTable(this.visitorType);
           vis.doc_number=this.dni_ce_plate;
           vis.status_validated='DENEGADO';
-
+          vis.type_doc='DNI';
+          vis.role_system='NINGUNO';
+          vis.status_system='INACTIVO';
+          vis.address_reniec=u.address_reniec;
+          vis.name=u.first_name;
+          vis.paternal_surname=u.paternal_surname;
+          vis.maternal_surname=u.maternal_surname;
           this.searchResult='denied';
           this.name_result= u.first_name+' '+u.paternal_surname+' '+u.maternal_surname;
           this.age_result= vis.age;
           this.hideBlock=false;
-
-          document.getElementById('btnResultModal')?.click();
-
-          this.limpiar();
-
-          this.clientsService.addVisitor(vis).subscribe();
           console.log('PERUANO REGISTRADO EN RENIEC');
+          document.getElementById('btnResultModal')?.click();
+          this.clientsService.addPerson(vis).subscribe(r=>{
+            this.clientsService.getUserByDocNumber(vis.doc_number).subscribe((usr:User)=>{
+              vis.visitor_id=usr.user_id;
+              this.clientsService.addVisitor(vis).subscribe();
+              console.log('visita añadida');
+              console.log('ya lárgate!');
+            })
+            console.log('Persona añadida, añadiendo visita...');
+          });
+          this.limpiar();
           this.toastr.warning('Persona no autorizada','DENEGADO');
         } 
         //CLIENTES SIN DATOS EN RENIEC
@@ -517,9 +515,9 @@ export class InicioComponent implements OnInit {
 
       this.clientsService.getVehicle(dni_ce_plate).subscribe((v: Vehicle) => {
           if (v.license_plate==this.docInputText.toUpperCase()) {
-              this.handleVehicleFound(vis,v);
+              this.handleVehicleFound(vis, v);
           } else {
-              this.handleVehicleNotFound(vis,v);
+              this.handleVehicleNotFound(vis, v);
           }
       });
   }
@@ -573,10 +571,10 @@ export class InicioComponent implements OnInit {
           vis.status_validated = 'PERMITIDO';
           break;
     }
-
     document.getElementById('btnResultModal')?.click();
-    this.limpiar();
+    console.log(vis);
     this.clientsService.addVisitor(vis).subscribe();
+    this.limpiar();
   }
 
 // 11. Si el vehículo no se encuentra en la base de datos
@@ -617,6 +615,45 @@ export class InicioComponent implements OnInit {
       error: err => console.error('Error al registrar nueva visita:', err)
     });
   }
+  
+  private selectLogTable(lt:string):string {
+    // Comparar con las categorías
+    if (this.categories.includes(lt)) {
+      let logTable = 'access_logs';
+      return logTable;
+    } 
+    else if (this.temp_visit_type.includes(lt)) {
+      let logTable = 'temporary_access_logs';
+      return logTable;
+    } 
+    // Caso predeterminado si no coincide con ninguna categoría
+    else {
+      // Manejar el caso de error o asignar un valor por defecto
+      let logTable = 'access_logs';
+      return logTable;
+    }
+  }
+
+  private displayMessage(searchResult: string, toastTitle: string, message: string) {
+    this.searchResult = searchResult;
+    this.toastr[searchResult === 'denied' ? 'warning' : 'info'](message, toastTitle);
+  }
+
+  private calculateAge(birthDate: string | null): number {
+    if (!birthDate) {
+        this.toastr.warning('No se pudo calcular la edad', 'VERIFICAR');
+        return 0;
+    }
+
+    const [birthYear, birthMonth, birthDay] = birthDate.split('-').map(Number);
+    let age = parseInt(this.year) - birthYear;
+
+    if (parseInt(this.month) < birthMonth || (parseInt(this.month) === birthMonth && parseInt(this.day) < birthDay)) {
+        age--;
+    }
+
+    return age;
+  }
 
   limpiar(){
     setTimeout(()=>{
@@ -649,18 +686,6 @@ export class InicioComponent implements OnInit {
     }, 3000);
   }
 
-  ngOnInit() {
-    initFlowbite();
-
-    this.initializeVisibility();
-    this.linkTitle = 'assets/titulo3.png';
-
-    if (this.isUserAuthenticated()) {
-        this.loadAccessPoint();
-    } else {
-        this.handleUnauthenticatedUser();
-    }
-  }
 
   private initializeVisibility() {
     this.disableDocInput = false;

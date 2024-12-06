@@ -3,16 +3,17 @@ export class Visitor {
     public visitor_id: number,           // user_id o temp_visit_id
     public doc_number: string,           // Número de documento
     public name: string,                 // Nombre del visitante
-    public paternal_surname:string,
-    public maternal_surname: string,
     public date_entry: string,           // entry_time o temp_entry_time
     public ap_id: number,                // ID del punto de acceso
     public status_validated: string,     // Estado de validación
-    public status_reason:string,
     public operator_id: number,         // ID del operario
-    public visits: number,               // Número de visitas
     public log_type: string,             // Tipo de log: 'access_logs' o 'temporary_access_logs'
     public type: string,                 // Tipo de visitante ('PERSONA', 'VEHICULO', 'EXTERNO')
+    public address_reniec: string,
+    public paternal_surname?:string,
+    public maternal_surname?: string,
+    public status_reason?:string,
+    public visits?: number,               // Número de visitas
     public date_exit?: string,           // temp_exit_time (solo para logs temporales)
     public age?: number,                 // Edad del visitante (solo si es relevante)
     public role_system?: string,         // Role del usuario en el sistema (si es un visitante tipo 'PERSONA')
