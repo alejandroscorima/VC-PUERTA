@@ -37,8 +37,8 @@ export class ClientesService {
     return this.http.get(`${this.baseUrl}/getUserByDocNumber.php?doc_number=${doc_number}`);
   }
 
-  getVehicle(license_plate: string) {
-    return this.http.get(`${this.baseUrl}/getVehicle.php?license_plate=${license_plate}`);
+  getVehicleByPlate(license_plate: string) {
+    return this.http.get(`${this.baseUrl}/getVehicleByPlate.php?license_plate=${license_plate}`);
   }
 
   getVisit(doc_number: string, table_entrance: string) {

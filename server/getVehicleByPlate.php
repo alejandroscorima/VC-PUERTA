@@ -3,18 +3,17 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-// Incluir conexión a la base de datos
 $bd = include_once "vc_db.php";
 
-// Validación y sanitización del parámetro 'license_plate'
 $license_plate=$_GET['license_plate'];
+
 if (empty($license_plate)) {
     echo json_encode(['error' => 'Faltan parámetros requeridos.']);
     exit();
 }
 
-try {
-    $sentencia = $bd->prepare("SELECT 
+$sql="
+SELECT 
         v.vehicle_id,
         v.license_plate,
         v.type_vehicle,
@@ -28,16 +27,16 @@ try {
         h.apartment
     FROM vehicles AS v
     LEFT JOIN houses AS h ON v.house_id = h.house_id
-    WHERE v.license_plate = :license_plate");
+    WHERE v.license_plate = :license_plate
+";
 
-    // Vincula el parámetro
+try {
+    $sentencia = $bd->prepare($sql);
     $sentencia->bindParam(':license_plate', $license_plate);
-
-    // Ejecutar la consulta
     $sentencia->execute();
     
     // Obtener los resultados como un arreglo de objetos
-    $vehicle = $sentencia->fetch(PDO::FETCH_OBJ);
+    $vehicle = $sentencia->fetchObject();
     
     // Comprobar si se encontraron resultados
     if ($vehicle) {
@@ -51,19 +50,8 @@ try {
         ]);
     }
 
-    // Cerrar la sentencia
-    $sentencia = null;
-
-} catch (Exception $e) {
-    // Registrar el error en un archivo de log
-    error_log($e->getMessage(), 3, '/var/log/php_errors.log');
-
-    // Devolver un mensaje genérico
-    echo json_encode([
-        "error" => true,
-        "message" => "An error occurred. Please try again later.",
-        "server_error" => $e->getMessage()
-    ]);
+} catch (PDOException $e) {
+    echo json_encode(['error' => 'Error al consultar la base de datos.', 'details' => $e->getMessage()]);
 }
 
 ?>

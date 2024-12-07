@@ -41,8 +41,9 @@ if ($jsonVisitor->type == 'PERSONA') {
         maternal_surname,
         role_system,
         username_system,
-        status_validated
-    ) VALUES (?,?,?,?,?,?,?,?)";
+        status_validated,
+        status_system
+    ) VALUES (?,?,?,?,?,?,?,?,?)";
     $values = [
         $jsonVisitor->type_doc,
         $jsonVisitor->doc_number,
@@ -51,17 +52,22 @@ if ($jsonVisitor->type == 'PERSONA') {
         $jsonVisitor->maternal_surname,
         $jsonVisitor->role_system ?? null,
         $jsonVisitor->username_system,
-        $jsonVisitor->status_validated
+        $jsonVisitor->status_validated,
+        $jsonVisitor->status_system
     ];
 }
 elseif ($jsonVisitor->type == 'VEHICULO') {
     $sql = "INSERT INTO vehicles(
         license_plate,
-        status_validated
-    ) VALUES (?,?)";
+        type_vehicle,
+        status_validated,
+        status_system
+    ) VALUES (?,?,?,?)";
     $values = [
         $jsonVisitor->license_plate ?? null,
-        $jsonVisitor->status_validated
+        $jsonVisitor->type_vehicle,
+        $jsonVisitor->status_validated,
+        $jsonVisitor->status_system,
     ];
 }
 try {

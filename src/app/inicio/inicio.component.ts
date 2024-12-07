@@ -266,8 +266,6 @@ export class InicioComponent implements OnInit {
 
 // 7. Si la persona se encuentra en la base de datos 
   handlePersonFound(vis: Visitor, u: User,){
-    this.doc_result = this.dni_ce_plate.toUpperCase();
-    this.house_result = 'Mz: '+u.block_house+' Lt: '+u.lot;
     console.log('esta en DB');
 
     vis.visitor_id = u.user_id;
@@ -283,6 +281,8 @@ export class InicioComponent implements OnInit {
     // Asignar información común
     this.name_result = `${u.first_name} ${u.paternal_surname} ${u.maternal_surname}`;
     this.age_result = vis.age;
+    this.doc_result = this.dni_ce_plate.toUpperCase();
+    this.house_result = 'Mz: '+u.block_house+' Lt: '+u.lot;
     // Manejar estados
     switch (u.status_validated) {
         case 'DENEGADO':
@@ -308,14 +308,17 @@ export class InicioComponent implements OnInit {
 
         default:
             console.log('ni restringido ni destacado');
-            this.searchResult = 'allowed';
-            this.hideCheck = false;
+            
 
             if (u.birth_date && u.birth_date.includes(this.fecha_cumple)) {
                 console.log('cumpleañero');
+                this.searchResult = 'birth allowed';
+                this.hideBirth=false;
                 this.toastr.info('Persona de cumpleaños', 'CUMPLEAÑOS');
             } else {
                 console.log('normal');
+                this.searchResult = 'allowed';
+                this.hideCheck = false;
                 this.toastr.success('Persona sin restricciones', 'PERMITIDO');
             }
 
@@ -333,13 +336,9 @@ export class InicioComponent implements OnInit {
 
   }
 
-
 // 8. Si la persona no se encuentra en la base de datos  
   handlePersonNotFound(vis: Visitor, u: User, ){
-    this.doc_result=this.dni_ce_plate.toUpperCase();
-    this.house_result='SN';
     console.log('no esta en DB');
-
     //Es chamo, agregar como vacío
     if(this.dni_ce_plate.length>8){
 
@@ -359,24 +358,32 @@ export class InicioComponent implements OnInit {
       vis.type_doc='CE';
       vis.role_system='NINGUNO';
       vis.status_system='INACTIVO';
+      vis.name='EXTRANJERO SN';
+      vis.paternal_surname='SN';
+      vis.maternal_surname='SN';
 
       // Mostrar modal de negación
       this.searchResult = 'denied';
       this.name_result = 'EXTRANJERO SN SN';
       this.age_result = vis.age;
       this.hideBlock = false;
+      this.doc_result=this.dni_ce_plate.toUpperCase();
+      this.house_result='SN';
+
       document.getElementById('btnResultModal')?.click();
-      console.log('CHAMO INDOCUMENTADO');
+      
       console.log(vis);
       this.clientsService.addPerson(vis).subscribe(r=>{
         this.clientsService.getUserByDocNumber(vis.doc_number).subscribe((usr:User)=>{
-          vis.visitor_id=u.user_id;
+          vis.visitor_id=usr.user_id;
           this.clientsService.addVisitor(vis).subscribe();
           console.log('visita añadida');
           console.log('ya lárgate!');
         })
         console.log('Persona añadida, añadiendo visita...');
       });
+      console.log('EXTRANEJRO INDOCUMENTADO');
+      this.toastr.warning('persona no autorizada','DENEGADO')
       this.limpiar();
     }
     //Es perucho, obtener info de RENIEC
@@ -384,8 +391,6 @@ export class InicioComponent implements OnInit {
       this.clientsService.getUserFromReniec(this.dni_ce_plate).subscribe(res=>{
         //CLIENTE CON DATOS EN RENIEC
         if(res['success']){
-
-
           u.type_doc = 'DNI';
           u.doc_number = res['data']['numero'];
           u.first_name = res['data']['nombres'];
@@ -403,7 +408,7 @@ export class InicioComponent implements OnInit {
           u.region = res['data']['departamento'];
           u.username_system = 'SN';
           u.password_system = 'SN';
-          u.role_system = 'SN';
+          u.role_system = 'NINGUNO';
           u.photo_url = 'SN';
           u.house_id = 0;
           u.status_validated = 'DENEGADO';
@@ -426,19 +431,20 @@ export class InicioComponent implements OnInit {
           vis.vehicle_id=null;
           vis.log_type=this.selectLogTable(this.visitorType);
           vis.doc_number=this.dni_ce_plate;
-          vis.status_validated='DENEGADO';
-          vis.type_doc='DNI';
-          vis.role_system='NINGUNO';
+          vis.status_validated=u.status_validated;
+          vis.type_doc=u.type_doc;
+          vis.role_system=u.role_system;
           vis.status_system='INACTIVO';
           vis.address_reniec=u.address_reniec;
           vis.name=u.first_name;
           vis.paternal_surname=u.paternal_surname;
           vis.maternal_surname=u.maternal_surname;
+
           this.searchResult='denied';
           this.name_result= u.first_name+' '+u.paternal_surname+' '+u.maternal_surname;
           this.age_result= vis.age;
           this.hideBlock=false;
-          console.log('PERUANO REGISTRADO EN RENIEC');
+          
           document.getElementById('btnResultModal')?.click();
           this.clientsService.addPerson(vis).subscribe(r=>{
             this.clientsService.getUserByDocNumber(vis.doc_number).subscribe((usr:User)=>{
@@ -449,14 +455,15 @@ export class InicioComponent implements OnInit {
             })
             console.log('Persona añadida, añadiendo visita...');
           });
-          this.limpiar();
+          console.log('PERUANO REGISTRADO EN RENIEC');
           this.toastr.warning('Persona no autorizada','DENEGADO');
+          this.limpiar();
         } 
         //CLIENTES SIN DATOS EN RENIEC
         else{
           u.type_doc = 'DNI';
           u.doc_number = this.dni_ce_plate;
-          u.first_name = 'PERUANO';
+          u.first_name = 'SN';
           u.paternal_surname = 'SN';
           u.maternal_surname = 'SN';
           u.gender = 'SN';
@@ -471,37 +478,52 @@ export class InicioComponent implements OnInit {
           u.region = 'SN';
           u.username_system = 'SN';
           u.password_system = 'SN';
-          u.role_system = 'SN';
+          u.role_system = 'NINGUNO';
           u.photo_url = 'SN';
           u.house_id = 0;
-          u.status_system = 'DENEGADO';
+          u.status_validated = 'DENEGADO';
           u.status_reason = 'SN';
 
           let snackBarRef = this.snackBar.open('NO SE OBTUVO DATOS DE RENIEC','X',{duration:4000});
 
           vis.visitor_id=0;
           vis.age=0;
-          vis.date_entry = this.fechaString +' '+ this.horaString;
           vis.ap_id=this.accessPoint_id;
           vis.operator_id=parseInt(this.cookies.getToken('user_id'));
           console.log(vis.operator_id);
-          vis.log_type=this.selectLogTable(this.visitorType);
+          vis.date_entry = this.fechaString +' '+ this.horaString;
           vis.vehicle_id=null;
+          vis.log_type=this.selectLogTable(this.visitorType);
+          console.log(vis.log_type);
           vis.doc_number=this.dni_ce_plate;
-          vis.status_validated='DENEGADO';
+          vis.status_validated = u.status_validated;
+          vis.type_doc=u.type_doc;
+          vis.role_system=u.role_system;
+          vis.status_system='INACTIVO';
+          vis.address_reniec=u.address_reniec;
+          vis.name=u.first_name;
+          vis.paternal_surname=u.paternal_surname;
+          vis.name=u.maternal_surname;
+          
           
           this.searchResult='denied';
-          this.name_result= u.first_name+' '+u.paternal_surname+' '+u.maternal_surname;
+          this.name_result= 'PERUANO SN SN';
           this.age_result= vis.age;
           this.hideBlock=false;
 
           document.getElementById("btnResultModal")?.click();
-          this.limpiar();
-
-          this.toastr.warning('Persona no autorizada','DENEGADO');
-
-          this.clientsService.addVisitor(vis).subscribe();
+          this.clientsService.addPerson(vis).subscribe(r=>{
+            this.clientsService.getUserByDocNumber(vis.doc_number).subscribe((usr:User)=>{
+              vis.visitor_id=usr.user_id;
+              this.clientsService.addVisitor(vis).subscribe();
+              console.log('visita añadida');
+              console.log('ya lárgate!');
+            })
+            console.log('Persona añadida, añadiendo visita...');
+          });
           console.log('PERUANO INDOCUMENTADO');
+          this.toastr.warning('Persona no autorizada','DENEGADO');
+          this.limpiar();
           
         }
       })
@@ -513,7 +535,7 @@ export class InicioComponent implements OnInit {
       this.type_result = 'VEHICLE';
       vis.type = 'VEHICULO';
 
-      this.clientsService.getVehicle(dni_ce_plate).subscribe((v: Vehicle) => {
+      this.clientsService.getVehicleByPlate(this.dni_ce_plate.toUpperCase()).subscribe((v: Vehicle) => {
           if (v.license_plate==this.docInputText.toUpperCase()) {
               this.handleVehicleFound(vis, v);
           } else {
@@ -524,24 +546,26 @@ export class InicioComponent implements OnInit {
 
 // 10. Si el vehículo se encuentra en la base de datos
   handleVehicleFound(vis: Visitor, v: Vehicle){
-    this.doc_result=this.dni_ce_plate.toUpperCase();
-    this.house_result='Mz: '+v.block_house+' Lt: '+v.lot;
-
-    console.log('esta en BD');
+    console.log('esta en BD');    
 
     vis.visitor_id=v.vehicle_id;
     vis.age=0;
-    vis.date_entry = this.fechaString;
-    vis.visits = 1;
-    // Ingresar registro en access_logs
-    if (this.visitorType == 'RESIDENTE') {
-      vis.log_type = 'access_logs';
-    }
-
-    this.name_result= v.type_vehicle;
+    vis.date_entry = this.fechaString +' '+ this.horaString;
+    vis.ap_id=this.accessPoint_id;
+    vis.operator_id=parseInt(this.cookies.getToken('user_id'));
+    vis.log_type=this.selectLogTable(v.category_entry);
+    vis.type_vehicle=v.type_vehicle;
+    vis.vehicle_id=v.vehicle_id;
+    vis.house_id=v.house_id;
+    vis.license_plate=this.dni_ce_plate.toUpperCase();
+    
+    
+    this.name_result= vis.type_vehicle;
     this.age_result= vis.age;
+    this.doc_result=this.dni_ce_plate.toUpperCase();
+    this.house_result='Mz: '+v.block_house+' Lt: '+v.lot;
     // Manejar estados
-    switch (v.status_system) {
+    switch (v.status_validated) {
       case 'DENEGADO':
           console.log('denegado');
           this.hideBlock = false;
@@ -572,48 +596,51 @@ export class InicioComponent implements OnInit {
           break;
     }
     document.getElementById('btnResultModal')?.click();
-    console.log(vis);
     this.clientsService.addVisitor(vis).subscribe();
+    console.log(vis);
+    console.log('VEHICULO REGISTRADO EN VC5');
     this.limpiar();
   }
 
 // 11. Si el vehículo no se encuentra en la base de datos
   handleVehicleNotFound(vis: Visitor,v:Vehicle,){
-    this.doc_result=this.dni_ce_plate.toUpperCase();
-    this.house_result='SN';
     console.log('no esta en BD')
-
     this.toastr.info('SIN DATOS');
 
-    vis.house_id=0;
-    vis.license_plate=this.dni_ce_plate;
-    vis.type_vehicle='SN';
-    vis.status_validated='DENEGADO';
-    vis.status_reason='SN';
-    v.category_entry
-
+    vis.visitor_id=0;
+    vis.age=0;
     vis.date_entry = this.fechaString +' '+ this.horaString;
-    if (this.visitorType == 'RESIDENTE') {
-      vis.log_type = 'access_logs';
-    }
-    vis.status_validated = 'DENEGADO';
-    vis.status_system = 'INACTIVO';
+    vis.ap_id=this.accessPoint_id;
+    vis.operator_id=parseInt(this.cookies.getToken('user_id'));
+    vis.log_type=this.selectLogTable(this.visitorType);
+    vis.type_vehicle='VEHÍCULO SN';
+    vis.vehicle_id=0;
+    vis.house_id=0;
+    vis.status_validated='DENEGADO';
+    vis.status_system='INACTIVO';
+    vis.license_plate=this.dni_ce_plate.toUpperCase();
 
+    this.doc_result=this.dni_ce_plate.toUpperCase();
+    this.house_result='SN';
     this.searchResult='denied';
-    this.name_result= v.type_vehicle;
+    this.name_result= vis.type_vehicle;
     this.age_result= vis.age;
     this.hideBlock=false;
 
     document.getElementById('btnResultModal')?.click();
-
-    this.limpiar();
-
-    this.clientsService.addVisitor(vis).subscribe({
-      next: () => {
-          console.log('Nueva visita registrada.');
-      },
-      error: err => console.error('Error al registrar nueva visita:', err)
+    console.log(vis);
+    this.clientsService.addPerson(vis).subscribe(r=>{
+      this.clientsService.getVehicleByPlate(vis.license_plate).subscribe((vhcl:Vehicle)=>{
+        vis.visitor_id=vhcl.vehicle_id;
+        vis.vehicle_id=vhcl.vehicle_id;
+        this.clientsService.addVisitor(vis).subscribe();
+        console.log('visita añadida');
+        console.log('ya lárgate!');
+      })
+      console.log('Persona añadida, añadiendo visita...');
     });
+    console.log('VEHÍCULO NO ENCONTRADO');
+    this.limpiar();
   }
   
   private selectLogTable(lt:string):string {
