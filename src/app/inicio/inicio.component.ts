@@ -797,6 +797,7 @@ export class InicioComponent implements OnInit {
       if (result) {
         this.operario_id = parseInt(this.cookies.getToken('user_id'));
         this.router.navigateByUrl('/'); // Mejor opción que location.reload()
+        location.reload()
       }
     });
   }
